@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="3" fill="#0A0B0D"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="2.5" fill="none" stroke="#24262C" stroke-width="1"/>
+  <text x="16" y="23"
+        text-anchor="middle"
+        font-family="JetBrains Mono, ui-monospace, SFMono-Regular, monospace"
+        font-size="19"
+        font-weight="600"
+        letter-spacing="-0.02em"
+        fill="#E8B45C">Æ</text>
+</svg>
