@@ -683,7 +683,7 @@ function Who() {
           <div className="who-name">Thor Henning Hetland</div>
           <div className="who-role dim">Founder · Ægis · ægentisk practitioner</div>
           <p>
-            Two decades shipping production code across Java, Kotlin, TypeScript, Python and the
+            Four decades shipping production code across Java, Kotlin, TypeScript, Python and the
             architectures around them. Spent the last few years using agentic tools every day on
             real client problems — long enough to have opinions, scars, and a working method.
           </p>
