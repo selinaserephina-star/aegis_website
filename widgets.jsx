@@ -133,14 +133,14 @@ function Mimir() {
   const channels = [
     { c: "#mimir-dev",     u: "mímir",  t: "[03:14] nightly index complete · 65,905 files · 0 schema drift · 4 stale skills flagged for review" },
     { c: "#mimir-dev",     u: "klaw",   t: "[06:02] PR #482 ready · characterisation tests green · waiting human approval (you)" },
-    { c: "#mimir-gtm",     u: "mímir",  t: "[06:31] BD signal: Item Consulting expanded LinkedIn team to 14 engineers — outreach window open" },
+    { c: "#mimir-gtm",     u: "mímir",  t: "[06:31] BD signal: target account expanded LinkedIn team to 14 engineers — outreach window open" },
     { c: "#mimir-finance", u: "mímir",  t: "[06:45] DM-only · invoice 0241 paid · runway recalculated · sources cited" },
     { c: "#mimir-product", u: "mímir",  t: "[07:00] morning briefing · 3 yesterday-decisions · 2 unblocked launches · 1 question for Thor" },
-    { c: "#mimir-dev",     u: "mímir",  t: "[07:02] elprint: 17 similarity calculators verified · MOSFETs now match by gate-charge ±5%" },
+    { c: "#mimir-dev",     u: "mímir",  t: "[07:02] component library: 17 similarity calculators verified · MOSFETs now match by gate-charge ±5%" },
     { c: "#mimir-strategy",u: "mímir",  t: "[07:14] cross-role query: 'who is talking to manufacturers?' → 2 threads, 1 deal in motion" },
     { c: "#mimir-dev",     u: "mímir",  t: "[07:22] memory triage · 12 stale topics · human in deletion loop · awaiting nod" },
     { c: "#mimir-gtm",     u: "mímir",  t: "[07:31] javaBin Oslo · attendance confirmed · 38 RSVPs · venue capacity ok" },
-    { c: "#mimir-product", u: "mímir",  t: "[07:48] mynder.no · production deploy clean · synthesis re-indexed · 1.1s avg query" },
+    { c: "#mimir-product", u: "mímir",  t: "[07:48] client production deploy clean · synthesis re-indexed · 1.1s avg query" },
   ];
   const [shown, setShown] = useStateW(channels.slice(0, 4));
   const cursorRef = useRefW(4);

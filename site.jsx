@@ -201,7 +201,7 @@ function Offerings() {
     { n: "02", k: "workshops", t: "Workshops",   d: "Hands-on team training. SDD, Claude Code, KCP — on your codebase." },
     { n: "03", k: "advisory",  t: "Advisory",    d: "Ægentisk maturity review. One-off or monthly retainer." },
     { n: "04", k: "hands-on",  t: "Hands-on",    d: "We build alongside you. Agentic development → full transformation." },
-    { n: "05", k: "tooling",   t: "Tooling",     d: "Synthesis · Exocortex · KCP · Skills Library — implementation + license." },
+    { n: "05", k: "tooling",   t: "Tooling",     d: "Synthesis · ExoCortex · KCP · Skills Library — implementation + license." },
   ];
   return (
     <section className="section" id="offerings">
@@ -231,12 +231,12 @@ function Talks() {
       <h2 className="section-title">On stage, where the builders are.</h2>
       <div className="two-col">
         <div>
-          <div className="col-label">// company conferences</div>
-          <ul className="tag-list"><li>Item</li><li>Clave</li><li>Fremra</li></ul>
+          <div className="col-label">// developer communities</div>
+          <p className="footnote" style={{margin:0}}>javaBin · Agentbrew · JVM, JavaScript and agentic-dev meetups across Oslo and beyond.</p>
         </div>
         <div>
-          <div className="col-label">// developer communities</div>
-          <ul className="tag-list"><li>Agentbew</li><li>JavaZone</li><li>javaBin</li></ul>
+          <div className="col-label">// businesses &amp; consultancies</div>
+          <p className="footnote" style={{margin:0}}>Internal events and brown-bags for engineering &amp; product organisations across the Nordics.</p>
         </div>
       </div>
       <div className="callout">
@@ -280,9 +280,7 @@ function Workshops() {
           <div className="col-label spaced">// what you leave with</div>
           <p>A Claude that actually knows what it's working on. Personal license to the Skills Library.</p>
           <div className="col-label spaced">// delivered for</div>
-          <ul className="tag-list">
-            <li>Item</li><li>Anomalab</li><li>Tvímenning</li><li>Mynder</li>
-          </ul>
+          <p className="footnote" style={{margin:0}}>Engineering teams across consulting, product and applied-AI organisations.</p>
         </div>
       </div>
 
@@ -362,8 +360,7 @@ function Testimonial({ enabled }) {
         med på laget.
       </blockquote>
       <div className="quote-attr">
-        <span className="dim">—</span> Mynder <span className="dim">·</span>{" "}
-        <span className="dim">mynder.no</span>
+        <span className="dim">—</span> Synnøve, CEO Mynder
       </div>
     </section>
   );
@@ -517,8 +514,8 @@ function HandsOn() {
         <div className="build-card">
           <div className="col-label">// current builds</div>
           <div className="build-item">
-            <span className="build-name">Mynder</span>
-            <span className="dim">— active build · mynder.no</span>
+            <span className="build-name">Active client build</span>
+            <span className="dim">— production agentic infrastructure</span>
           </div>
           <div className="build-item">
             <span className="build-name">elprint</span>
@@ -556,7 +553,7 @@ function HandsOn() {
   );
 }
 
-// ---------- tooling (KCP / Synthesis / Exocortex / Skills) ----------
+// ---------- tooling (KCP / Synthesis / ExoCortex / Skills) ----------
 
 function Tooling() {
   const rows = [
@@ -605,7 +602,7 @@ function Tooling() {
         </div>
 
         <div className="tool-card">
-          <div className="col-label">// 02 — exocortex</div>
+          <div className="col-label">// 02 — ExoCortex</div>
           <div className="tool-name">Declare → execute → verify.</div>
           <p className="tool-desc">
             Human-led ægentisk workflow. In the loop at the decisions that matter
@@ -691,7 +688,7 @@ function Who() {
             real client problems — long enough to have opinions, scars, and a working method.
           </p>
           <p>
-            Ægis is the practice that came out of that. The tooling (Synthesis · Exocortex · KCP),
+            Ægis is the practice that came out of that. The tooling (Synthesis · ExoCortex · KCP),
             the workshops, the case studies — all of it is what I do daily, packaged so a team can
             adopt it without re-living the learning curve.
           </p>
