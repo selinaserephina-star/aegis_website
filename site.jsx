@@ -559,7 +559,7 @@ function Tooling() {
   const rows = [
     { c: "CLAUDE.md, hand-curated skill files",            e: "Semantic indexing, behavioural scoring" },
     { c: "Manual routing and memory maintenance",          e: "Deterministic, scheduled memory maintenance" },
-    { c: "Scales to one developer, breaks at team scale",  e: "Scales to 289+ repos, 65,905 files, 476 skills" },
+    { c: "Scales to one developer, breaks at team scale",  e: "Scales to 289+ repos, 66,350 files, 529 skills" },
     { c: "Memory rots silently",                           e: "Push-based context: 53–80% fewer tool calls" },
   ];
   return (
@@ -634,7 +634,7 @@ $ exo verify   --human`}
       <div className="skills-product">
         <div className="skills-head">
           <div className="col-label">// 04 — skills library</div>
-          <div className="skills-title">476 skills. 40 years of dev knowledge. Licensed.</div>
+          <div className="skills-title">529 skills. 40 years of dev knowledge. Licensed.</div>
         </div>
         <div className="skills-grid">
           <div>
@@ -847,15 +847,15 @@ function App() {
       <StickyCTA />
 
       <TweaksPanel title="Tweaks">
-        <TweakSection title="Accent">
+        <TweakSection label="Accent">
           <TweakRadio value={tweaks.accent} onChange={(v) => setTweak("accent", v)}
             options={[{value:"amber",label:"amber"},{value:"bone",label:"bone"},{value:"rust",label:"rust"},{value:"cyan",label:"cyan"}]} />
         </TweakSection>
-        <TweakSection title="Density">
+        <TweakSection label="Density">
           <TweakRadio value={tweaks.density} onChange={(v) => setTweak("density", v)}
             options={[{value:"compact",label:"compact"},{value:"roomy",label:"roomy"}]} />
         </TweakSection>
-        <TweakSection title="Sections">
+        <TweakSection label="Sections">
           <TweakToggle label="testimonial" checked={tweaks.showTestimonial} onChange={(v) => setTweak("showTestimonial", v)} />
           <TweakToggle label="case study"  checked={tweaks.showCase}        onChange={(v) => setTweak("showCase", v)} />
         </TweakSection>

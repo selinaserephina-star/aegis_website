@@ -131,7 +131,7 @@ Use lower-case, monospace-friendly, no emoji, no markdown bold. Be specific to t
 function Mimir() {
   // simulated rotating Slack-style pulse
   const channels = [
-    { c: "#mimir-dev",     u: "mímir",  t: "[03:14] nightly index complete · 65,905 files · 0 schema drift · 4 stale skills flagged for review" },
+    { c: "#mimir-dev",     u: "mímir",  t: "[03:14] nightly index complete · 66,350 files · 0 schema drift · 4 stale skills flagged for review" },
     { c: "#mimir-dev",     u: "klaw",   t: "[06:02] PR #482 ready · characterisation tests green · waiting human approval (you)" },
     { c: "#mimir-gtm",     u: "mímir",  t: "[06:31] BD signal: target account expanded LinkedIn team to 14 engineers — outreach window open" },
     { c: "#mimir-finance", u: "mímir",  t: "[06:45] DM-only · invoice 0241 paid · runway recalculated · sources cited" },
