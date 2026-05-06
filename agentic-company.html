@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Agentic Company · Ægis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    .ac-hero { padding: 120px 0 80px; border-bottom: 1px solid var(--line); }
+    .ac-eyebrow { font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px; }
+    .ac-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(48px, 8vw, 120px);
+      line-height: 0.98; letter-spacing: -0.04em; margin: 0;
+    }
+    .ac-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .ac-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(20px, 2.4vw, 30px); line-height: 1.4;
+      color: var(--fg-mute); max-width: 56ch; margin: 32px 0 0;
+    }
+    .ac-essay { padding: 80px 0; max-width: 70ch; }
+    .ac-essay h3 {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(22px, 2.6vw, 32px); letter-spacing: -0.02em;
+      margin: 48px 0 16px;
+    }
+    .ac-essay p { font-size: 16px; line-height: 1.7; color: var(--fg); margin: 0 0 18px; }
+    .ac-essay p.lede { font-family: var(--t-disp); font-size: 20px; font-style: italic; color: var(--fg-mute); }
+    .ac-essay strong { color: var(--accent-hex); font-weight: 500; }
+
+    .ac-morning {
+      margin-top: 48px;
+      border: 1px solid var(--line); background: var(--bg-2);
+      padding: 32px;
+    }
+    .ac-morning h4 { font-size: 12px; letter-spacing: 0.1em; color: var(--fg-mute); margin: 0 0 16px; }
+    .ac-morning ol { padding-left: 20px; margin: 0; }
+    .ac-morning li { font-size: 14px; line-height: 1.7; color: var(--fg); }
+    .ac-morning li strong { color: var(--accent-hex); font-weight: 500; }
+    .ac-morning code { background: var(--bg); border: 1px solid var(--line); padding: 1px 6px; font-size: 12px; color: var(--accent-hex); }
+
+    .ac-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
+    .ac-back:hover { color: var(--accent-hex); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="Aegis Website.html#offerings">offerings</a>
+          <a href="Aegis Website.html#workshops">workshops</a>
+          <a href="Aegis Website.html#tooling">tooling</a>
+          <a href="Aegis Website.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">essay</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="ac-hero">
+        <div class="ac-eyebrow">// essay · the destination</div>
+        <h1 class="ac-title">The <em>agentic</em><br/>company.</h1>
+        <p class="ac-lede">
+          A synchronised organisation. No meetings. No status reports. No copy-pasting.
+          Every person wakes up to a briefing that already knows what happened yesterday
+          across the whole company.
+        </p>
+      </section>
+
+      <section class="section ac-essay">
+        <p class="lede">
+          Most companies coordinate by interrupting each other. Agentic companies coordinate by
+          composing the pulse — and then delivering only the parts each person needs.
+        </p>
+
+        <h3>What changes</h3>
+        <p>
+          The morning briefing replaces the stand-up. Mímir composes it overnight from yesterday&apos;s
+          decisions, code changes, customer signals, and financial events. By the time you open
+          Slack, you already know what happened.
+        </p>
+        <p>
+          The status report disappears. Anyone can ask any question of the org — &ldquo;who is talking
+          to manufacturers?&rdquo; — and get a real answer in seconds, with sources.
+        </p>
+        <p>
+          Copy-pasting between tools stops. Agents route signals between Slack, M365, Trello,
+          SharePoint, the CRM, and Accounting automatically. <strong>The boundary between humans
+          and tools moves up the stack.</strong>
+        </p>
+
+        <h3>How memory works</h3>
+        <p>
+          Hybrid architecture. A shared layer carries product, strategy and market intelligence
+          across roles. Role silos — finance, GTM, dev — keep strict boundaries. Agent infrastructure
+          never has production credential access; it bridges through targeted MCPs to existing tools.
+        </p>
+        <p>
+          Memory rots. Nightly <code>topic-health</code> and <code>topic-triage</code> jobs run
+          with zero LLM calls and a human in the deletion loop. <strong>Freshness beats completeness.</strong>
+        </p>
+
+        <h3>One synthetic morning</h3>
+        <div class="ac-morning">
+          <h4>// 07:00 · Tuesday · agentic company, week 7</h4>
+          <ol>
+            <li><strong>06:31</strong> · BD signal flagged · Item Consulting expanded to 14 engineers · outreach window open</li>
+            <li><strong>06:45</strong> · DM-only · invoice 0241 paid · runway recalculated · sources cited</li>
+            <li><strong>07:00</strong> · morning briefing posted · 3 yesterday-decisions · 2 unblocked launches · 1 question for Thor</li>
+            <li><strong>07:02</strong> · elprint · 17 similarity calculators verified · MOSFETs match by gate-charge ±5%</li>
+            <li><strong>07:14</strong> · cross-role query · &ldquo;who is talking to manufacturers?&rdquo; → 2 threads · 1 deal in motion</li>
+            <li><strong>07:22</strong> · memory triage · 12 stale topics flagged · awaiting human nod</li>
+            <li><strong>07:48</strong> · mynder.no · production deploy clean · synthesis re-indexed · 1.1s avg query</li>
+          </ol>
+        </div>
+
+        <h3>The 6-week conversion path</h3>
+        <p>
+          Week 0 — core infra. Week 1 — dev activation. Week 2–3 — role activation. Week 4 — API hardening.
+          Week 5–6 — polish &amp; showcase. Infra cost ~15,000 NOK/month. <strong>Positive ROI the moment each
+          team member saves 20 minutes a day.</strong>
+        </p>
+
+        <p style="margin-top: 48px;">
+          <a class="cta-primary" href="Aegis Website.html#engage">
+            <span>$</span> book a 30-min scoping call <span class="arrow">→</span>
+          </a>
+        </p>
+
+        <a class="ac-back" href="Aegis Website.html">← back to ægis</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
