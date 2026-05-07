@@ -64,7 +64,13 @@ function Header() {
     const id = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
-  const t = time.toISOString().slice(11, 19);
+  const t = new Intl.DateTimeFormat("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Europe/Oslo",
+  }).format(time);
   const close = () => setOpen(false);
   return (
     <header className="topbar">
@@ -86,7 +92,7 @@ function Header() {
         </nav>
         <div className="topbar-right">
           <span className="status-dot" />
-          <span className="dim">UTC</span>
+          <span className="dim">CET</span>
           <span className="mono-time">{t}</span>
           <button className="hamburger" aria-label="menu" onClick={() => setOpen(o => !o)}>
             <span /><span /><span />

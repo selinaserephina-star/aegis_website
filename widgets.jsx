@@ -175,7 +175,7 @@ function Mimir() {
           <span className="mimir-dot" />
           <span className="dim">slack · ægis workspace · </span>
           <span>09 channels</span>
-          <span className="dim mimir-clock">{new Date().toISOString().slice(11,16)} UTC</span>
+          <span className="dim mimir-clock">{new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Oslo" }).format(new Date())} CET</span>
         </div>
         <div className="mimir-list" ref={listRef}>
           {shown.map((m, i) => (
