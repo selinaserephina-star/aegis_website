@@ -1,0 +1,120 @@
+# Ægis · Ægentisk — KCP manifest
+# Knowledge Context Protocol: https://github.com/Cantara/kcp
+version: "0.14"
+
+entity:
+  name: Ægis · Ægentisk
+  domain: xn--gis-xla.no
+  aliases:
+    - ægis.no
+  location: Oslo, Norway
+  timezone: Europe/Oslo
+  description: >
+    AI-era development partner. Helps organisations work with AI — and as AI.
+    Talks, workshops, advisory, hands-on builds, and tooling from years of
+    production use. Human-led. Production-grade. Memory as infrastructure.
+
+contact:
+  business: selina@exoreaction.com
+  technical: totto@exoreaction.com
+
+people:
+  - name: Thor Henning Hetland
+    alias: Totto
+    role: Founder
+    email: totto@exoreaction.com
+    wiki: https://wiki.totto.org/about/
+
+services:
+  talks:
+    description: Keynotes at developer communities and company events across the Nordics
+    venues: [javaBin Oslo, Agentbrew Oslo, JVM meetups, internal company events]
+
+  workshops:
+    description: Hands-on team training in AI-era development on your own codebase
+    formats:
+      individual:
+        price: "9000 NOK/seat"
+        next: "2026-05-21"
+        capacity: 15
+        includes: Skills Library personal license
+      team:
+        price: enquire
+        contact: selina@exoreaction.com
+        formats: [half-day, full-day, multi-day]
+        location: on-premises, on your codebase
+
+  advisory:
+    description: Ægentisk maturity review — codebase and organisation readiness
+    assesses:
+      - Organisation and team readiness
+      - Tech stacks and codebase fit for agents
+      - Automation surface area
+      - Blast radius analysis
+    deliverables:
+      - 6–8 technical reports
+      - Architecture guards
+      - Security analysis (21 signal types)
+      - Prioritised ægentisk adoption roadmap
+    formats: [one-off, monthly-retainer]
+
+  hands-on:
+    description: >
+      Agentic development builds alongside client teams.
+      From single feature to full ægentisk transformation.
+    throughput: "10–30× with controlled quality"
+    reference_agents:
+      - name: Mímir
+        host: ironclaw0
+        runtime: AWS EC2, 24/7
+      - name: Klaw
+        host: ironclaw1
+        runtime: AWS EC2, 24/7
+
+  tooling:
+    description: Synthesis · ExoCortex · KCP · Skills Library — implementation and licensing
+    products:
+      synthesis:
+        description: Knowledge index across entire codebase
+        tech: Lucene-based, sub-second retrieval
+        scale: "tested to 289+ repos, 66,350 files"
+        stats:
+          answer_latency: 1.2s
+          tool_call_reduction: 40%
+          reasoning_time_increase: 67%
+        signals: 21 security signal types including AI-specific threats
+      exocortex:
+        description: Human-led agentic workflow (declare → execute → verify)
+        principle: Human in the loop at decisions that matter; out of it everywhere else
+      kcp:
+        description: Federated org manifest — knowledge.yaml standard for agent context
+        spec: https://github.com/Cantara/kcp
+        benefit: "~33% context savings vs prompt-stuffing"
+      skills-library:
+        description: Production-curated skill registry for Claude Code
+        size: 529
+        stacks: [Java, Spring, Kotlin, TypeScript, Python, React]
+        domains: [architecture, security, testing, performance, DX]
+        licensing:
+          personal: included with every workshop seat
+          business: enquire at selina@exoreaction.com
+        maintenance: auto-curated, behaviourally scored, stale skills retired
+
+capabilities:
+  - agentic-development
+  - ai-era-transformation
+  - knowledge-infrastructure
+  - memory-as-infrastructure
+  - security-analysis
+  - team-training
+  - tooling-implementation
+
+methodology:
+  name: SDD — Skill-Driven Development
+  pillars: 6
+  loop: [build, test, change, learn, improve, repeat]
+
+discovery:
+  provenance: canonical
+  confidence: high
+  llms_txt: https://xn--gis-xla.no/llms.txt

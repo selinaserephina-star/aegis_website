@@ -1,0 +1,46 @@
+# Ægis · Ægentisk
+
+> AI-era development partner. Organisations that work with AI — and as AI.
+> Based in Oslo, Norway. Founded by Thor Henning Hetland.
+
+Ægis helps engineering teams adopt agentic development through talks, workshops,
+advisory engagements, hands-on builds, and tooling. Human-led, production-grade.
+Memory as infrastructure. Years of production use, not hype.
+
+## Offerings
+
+- Talks: keynotes at developer conferences and company events across the Nordics
+- Workshops: hands-on team training on AI-era development, on your own codebase (open enrolment: 9,000 NOK/seat; next cohort: 21 May)
+- Advisory: ægentisk maturity review — tech stacks, codebase readiness, blast radius, security, roadmap
+- Hands-on: agentic development builds alongside your team (single feature → full ægentisk transformation)
+- Tooling: Synthesis · ExoCortex · KCP · Skills Library — implementation and licensing
+
+## Tooling
+
+- Synthesis: Lucene-based knowledge index across entire codebase. Sub-second retrieval. 21 security signal types including AI-specific threats. Auto-generates skills from recurring session patterns. Reduces tool calls 40%.
+- ExoCortex: human-led agentic workflow (declare → execute → verify). Human in the loop at decisions that matter, out of it everywhere else.
+- KCP (Knowledge Context Protocol): federated org manifest via knowledge.yaml. Agents understand org structure without prompt-stuffing. Saves ~33% context. Open standard: github.com/Cantara/kcp
+- Skills Library: 529 skills across Java, Spring, Kotlin, TypeScript, Python, React. Architecture, security, testing, performance, DX patterns. Auto-curated from real production sessions. Personal license included with every workshop seat.
+
+## Methodology
+
+SDD — Skill-Driven Development. Six-pillar method for AI-era engineering teams.
+Iterative loop: build → test → change → learn → improve → repeat.
+
+## People
+
+Thor Henning Hetland (Totto) — founder. Four decades shipping production code across
+Java, Kotlin, TypeScript, Python. Ægentisk practitioner, speaker at javaBin and Agentbrew Oslo.
+
+## Contact
+
+- Business / workshops: selina@exoreaction.com
+- Technical: totto@exoreaction.com
+
+## Links
+
+- [Home](https://xn--gis-xla.no)
+- [Agentic Company essay](https://xn--gis-xla.no/agentic-company.html)
+- [Blog / wiki](https://wiki.totto.org)
+- [KCP spec](https://github.com/Cantara/kcp)
+- [Machine-readable manifest](https://xn--gis-xla.no/knowledge.yaml)
