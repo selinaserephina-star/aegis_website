@@ -10,5 +10,5 @@ compatibility_date = "2024-01-01"
 # 2. Uncomment and update the route below:
 #
 # routes = [
-#   { pattern = "api.xn--gis-rna.no/*", zone_name = "xn--gis-rna.no" }
+#   { pattern = "api.xn--gis-xla.no/*", zone_name = "xn--gis-xla.no" }
 # ]

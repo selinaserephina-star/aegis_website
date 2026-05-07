@@ -3,7 +3,7 @@
 // Deploy: wrangler deploy
 // Set key: wrangler secret put CLAUDE_API_KEY
 
-const ALLOWED_ORIGINS = ["https://ægis.no", "https://xn--gis-rna.no", "http://localhost"];
+const ALLOWED_ORIGINS = ["https://ægis.no", "https://xn--gis-xla.no", "http://localhost"];
 
 export default {
   async fetch(request, env) {
