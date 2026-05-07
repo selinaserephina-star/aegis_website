@@ -297,7 +297,7 @@ function Workshops() {
             <li>Personal license to the Skills Library included</li>
             <li>Bring your own codebase</li>
           </ul>
-          <a className="cta-primary" href="mailto:totto@exoreaction.com?subject=Workshop%2021%20May%20-%20book%20a%20seat">
+          <a className="cta-primary" href="mailto:selina@exoreaction.com?subject=Workshop%2021%20May%20-%20book%20a%20seat">
             <span>$</span> book your place <span className="arrow">→</span>
           </a>
         </div>
@@ -313,7 +313,7 @@ function Workshops() {
             <li>Skills Library business license available</li>
             <li>Half-day to multi-day formats</li>
           </ul>
-          <a className="cta-primary outline" href="mailto:totto@exoreaction.com?subject=Business%20workshop%20enquiry">
+          <a className="cta-primary outline" href="mailto:selina@exoreaction.com?subject=Business%20workshop%20enquiry">
             <span>$</span> enquire within <span className="arrow">→</span>
           </a>
         </div>
@@ -653,7 +653,7 @@ $ exo verify   --human`}
               <li><strong>Business license</strong> — enquire within</li>
               <li>Updated weekly · audit-trailed · self-hosted option</li>
             </ul>
-            <a className="cta-primary outline" href="mailto:totto@exoreaction.com?subject=Skills%20Library%20-%20business%20license%20enquiry">
+            <a className="cta-primary outline" href="mailto:selina@exoreaction.com?subject=Skills%20Library%20-%20business%20license%20enquiry">
               <span>$</span> enquire about business licensing <span className="arrow">→</span>
             </a>
           </div>
@@ -777,7 +777,7 @@ function CTA() {
         <span className="dim">Start with 30 minutes.</span><Caret />
       </h2>
       <div className="cta-actions">
-        <a className="cta-primary big" href="mailto:totto@exoreaction.com">
+        <a className="cta-primary big" href="mailto:selina@exoreaction.com?subject=Scoping%20call%20enquiry">
           <span>$</span> book scoping call <span className="arrow">→</span>
         </a>
         <div className="cta-links">
