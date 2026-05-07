@@ -6,6 +6,7 @@ on:
     paths:
       - 'knowledge.yaml'
       - 'knowledge/**'
+  workflow_dispatch:
 
 jobs:
   sign:
