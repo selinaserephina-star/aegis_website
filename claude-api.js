@@ -1,18 +1,13 @@
 // Ægis · window.claude
-// Direct Anthropic API call from browser.
-// API key is injected at deploy time by GitHub Actions (secret: CLAUDE_API_KEY).
-// Set it in: repo Settings → Secrets and variables → Actions → New repository secret.
+// Calls the Cloudflare Worker proxy — API key never reaches the browser.
+// Worker repo: worker/index.js
+// Set worker URL below after running: wrangler deploy
 window.claude = {
-  _key: "__CLAUDE_API_KEY__",
+  _proxyUrl: "https://aegis-proxy.__CF_SUBDOMAIN__.workers.dev",
   complete: async function (prompt) {
-    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    const resp = await fetch(this._proxyUrl, {
       method: "POST",
-      headers: {
-        "x-api-key": this._key,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true",
-        "content-type": "application/json",
-      },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
         max_tokens: 512,

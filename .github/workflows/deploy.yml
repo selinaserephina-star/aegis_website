@@ -23,8 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Inject Claude API key
-        run: sed -i "s/__CLAUDE_API_KEY__/${{ secrets.CLAUDE_API_KEY }}/g" claude-api.js
+      # No API key injection — key lives in Cloudflare Worker secrets.
+      # See worker/index.js and worker/wrangler.toml.
 
       - uses: actions/configure-pages@v5
 

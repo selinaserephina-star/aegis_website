@@ -1,0 +1,14 @@
+name = "aegis-proxy"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+# After deploying, the worker URL will be:
+# https://aegis-proxy.<your-subdomain>.workers.dev
+#
+# To use a custom domain instead (e.g. api.ægis.no):
+# 1. Add ægis.no to Cloudflare (DNS must be on CF)
+# 2. Uncomment and update the route below:
+#
+# routes = [
+#   { pattern = "api.xn--gis-rna.no/*", zone_name = "xn--gis-rna.no" }
+# ]
