@@ -1,0 +1,46 @@
+# Ægis — kcp-commands sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: tooling.kcp-commands
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 14
+
+title: kcp-commands
+version_current: "0.23.0"
+tagline: Proactive CLI guidance and output filtering for Claude Code
+description: >
+  Claude Code hook that wraps CLI commands with manifest-aware context injection
+  and output compression. Two phases: Phase A injects compatible manifest context
+  before the command runs; Phase B filters and compresses command output through
+  the daemon. Transparent to the developer — commands run as normal.
+
+phases:
+  A:
+    label: Input / pre-hook
+    description: >
+      Injects manifest context from knowledge.yaml before the command executes.
+      Agents receive relevant org knowledge without manual prompt construction.
+    trigger: PreToolCall hook (Claude Code)
+
+  B:
+    label: Output / filter
+    description: >
+      Wraps command output through the daemon's /filter/{key} endpoint.
+      Compresses verbose CLI output to token-efficient summaries.
+      Configurable per-command via enable_filter in manifest.
+    trigger: PostToolCall hook (Claude Code)
+
+benefits:
+  - Agents know what commands are available and compatible without querying
+  - Output compression reduces context consumption on verbose commands
+  - Manifest-aware — tools declare what they are, not just what they do
+  - Zero overhead to developer workflow
+
+open_source: true
+repo: https://github.com/Cantara/kcp
+language: TypeScript

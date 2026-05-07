@@ -52,6 +52,20 @@ benefit:
 query_vocabulary:
   filters: [token_budget, audience, capabilities, staleness, federation]
 
+toolchain:
+  kcp-commands:
+    description: Claude Code hook — manifest context injection + output compression
+    manifest: knowledge/tooling/kcp-commands.yaml
+  kcp-memory:
+    description: Episodic memory hub for multi-agent networks
+    manifest: knowledge/tooling/kcp-memory.yaml
+  kcp-triage:
+    description: Deterministic nightly memory maintenance — zero LLM calls
+    manifest: knowledge/tooling/kcp-triage.yaml
+  kcp-dashboard:
+    description: Live terminal TUI for KCP toolchain observability
+    manifest: knowledge/tooling/kcp-dashboard.yaml
+
 implementations:
   - language: TypeScript
     package: kcp-mcp

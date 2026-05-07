@@ -1,0 +1,41 @@
+# Ægis — kcp-dashboard sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: tooling.kcp-dashboard
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 30
+
+title: kcp-dashboard
+version_current: "0.22.0"
+tagline: Live terminal TUI for KCP toolchain observability
+description: >
+  Real-time terminal dashboard for monitoring KCP toolchain activity.
+  Shows manifest health, memory usage, triage status, and toolchain
+  metrics across the agent network. Built with Bubble Tea + Lip Gloss (Charm.sh).
+
+tech:
+  framework: Bubble Tea (Charm.sh)
+  styling: Lip Gloss
+  interface: terminal TUI
+  runtime: local or SSH
+
+displays:
+  - Manifest health scores per topic
+  - Memory hub connection status
+  - kcp-triage queue — topics pending review
+  - kcp-commands usage and compression stats
+  - Agent session activity (kcp-memory)
+  - Toolchain version matrix
+
+principle: >
+  Observability for the declaration layer. If you cannot see what agents were
+  told to know, you cannot verify what they decided to do.
+
+open_source: true
+repo: https://github.com/Cantara/kcp
+language: Go

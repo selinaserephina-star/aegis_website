@@ -41,11 +41,15 @@ services:
     summary: Keynotes at developer communities and company events (javaBin, Agentbrew, Nordics)
 
   - id: tooling
-    summary: Synthesis · ExoCortex · KCP · Skills Library
+    summary: Synthesis · ExoCortex · KCP · Skills Library · kcp-commands · kcp-memory · kcp-triage · kcp-dashboard
     manifests:
       - knowledge/tooling/synthesis.yaml
       - knowledge/tooling/exocortex.yaml
       - knowledge/tooling/kcp.yaml
+      - knowledge/tooling/kcp-commands.yaml
+      - knowledge/tooling/kcp-memory.yaml
+      - knowledge/tooling/kcp-triage.yaml
+      - knowledge/tooling/kcp-dashboard.yaml
       - knowledge/tooling/skills-library.yaml
 
 people:
@@ -57,5 +61,9 @@ includes:
   - knowledge/tooling/synthesis.yaml
   - knowledge/tooling/exocortex.yaml
   - knowledge/tooling/kcp.yaml
+  - knowledge/tooling/kcp-commands.yaml
+  - knowledge/tooling/kcp-memory.yaml
+  - knowledge/tooling/kcp-triage.yaml
+  - knowledge/tooling/kcp-dashboard.yaml
   - knowledge/tooling/skills-library.yaml
   - knowledge/who.yaml

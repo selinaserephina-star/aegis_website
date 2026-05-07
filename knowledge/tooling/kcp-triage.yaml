@@ -1,0 +1,50 @@
+# Ægis — kcp-triage sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: tooling.kcp-triage
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 14
+
+title: kcp-triage
+tagline: Deterministic memory maintenance — zero LLM calls
+description: >
+  Scheduled memory maintenance for agent knowledge bases. Runs topic-health and
+  topic-triage on a nightly schedule. Deterministic — no LLM calls, no silent
+  drift. Human is in the deletion loop: triage flags, human decides.
+
+operation:
+  schedule: nightly (configurable)
+  llm_calls: 0
+  mechanism: rule-based health scoring + threshold-based triage
+
+components:
+  topic-health:
+    description: Scores each topic file on freshness, relevance, and usage recency
+    outputs: health score per topic
+
+  topic-triage:
+    description: >
+      Applies dual-threshold consolidation — warm threshold (summarise) and
+      cold threshold (archive or delete). Flags topics for human review before
+      destructive operations.
+    thresholds: [warm, cold]
+    human_checkpoint: yes — human approves deletions
+
+results:
+  example: "25 → 19 topic files after first run (better performance, no lost knowledge)"
+
+principle: "Freshness beats completeness."
+
+why_deterministic: >
+  LLM-scored memory maintenance introduces drift — the model self-reports it
+  met the spec even when the output is incomplete. Deterministic rules are
+  auditable and reproducible. You can explain every triage decision without
+  replaying a model call.
+
+open_source: true
+repo: https://github.com/Cantara/kcp

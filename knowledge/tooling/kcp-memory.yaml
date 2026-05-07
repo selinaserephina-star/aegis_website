@@ -1,0 +1,51 @@
+# Ægis — kcp-memory sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: tooling.kcp-memory
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 14
+
+title: kcp-memory
+tagline: Episodic memory hub for agent networks
+description: >
+  Distributed episodic memory service for multi-agent ExoCortex deployments.
+  Agents write session memories and query prior context across the network.
+  Runs as a persistent service — memory survives agent restarts and context resets.
+
+architecture:
+  role: Memory hub
+  protocol: KCP
+  persistence: yes — survives agent context resets
+  network: multi-agent, hub-and-spoke
+
+memory_types:
+  episodic:
+    description: Session records — what happened, what was decided, what failed
+    queryable: true
+  semantic:
+    description: Distilled knowledge from episodic records (via Synthesis)
+  procedural:
+    description: Skills — behavioural rules (Skills Library)
+
+three_layer_model:
+  - label: Procedural
+    store: Skills Library
+    description: What agents know how to do
+  - label: Episodic
+    store: kcp-memory sessions
+    description: What agents did and decided
+  - label: Semantic
+    store: Synthesis knowledge graph
+    description: What agents understand about the codebase and org
+
+principle: >
+  Agent memory rots. kcp-memory + kcp-triage maintain it deterministically —
+  zero LLM calls, human in the deletion loop.
+
+open_source: true
+repo: https://github.com/Cantara/kcp
