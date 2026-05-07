@@ -3,7 +3,7 @@
 // Worker repo: worker/index.js
 // Set worker URL below after running: wrangler deploy
 window.claude = {
-  _proxyUrl: "https://aegis-proxy.__CF_SUBDOMAIN__.workers.dev",
+  _proxyUrl: "https://aegis-proxy.totto.workers.dev",
   complete: async function (prompt) {
     const resp = await fetch(this._proxyUrl, {
       method: "POST",
