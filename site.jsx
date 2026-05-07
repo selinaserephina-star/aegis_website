@@ -693,9 +693,8 @@ function Who() {
       <SectionLabel idx={10} total={11} name="WHO" />
       <h2 className="section-title">Who builds this.</h2>
       <div className="who-grid">
-        <div className="who-portrait" aria-hidden="true">
-          <div className="who-mono">THH</div>
-          <div className="who-portrait-meta dim">// portrait pending</div>
+        <div className="who-portrait">
+          <img src="thh.jpg" alt="Thor Henning Hetland" loading="lazy" />
         </div>
         <div className="who-body">
           <div className="who-name">Thor Henning Hetland</div>

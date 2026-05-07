@@ -1095,9 +1095,18 @@ em { font-style: italic; color: var(--accent-hex); font-weight: 500; }
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 12px;
   position: relative;
+  overflow: hidden;
   background-image:
     linear-gradient(135deg, transparent 0 49%, var(--line-2) 49% 50%, transparent 50% 100%);
   background-size: 12px 12px;
+}
+.who-portrait img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+  filter: contrast(1.02) saturate(0.92);
 }
 .who-mono {
   font-size: 64px; font-weight: 500; color: var(--accent-hex);
