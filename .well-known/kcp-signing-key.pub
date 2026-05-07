@@ -1,16 +1,3 @@
-# PLACEHOLDER — replace with actual Ed25519 public key
-#
-# To generate the key pair:
-#
-#   openssl genpkey -algorithm ed25519 -out kcp-signing-key.pem
-#   openssl pkey -in kcp-signing-key.pem -pubout -out .well-known/kcp-signing-key.pub
-#
-# Then:
-#   1. Commit this file (public key only — never commit the .pem)
-#   2. Add the private key to GitHub repo secret: Settings → Secrets → KCP_SIGNING_KEY
-#      (paste the full contents of kcp-signing-key.pem)
-#   3. Delete kcp-signing-key.pem from your local machine after storing it safely
-#
-# Verification (after action runs):
-#   openssl pkeyutl -verify -pubin -inkey .well-known/kcp-signing-key.pub \
-#     -in knowledge.yaml -sigfile knowledge.yaml.sig && echo "valid"
+-----BEGIN PUBLIC KEY-----
+MCowBQYDK2VwAyEAtk78g7Bm5o4aMGPrqOqLoVQ/y4KviYnS9sKzfzeBKnQ=
+-----END PUBLIC KEY-----
