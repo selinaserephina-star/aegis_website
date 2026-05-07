@@ -31,7 +31,7 @@ jobs:
           set -euo pipefail
           sign_manifest() {
             local f="$1"
-            openssl pkeyutl -sign -inkey /tmp/kcp-signing.pem -in "$f" \
+            openssl pkeyutl -sign -rawin -inkey /tmp/kcp-signing.pem -in "$f" \
               | base64 -w0 > "${f}.sig"
             echo "  signed: $f → ${f}.sig"
           }
