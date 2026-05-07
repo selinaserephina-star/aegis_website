@@ -1,0 +1,59 @@
+name: Sign KCP manifests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'knowledge.yaml'
+      - 'knowledge/**'
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    # Avoid re-triggering on the commit this job makes
+    if: "!contains(github.event.head_commit.message, '[skip-sign]')"
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore signing key
+        env:
+          KCP_SIGNING_KEY: ${{ secrets.KCP_SIGNING_KEY }}
+        run: |
+          printf '%s' "$KCP_SIGNING_KEY" > /tmp/kcp-signing.pem
+          chmod 600 /tmp/kcp-signing.pem
+
+      - name: Sign all KCP manifests (Option A — per-manifest)
+        run: |
+          set -euo pipefail
+          sign_manifest() {
+            local f="$1"
+            openssl pkeyutl -sign -inkey /tmp/kcp-signing.pem -in "$f" \
+              | base64 -w0 > "${f}.sig"
+            echo "  signed: $f → ${f}.sig"
+          }
+
+          echo "Signing root manifest..."
+          sign_manifest knowledge.yaml
+
+          echo "Signing sub-manifests..."
+          find knowledge/ -name "*.yaml" | sort | while IFS= read -r f; do
+            sign_manifest "$f"
+          done
+
+      - name: Commit and push signatures
+        run: |
+          git config user.name  "kcp-signer[bot]"
+          git config user.email "actions@xn--gis-xla.no"
+
+          git add knowledge.yaml.sig
+          find knowledge/ -name "*.sig" -exec git add {} +
+
+          if git diff --staged --quiet; then
+            echo "Signatures unchanged — nothing to commit"
+          else
+            git commit -m "chore: refresh manifest signatures [skip-sign]"
+            git push
+          fi

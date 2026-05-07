@@ -10,6 +10,12 @@ discovery:
   confidence: high
   staleness_days: 14
 
+signing:
+  scheme: ed25519
+  scope: this-manifest
+  public_key: https://xn--gis-xla.no/.well-known/kcp-signing-key.pub
+  signature: https://xn--gis-xla.no/knowledge/workshops.yaml.sig
+
 authority:
   initiative: inform
   requires_approval: []

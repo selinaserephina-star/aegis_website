@@ -25,6 +25,12 @@ discovery:
   maintained_by: totto@exoreaction.com
   llms_txt: https://xn--gis-xla.no/llms.txt
 
+signing:
+  scheme: ed25519
+  scope: this-manifest
+  public_key: https://xn--gis-xla.no/.well-known/kcp-signing-key.pub
+  signature: https://xn--gis-xla.no/knowledge.yaml.sig
+
 services:
   - id: workshops
     summary: Hands-on team training in AI-era development
