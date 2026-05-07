@@ -803,6 +803,60 @@ em { font-style: italic; color: var(--accent-hex); font-weight: 500; }
 .cta-link { color: var(--fg-mute); border-bottom: 1px dotted var(--fg-dim); }
 .cta-link:hover { color: var(--accent-hex); border-color: var(--accent-hex); }
 
+/* ---------- mail CTA + toast ---------- */
+
+.cta-with-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.cta-actions .cta-with-foot { align-items: center; }
+
+.mail-cta-foot {
+  font-size: 12px;
+  color: var(--fg-mute);
+  letter-spacing: 0.02em;
+}
+.mail-cta-link {
+  color: var(--fg-mute);
+  border-bottom: 1px dotted var(--fg-dim);
+  transition: color .15s, border-color .15s;
+}
+.mail-cta-link:hover {
+  color: var(--accent-hex);
+  border-color: var(--accent-hex);
+}
+.mail-cta-link .arrow { display: inline-block; transition: transform .15s; }
+.mail-cta-link:hover .arrow { transform: translateX(2px); }
+
+.aegis-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  font-family: var(--t-mono);
+  font-size: 13px;
+  padding: 10px 16px;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+  z-index: 9999;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.aegis-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* ---------- footer ---------- */
 .footer {
   border-top: 1px solid var(--line);

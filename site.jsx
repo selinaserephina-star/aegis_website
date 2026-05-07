@@ -297,9 +297,13 @@ function Workshops() {
             <li>Personal license to the Skills Library included</li>
             <li>Bring your own codebase</li>
           </ul>
-          <a className="cta-primary" href="mailto:selina@exoreaction.com?subject=Workshop%2021%20May%20-%20book%20a%20seat">
+          <MailCTAGroup
+            className="cta-primary"
+            email="selina@exoreaction.com"
+            subject="Workshop 21 May - book a seat"
+          >
             <span>$</span> book your place <span className="arrow">→</span>
-          </a>
+          </MailCTAGroup>
         </div>
 
         <div className="price-card">
@@ -313,9 +317,13 @@ function Workshops() {
             <li>Skills Library business license available</li>
             <li>Half-day to multi-day formats</li>
           </ul>
-          <a className="cta-primary outline" href="mailto:selina@exoreaction.com?subject=Business%20workshop%20enquiry">
+          <MailCTAGroup
+            className="cta-primary outline"
+            email="selina@exoreaction.com"
+            subject="Business workshop enquiry"
+          >
             <span>$</span> enquire within <span className="arrow">→</span>
-          </a>
+          </MailCTAGroup>
         </div>
       </div>
     </section>
@@ -653,9 +661,13 @@ $ exo verify   --human`}
               <li><strong>Business license</strong> — enquire within</li>
               <li>Updated weekly · audit-trailed · self-hosted option</li>
             </ul>
-            <a className="cta-primary outline" href="mailto:selina@exoreaction.com?subject=Skills%20Library%20-%20business%20license%20enquiry">
+            <MailCTAGroup
+              className="cta-primary outline"
+              email="selina@exoreaction.com"
+              subject="Skills Library - business license enquiry"
+            >
               <span>$</span> enquire about business licensing <span className="arrow">→</span>
-            </a>
+            </MailCTAGroup>
           </div>
         </div>
       </div>
@@ -777,9 +789,13 @@ function CTA() {
         <span className="dim">Start with 30 minutes.</span><Caret />
       </h2>
       <div className="cta-actions">
-        <a className="cta-primary big" href="mailto:selina@exoreaction.com?subject=Scoping%20call%20enquiry">
+        <MailCTAGroup
+          className="cta-primary big"
+          email="selina@exoreaction.com"
+          subject="Scoping call enquiry"
+        >
           <span>$</span> book scoping call <span className="arrow">→</span>
-        </a>
+        </MailCTAGroup>
         <div className="cta-links">
           <a href="https://aegis.org" className="cta-link">aegis.org</a>
           <span className="dim">·</span>
