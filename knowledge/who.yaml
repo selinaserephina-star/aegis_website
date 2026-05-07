@@ -1,0 +1,55 @@
+# Ægis — People sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: who
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 90
+
+people:
+  - name: Thor Henning Hetland
+    alias: Totto
+    role: Founder
+    entity: Ægis · Ægentisk
+    location: Oslo, Norway
+
+    bio: >
+      Four decades shipping production code across Java, Kotlin, TypeScript,
+      Python and the architectures around them. Spent the last few years using
+      agentic tools every day on real client problems — long enough to have
+      opinions, scars, and a working method.
+
+      Ægis is the practice that came out of that. The tooling (Synthesis ·
+      ExoCortex · KCP), the workshops, the case studies — all of it is what
+      he does daily, packaged so a team can adopt it without re-living the
+      learning curve.
+
+    expertise:
+      - Agentic development (practitioner, daily production use)
+      - Java / Kotlin / TypeScript / Python / React
+      - System architecture
+      - AI governance and knowledge infrastructure
+      - Security analysis
+      - Workshop facilitation and team training
+
+    speaking:
+      venues: [javaBin Oslo, Agentbrew Oslo, company events across the Nordics]
+      topics:
+        - Skill-Driven Development (SDD)
+        - Fear-Driven Development (testing and quality)
+        - Agent memory architecture
+        - KCP and knowledge infrastructure
+        - Quantum computing (IBM hardware)
+
+    links:
+      wiki: https://wiki.totto.org/about/
+      email: totto@exoreaction.com
+
+    affiliation:
+      company: eXOReaction
+      role: Founder / Technical Lead
+      interim_cto: Mynder (from 2026-03-16, 60%)

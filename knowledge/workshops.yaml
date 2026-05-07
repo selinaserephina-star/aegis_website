@@ -1,0 +1,67 @@
+# Ægis — Workshops sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: workshops
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 14
+
+authority:
+  initiative: inform
+  requires_approval: []
+  denied: [book_on_behalf_of_user]
+
+title: "The 10× Developer Productivity Workshop"
+description: >
+  Transform your team into AI-era developers who ship 10× value — with a sharp
+  eye on AI cost. Hands-on, on your own codebase or idea.
+
+methodology: SDD — Skill-Driven Development
+loop: [build, test, change, learn, improve, repeat]
+
+formats:
+  individual:
+    label: Individual · Open Enrolment
+    price: "9 000 NOK/seat"
+    next_cohort: "2026-05-21"
+    capacity: 15
+    booking: first-come
+    includes:
+      - Personal license to the Skills Library
+      - Bring your own codebase or idea
+    contact:
+      email: selina@exoreaction.com
+      subject: "Workshop 21 May - book a seat"
+
+  team:
+    label: Business · Team Training
+    price: enquire
+    location: on-premises, on your codebase
+    formats: [half-day, full-day, multi-day]
+    curriculum: tailored
+    follow_ups: paired coaching sprints
+    includes:
+      - Skills Library business license available
+    contact:
+      email: selina@exoreaction.com
+      subject: "Business workshop enquiry"
+
+outcomes:
+  - A Claude that actually knows what it is working on
+  - Personal license to the Skills Library
+  - Practical, opinionated method grounded in production — not hype
+  - Your own codebase improved by end of day
+
+testimonials:
+  - quote: >
+      I've been on many AI courses that promise a lot and deliver less. This was
+      different. You show up with your own codebase and work with it all day.
+      Before lunch we had written several skills — rules obvious to me, invisible
+      to any AI. The instructor clearly doesn't just read about AI — he uses the
+      tools daily on real problems.
+    attribution: Ketil Hjerpaasen
+    role: Head of Consulting, Item Consulting

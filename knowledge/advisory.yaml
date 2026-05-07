@@ -1,0 +1,72 @@
+# Ægis — Advisory sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: advisory
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 30
+
+authority:
+  initiative: inform
+  requires_approval: []
+  denied: [schedule_on_behalf_of_user]
+
+title: Ægentisk Maturity Review
+description: >
+  Make your codebase and organisation agent-ready. Structured assessment covering
+  team readiness, tech stack fit, automation surface area, blast radius, and
+  a prioritised adoption roadmap.
+
+formats:
+  one-off:
+    description: Single engagement — full maturity assessment and report set
+  monthly-retainer:
+    description: Continuous access for ongoing advisory and iterative improvement
+
+what_we_assess:
+  - Organisation and team readiness
+  - Tech stacks and codebase fit for agents
+  - Which areas can be automated
+  - Blast radius — what breaks if an agent goes wrong
+  - Security posture and secret hygiene
+  - AI cost surface and spend controls
+
+deliverables:
+  - count: "6–8"
+    type: technical reports
+  - type: architecture guards
+    description: Constraints that prevent agent overreach
+  - type: security analysis
+    signals: 21 signal types including AI-specific threats
+  - type: prioritised roadmap
+    description: Ægentisk adoption steps, sequenced by risk and ROI
+
+engagement_arc:
+  - week: "0"
+    label: Scoping call
+    description: "30 min — fit, goals, constraints"
+  - week: "1–2"
+    label: Maturity review + workshop
+    description: Assess · train · align
+  - week: "3–8"
+    label: Implementation + agentic build
+    description: Ship to production together
+  - week: "9+"
+    label: Handover · train-the-trainer
+    description: Your team keeps the velocity
+
+reference_case:
+  label: "21 deliverables in 7 days — Mar–Apr 2026"
+  deliverables: 21
+  value_nok: 1_750_000
+  throughput: "10×"
+  timeline_days: 7
+  human_checkpoints: [kickoff, midweek review, sign-off]
+
+contact:
+  email: selina@exoreaction.com
+  subject: "Scoping call enquiry"

@@ -1,0 +1,65 @@
+# Ægis — Skills Library sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: tooling.skills-library
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 7
+
+title: Skills Library
+tagline: "529 skills. 40 years of dev knowledge. Licensed."
+description: >
+  Production-curated skill registry for Claude Code. Each skill encodes a
+  behavioural rule — what Claude should know about your stack, architecture,
+  or workflow. Auto-curated from real production sessions. Stale skills retired
+  automatically via behavioural scoring.
+
+size: 529
+update_cadence: weekly
+maintenance: auto-curated, behaviourally scored, audit-trailed
+
+stacks:
+  - Java
+  - Spring
+  - Kotlin
+  - TypeScript
+  - Python
+  - React
+
+domains:
+  - Architecture patterns
+  - Security practices
+  - Testing strategies (TDD, property-based, characterisation)
+  - Performance optimisation
+  - DX patterns
+  - Agentic workflow rules
+  - Code review automation
+  - Memory and context management
+
+quality:
+  scoring: behavioural — skills scored by actual usage outcomes
+  retirement: stale skills retired automatically
+  provenance: mined from real production sessions, not written speculatively
+  audit: full audit trail per skill
+
+licensing:
+  personal:
+    description: For individual developers
+    included_with: every workshop seat
+  business:
+    description: For teams and organisations
+    options: [self-hosted, managed]
+    contact: selina@exoreaction.com
+    subject: "Skills Library - business license enquiry"
+
+self_hosted: true
+
+principle: >
+  Configuration approach vs ægis tooling:
+  hand-curated CLAUDE.md files → semantic indexing with behavioural scoring.
+  Memory that rots silently → topic-health + topic-triage, nightly, zero LLM calls.
+  Scales to one developer → scales to 289+ repos, 66,350 files, 529 skills.

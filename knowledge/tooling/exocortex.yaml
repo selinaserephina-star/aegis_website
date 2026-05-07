@@ -1,0 +1,58 @@
+# Ægis — ExoCortex sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: tooling.exocortex
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 30
+
+title: ExoCortex
+tagline: "Declare → execute → verify"
+description: >
+  Human-led agentic workflow system. The human is in the loop at the decisions
+  that matter — out of it everywhere else. Orchestrates the full ExoCortex
+  toolstack: Synthesis, KCP, Skills Library, Mimir, Klaw.
+
+loop:
+  steps: [declare, execute, verify]
+  human_checkpoints:
+    - Intent declaration (what the agent is authorised to do)
+    - Dry-run review before destructive operations
+    - Human-in-the-loop verify step on outputs
+
+principle: >
+  The danger is not the permissions you grant. It is the inference chains the
+  agent constructs from those permissions. Declaration before execution.
+
+components:
+  synthesis:
+    role: Knowledge indexing and retrieval
+  kcp:
+    role: Org manifest — agents understand structure without prompt-stuffing
+  skills-library:
+    role: Behavioural rules — what Claude knows about your codebase
+  mimir:
+    role: Async agent hub (ironclaw0, AWS EC2, 24/7)
+  klaw:
+    role: Code review and security agent (ironclaw1, AWS EC2, 24/7)
+
+guardrails:
+  - Network isolation
+  - Financial outputs cite API sources
+  - Sensitive queries DM-only
+  - Hard spend alerts
+  - Documented backup admin
+  - Gradual channel rollout
+  - Human deletion loop on memory triage
+
+throughput: "10–30× development speed with controlled quality"
+
+methodology: SDD — Skill-Driven Development (six-pillar method)
+
+licensing:
+  model: implementation engagement or license
+  contact: selina@exoreaction.com

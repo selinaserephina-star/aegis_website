@@ -1,0 +1,70 @@
+# Ægis — KCP sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: tooling.kcp
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 14
+
+title: KCP — Knowledge Context Protocol
+tagline: Federated org manifest
+description: >
+  Open standard for machine-readable organisational knowledge manifests.
+  knowledge.yaml files declare what agents need to understand your org — without
+  prompt-stuffing. Federation allows sub-manifests per team, service, or domain.
+
+spec: https://github.com/Cantara/kcp
+current_version: "0.14"
+
+principle: >
+  Declaration and enforcement are two different problems.
+  KCP solves the declaration layer. Agents that query a knowledge manifest
+  stop reinventing filtering.
+
+key_features:
+  - "knowledge.yaml: single file, machine-readable, version-controlled"
+  - "Federation: root manifest includes sub-manifests per domain"
+  - "RFC-0014 composition: includes/overrides/excludes — teams stop forking manifests"
+  - "Query vocabulary (§15): token budget, audience, capabilities, staleness"
+  - "v0.12 governance blocks: discovery, authority, visibility"
+  - "Visibility: env+role-aware — agents see what they are authorised to see"
+
+governance_blocks:
+  discovery:
+    fields: [provenance, confidence, maintained_by, staleness_days]
+  authority:
+    fields: [initiative, requires_approval, denied]
+    values:
+      initiative: [inform, suggest, act]
+  visibility:
+    description: env+role-aware filtering — production vs dev, role-scoped content
+
+benefit:
+  context_savings: "~33%"
+  mechanism: >
+    Agents query the manifest instead of reading entire codebases or relying on
+    manual CLAUDE.md maintenance. Structured retrieval replaces prompt-stuffing.
+
+query_vocabulary:
+  filters: [token_budget, audience, capabilities, staleness, federation]
+
+implementations:
+  - language: TypeScript
+    package: kcp-mcp
+    note: MCP server — serves knowledge.yaml to any MCP-compatible agent
+  - language: Java
+    package: kcp-mcp (Java port)
+    note: Parity implementation — same spec, JVM stack
+
+this_site_as_reference:
+  note: >
+    This site (xn--gis-xla.no) is a live reference implementation of KCP federation.
+    Root manifest at /knowledge.yaml includes seven sub-manifests. Demonstrates
+    entity declaration, governance blocks, and composition in production.
+
+licensing: open-source (Apache 2.0)
+spec: https://github.com/Cantara/kcp

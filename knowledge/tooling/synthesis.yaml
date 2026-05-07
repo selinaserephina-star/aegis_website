@@ -1,0 +1,66 @@
+# Ægis — Synthesis sub-manifest
+# Parent: https://xn--gis-xla.no/knowledge.yaml
+version: "0.14"
+
+id: tooling.synthesis
+parent: https://xn--gis-xla.no/knowledge.yaml
+
+discovery:
+  provenance: canonical
+  confidence: high
+  staleness_days: 30
+
+title: Synthesis
+tagline: Knowledge index across your entire codebase
+description: >
+  Lucene-based semantic knowledge index. Sub-second retrieval across tens of
+  thousands of files. Eliminates the discovery phase that blocks every coding
+  session. Memory as infrastructure — not text files you maintain by hand.
+
+tech:
+  index: Lucene-based
+  query_latency: "< 1.2s average"
+  tested_scale:
+    repos: 289
+    files: 66_350
+    skills: 529
+
+knowledge_layers:
+  - Document knowledge graph (directory centroids, archetypes, health signals)
+  - Episodic session memory
+  - Workspace graph
+  - Behavioural skill scoring
+  - Cross-repo dependency mapping
+  - Security signal layer (21 signal types)
+  - Notion documentation sync
+  - Topic health + triage (nightly, deterministic, zero LLM calls)
+
+security:
+  signal_types: 21
+  includes_ai_specific: true
+  examples:
+    - Hardcoded secrets
+    - Prompt injection vectors
+    - Overly permissive agent scopes
+    - Unvalidated external content in agent pipelines
+
+stats:
+  answer_latency: 1.2s
+  tool_call_reduction: 40%
+  reasoning_time_increase: 67%
+  session_retrieval_time_before: "40–55% of session"
+  session_retrieval_time_after: "10–15% of session"
+
+capabilities:
+  - Semantic codebase search
+  - Architecture analysis
+  - Security scan
+  - Auto-skill generation from session patterns
+  - Notion documentation sync and drift detection
+  - Topic health maintenance (freshness over completeness)
+
+principle: "Freshness beats completeness."
+
+licensing:
+  model: implementation engagement or license
+  contact: selina@exoreaction.com
