@@ -678,10 +678,99 @@ $ exo verify   --human`}
         </div>
       </div>
 
+      {/* AI-Readiness Package — self-service KCP generation */}
+      <KcpPackage />
+
       <p className="footnote">
         Implementation engagement available — we wire these into your stack and hand it back maintained.
       </p>
     </section>
+  );
+}
+
+// ---------- ai-readiness package (self-service KCP) ----------
+
+function KcpPackage() {
+  const [url, setUrl] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    if (!url.trim()) { setError("enter a GitHub repo or website URL"); return; }
+    if (!email.trim()) { setError("enter your email address"); return; }
+    try { new URL(url.trim()); } catch { setError("not a valid URL — include https://"); return; }
+
+    const params = new URLSearchParams({
+      client_reference_id: url.trim(),
+      prefilled_email: email.trim(),
+    });
+    window.location.href = "https://buy.stripe.com/4gM5kE2LM57Q1bB5WE14400?" + params.toString();
+  }
+
+  return (
+    <div className="skills-product" id="kcp-package" style={{ marginTop: "32px" }}>
+      <div className="skills-head">
+        <div className="col-label">// 05 — ai-readiness package</div>
+        <div className="skills-title">
+          KCP manifest. Signed. Delivered.{" "}
+          <span style={{ color: "var(--accent-hex)" }}>€5</span>.
+        </div>
+      </div>
+      <div className="skills-grid">
+        <div>
+          <div className="col-label">// what you receive</div>
+          <ul className="check-list dense">
+            <li><code>knowledge.yaml</code> — KCP v0.12 manifest, structured for AI agents</li>
+            <li><code>knowledge.yaml.sig</code> — ED25519 signed, verifiable provenance</li>
+            <li><code>CLAUDE.md</code> — Claude Code navigation hub</li>
+            <li><code>AGENTS.md</code> — AI agent instructions (all frameworks)</li>
+            <li><code>llms.txt</code> + <code>llms-full.txt</code> — standard AI crawler format</li>
+            <li>Setup guide — deploy to web root in minutes</li>
+          </ul>
+          <div style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)", lineHeight: "1.6" }}>
+            Delivered to your inbox within 24 hours.
+            One-time payment. No subscription.
+          </div>
+        </div>
+        <div>
+          <div className="col-label">// submit your repo or website</div>
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "8px" }}>
+            <div className="demo-input-row">
+              <span className="prompt-arrow">▸</span>
+              <input
+                className="demo-input"
+                type="url"
+                placeholder="https://github.com/you/your-repo"
+                value={url}
+                onChange={e => setUrl(e.target.value)}
+                autoComplete="url"
+              />
+            </div>
+            <div className="demo-input-row">
+              <span className="prompt-arrow">@</span>
+              <input
+                className="demo-input"
+                type="email"
+                placeholder="your@email.com (package delivered here)"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                autoComplete="email"
+              />
+            </div>
+            {error && (
+              <div style={{ fontSize: "12px", color: "var(--accent-hex)", letterSpacing: "0.02em" }}>
+                ⚠ {error}
+              </div>
+            )}
+            <button type="submit" className="cta-primary outline" style={{ marginTop: "4px" }}>
+              <span>$</span> pay €5 · get your package <span className="arrow">→</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }
 
