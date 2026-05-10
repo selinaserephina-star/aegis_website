@@ -730,7 +730,7 @@ function KcpPackage() {
             <li>Setup guide — deploy to web root in minutes</li>
           </ul>
           <div style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)", lineHeight: "1.6" }}>
-            Delivered to your inbox within 24 hours.
+            Delivered to your inbox in minutes.
             One-time payment. No subscription.
           </div>
         </div>

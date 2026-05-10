@@ -43,7 +43,20 @@ export default {
 
     console.log(`New KCP package request: ${customerEmail} → ${repoUrl}`);
 
-    // Send notification to Selina/Totto
+    // Queue job for automated pipeline (Neuron pulls and processes)
+    if (env.KCP_JOBS) {
+      await env.KCP_JOBS.send({
+        url:       repoUrl,
+        email:     customerEmail,
+        sessionId: session.id,
+        amount:    amountPaid,
+        currency,
+        queuedAt:  new Date().toISOString(),
+      });
+      console.log(`Queued KCP job for ${repoUrl}`);
+    }
+
+    // Send notification to Selina/Totto (also serves as manual fallback if pipeline is down)
     await sendEmail(env.RESEND_API_KEY, {
       from: FROM_EMAIL,
       to:   NOTIFY_EMAIL,
@@ -70,7 +83,7 @@ export default {
           <p>Hi,</p>
           <p>We've received your order for the Ægis AI-Readiness Package.</p>
           <p><strong>Repository / website:</strong> ${repoUrl}</p>
-          <p>Your package will be delivered to this email address within 24 hours.
+          <p>Your package will be delivered to this email address within minutes.
              It will include: <code>knowledge.yaml</code> (signed), <code>CLAUDE.md</code>,
              <code>AGENTS.md</code>, <code>llms.txt</code>, and a setup guide.</p>
           <p>Questions? Reply to this email or write to
