@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>10× Developer Productivity Workshop · Ægis</title>
+  <meta name="description" content="Transform your team into AI-era developers who ship 10× value. Next open cohort: 21 May, Oslo. 9 000 NOK/seat. Business team training available." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ægis" />
+  <meta property="og:title" content="10× Developer Productivity Workshop · Ægis" />
+  <meta property="og:description" content="Next cohort: 21 May, Oslo. 9 000 NOK/seat · 15 places. Bring your own codebase. Leave with a Claude that actually knows what it's working on." />
+  <meta property="og:url" content="https://xn--gis-xla.no/workshops.html" />
+  <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* ---- hero ---- */
+    .ws-hero {
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .ws-eyebrow { font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px; }
+    .ws-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(36px, 6.5vw, 96px);
+      line-height: 0.97; letter-spacing: -0.04em; margin: 0;
+    }
+    .ws-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .ws-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.2vw, 26px); line-height: 1.45;
+      color: var(--fg-mute); max-width: 52ch; margin: 32px 0 0;
+    }
+    .ws-next-banner {
+      display: inline-flex; align-items: center; gap: 16px;
+      border: 1px solid var(--accent-hex); padding: 12px 20px; margin-top: 40px;
+      font-size: 13px;
+    }
+    .ws-next-date { color: var(--accent-hex); font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
+    .ws-next-meta { color: var(--fg-mute); font-size: 12px; line-height: 1.6; }
+
+    /* ---- body ---- */
+    .ws-body {
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+    }
+    @media (max-width: 720px) { .ws-body { grid-template-columns: 1fr; gap: 40px; } }
+
+    .ws-label { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
+    .ws-check { list-style: none; padding: 0; margin: 0 0 32px; }
+    .ws-check li {
+      font-size: 14px; line-height: 1.7; padding: 6px 0;
+      border-bottom: 1px solid var(--line-2); display: flex; align-items: baseline; gap: 10px;
+    }
+    .ws-check li::before { content: "✓"; color: var(--accent-hex); flex-shrink: 0; }
+
+    .ws-ascii {
+      background: var(--bg-2); border: 1px solid var(--line);
+      padding: 24px; font-size: 12px; line-height: 1.8;
+      white-space: pre; overflow-x: auto; color: var(--fg-mute);
+    }
+
+    /* ---- pricing ---- */
+    .ws-pricing {
+      padding: 64px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-bottom: 1px solid var(--line);
+    }
+    @media (max-width: 640px) { .ws-pricing { grid-template-columns: 1fr; } }
+
+    .ws-price-card {
+      background: var(--bg-2); border: 1px solid var(--line);
+      padding: 40px 36px;
+    }
+    .ws-price-card.featured { border-color: var(--accent-hex); }
+
+    .ws-price-tag {
+      font-size: 10px; letter-spacing: 0.14em; color: var(--fg-mute); margin-bottom: 24px;
+    }
+    .ws-price-amount {
+      font-size: clamp(36px, 5vw, 56px); font-weight: 600;
+      letter-spacing: -0.03em; color: var(--fg); line-height: 1;
+    }
+    .ws-price-unit { font-size: 14px; color: var(--fg-mute); margin-left: 4px; }
+    .ws-price-desc { font-size: 13px; color: var(--fg-mute); margin: 8px 0 28px; line-height: 1.6; }
+
+    .ws-cta {
+      display: flex; align-items: center; gap: 10px; justify-content: space-between;
+      padding: 14px 20px; border: 1px solid var(--fg-mute); background: transparent;
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px; letter-spacing: 0.04em;
+      text-decoration: none; transition: border-color 0.15s, color 0.15s; margin-top: 24px;
+      display: block; text-align: center;
+    }
+    .ws-cta:hover { border-color: var(--accent-hex); color: var(--accent-hex); }
+    .ws-cta.primary { border-color: var(--accent-hex); color: var(--accent-hex); }
+
+    /* ---- testimonial ---- */
+    .ws-testimonial {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line);
+      max-width: 72ch;
+    }
+    .ws-quote-mark { font-size: 72px; color: var(--accent-hex); line-height: 0.8; margin-bottom: 24px; font-family: var(--t-disp); }
+    .ws-quote { font-family: var(--t-disp); font-style: italic; font-size: clamp(16px, 2vw, 20px); line-height: 1.65; color: var(--fg); margin: 0 0 24px; }
+    .ws-quote strong { font-style: normal; color: var(--accent-hex); }
+    .ws-quote-attr { font-size: 13px; color: var(--fg-mute); }
+
+    /* ---- format ---- */
+    .ws-format {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .ws-format-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 32px;
+    }
+    @media (max-width: 720px) { .ws-format-grid { grid-template-columns: 1fr; } }
+    .ws-format-card {
+      background: var(--bg-2); border: 1px solid var(--line); padding: 28px 24px;
+    }
+    .ws-format-n { font-size: 11px; color: var(--fg-dim); margin-bottom: 12px; }
+    .ws-format-t { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+    .ws-format-d { font-size: 13px; color: var(--fg-mute); line-height: 1.6; }
+
+    .ws-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
+    .ws-back:hover { color: var(--accent-hex); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="ai-readiness-package.html">ai-readiness</a>
+          <a href="advisory.html">advisory</a>
+          <a href="index.html#tooling">tooling</a>
+          <a href="index.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">// 21 May</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- hero -->
+      <section class="ws-hero">
+        <div class="ws-eyebrow">// product · workshop</div>
+        <h1 class="ws-title">
+          The <em>10×</em><br/>
+          Developer<br/>
+          Productivity<br/>
+          Workshop.
+        </h1>
+        <p class="ws-lede">
+          Transform your team into AI-era developers who ship 10× value —
+          with a sharp eye on AI cost. One day. Your own codebase.
+        </p>
+        <div class="ws-next-banner">
+          <div>
+            <div class="ws-next-date">21 May 2026</div>
+            <div class="ws-next-meta">Oslo · open enrolment · 15 places</div>
+          </div>
+          <span class="dim">·</span>
+          <div>
+            <div style="color:var(--accent-hex);font-weight:600;">9 000 NOK</div>
+            <div class="ws-next-meta">per seat · incl. Skills Library</div>
+          </div>
+          <a href="mailto:selina@exoreaction.com?subject=Workshop 21 May - book a seat"
+             class="ws-cta primary" style="margin-top:0;padding:10px 18px;display:inline-flex;align-items:center;gap:8px;">
+            <span>$</span> book now <span>→</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- what + loop -->
+      <section class="ws-body">
+        <div>
+          <div class="ws-label">// what you bring</div>
+          <ul class="ws-check">
+            <li>Your own codebase — or an idea you want to build</li>
+            <li>A laptop with Claude Code installed</li>
+            <li>No prior AI-dev experience required</li>
+          </ul>
+
+          <div class="ws-label">// what you leave with</div>
+          <ul class="ws-check">
+            <li>A Claude that actually knows what it's working on</li>
+            <li>A working CLAUDE.md and skill set tailored to your stack</li>
+            <li>Personal license to the Skills Library (529 skills)</li>
+            <li>The SDD six-pillar method — applied to your own code</li>
+            <li>A development loop you can use from Monday</li>
+          </ul>
+        </div>
+        <div>
+          <div class="ws-label">// the iterative loop you'll master</div>
+          <pre class="ws-ascii">
+  ┌──────┐   ┌──────┐   ┌────────┐
+  │ build│ → │ test │ → │ change │
+  └──────┘   └──────┘   └────────┘
+                          │
+                          ▼
+  ┌──────┐   ┌──────────┐   ┌──────┐
+  │repeat│ ← │ improve  │ ← │ learn│
+  └──────┘   └──────────┘   └──────┘</pre>
+          <p style="font-size:13px;color:var(--fg-mute);margin:20px 0 0;line-height:1.7;">
+            Human-led. Production-grade. Not a toy example — you bring the real codebase
+            and we work through it together.
+          </p>
+        </div>
+      </section>
+
+      <!-- pricing -->
+      <section style="padding: 64px 0; border-bottom: 1px solid var(--line);">
+        <div class="ws-label">// pricing</div>
+        <div class="ws-pricing" style="padding: 0; border: none;">
+          <div class="ws-price-card featured">
+            <div class="ws-price-tag">INDIVIDUAL · OPEN ENROLMENT</div>
+            <div>
+              <span class="ws-price-amount">9 000</span>
+              <span class="ws-price-unit">NOK / seat</span>
+            </div>
+            <div class="ws-price-desc">
+              Next cohort: <strong style="color:var(--accent-hex);">21 May 2026</strong> · Oslo<br/>
+              15 places only · first-come, first-served<br/>
+              Personal Skills Library license included
+            </div>
+            <ul class="ws-check" style="margin-bottom:0;">
+              <li>Full-day workshop, hands-on</li>
+              <li>Bring your own codebase</li>
+              <li>Claude Code live on your machine</li>
+              <li>529 skills — personal license, yours to keep</li>
+            </ul>
+            <a href="mailto:selina@exoreaction.com?subject=Workshop 21 May - book a seat"
+               class="ws-cta primary" style="margin-top:28px;">
+              <span>$</span> book your place →
+            </a>
+          </div>
+
+          <div class="ws-price-card">
+            <div class="ws-price-tag">BUSINESS · TEAM TRAINING</div>
+            <div>
+              <span class="ws-price-amount" style="font-size:clamp(28px,4vw,40px);">enquire</span>
+            </div>
+            <div class="ws-price-desc">
+              On your codebase. On your premises.<br/>
+              Tailored curriculum. Paired follow-ups.<br/>
+              Half-day to multi-day formats.
+            </div>
+            <ul class="ws-check" style="margin-bottom:0;">
+              <li>On-site delivery anywhere in the Nordics</li>
+              <li>Custom curriculum for your stack</li>
+              <li>Paired coaching sessions included</li>
+              <li>Skills Library business license available</li>
+            </ul>
+            <a href="mailto:selina@exoreaction.com?subject=Business workshop enquiry"
+               class="ws-cta">
+              <span>$</span> enquire within →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- testimonial -->
+      <section class="ws-testimonial">
+        <div class="ws-quote-mark">&ldquo;</div>
+        <blockquote class="ws-quote">
+          I&apos;ve been on many AI courses that promise a lot and deliver less. This was different.
+          You show up with your own codebase and work with it all day.
+          <strong>Before lunch we had written several skills</strong> — rules obvious to me, invisible to any AI.
+          <br /><br />
+          The instructor clearly doesn&apos;t just read about AI — he uses the tools daily on real problems.
+          Claude now orients itself quickly in our codebase. Less noise, and an assistant that actually
+          knows what it&apos;s working on. After one day we work noticeably smarter with AI.
+        </blockquote>
+        <div class="ws-quote-attr">— Ketil Hjerpaasen · Head of Consulting, Item Consulting</div>
+      </section>
+
+      <!-- format -->
+      <section class="ws-format">
+        <div class="ws-label">// what a day looks like</div>
+        <div class="ws-format-grid">
+          <div class="ws-format-card">
+            <div class="ws-format-n">Morning</div>
+            <div class="ws-format-t">Context and setup</div>
+            <div class="ws-format-d">SDD six-pillar method. Claude Code live. Codebase indexed. First skill written.</div>
+          </div>
+          <div class="ws-format-card">
+            <div class="ws-format-n">Midday</div>
+            <div class="ws-format-t">Hands-on sessions</div>
+            <div class="ws-format-d">Characterisation testing. CLAUDE.md. Memory structure. Real problems on your codebase.</div>
+          </div>
+          <div class="ws-format-card">
+            <div class="ws-format-n">Afternoon</div>
+            <div class="ws-format-t">Integration + shipping</div>
+            <div class="ws-format-d">Skills library configured. Development loop proven. Take-home practice structure.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:40px;">
+          <p style="font-size:14px;color:var(--fg-mute);line-height:1.7;max-width:60ch;">
+            Delivered across: engineering teams in consulting, product, and applied-AI organisations.
+            All levels welcome — from senior architects to developers who opened Claude Code last week.
+          </p>
+        </div>
+        <a class="ws-back" href="index.html">← back to ægis</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
