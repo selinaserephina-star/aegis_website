@@ -390,6 +390,11 @@ def generate_codebase_intelligence(repo_path, repo_name):
     )
     if result.returncode != 0:
         raise RuntimeError(f"claude CLI failed (rc={result.returncode}): {result.stderr[:400]}")
+    # Save raw output for diagnostics
+    debug_path = os.path.expanduser(f"~/kcp-deliveries/{repo_name.replace('/', '-')}-raw.txt")
+    os.makedirs(os.path.dirname(debug_path), exist_ok=True)
+    with open(debug_path, "w") as f:
+        f.write(result.stdout)
     return result.stdout
 
 def parse_codebase_output(text):
