@@ -382,9 +382,10 @@ def generate_codebase_intelligence(repo_path, repo_name):
             "--output-format", "text",
             "--model", "claude-sonnet-4-6",
             "--allowedTools", "Read,Glob,Grep,Bash",
-            "--cwd", repo_path,
+            "--dangerously-skip-permissions",
         ],
         capture_output=True, text=True, timeout=600, env=env,
+        cwd=repo_path,
     )
     if result.returncode != 0:
         raise RuntimeError(f"claude CLI failed (rc={result.returncode}): {result.stderr[:400]}")
