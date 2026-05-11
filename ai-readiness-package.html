@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI-Readiness Package · Ægis</title>
-  <meta name="description" content="Your KCP manifest, CLAUDE.md, AGENTS.md, and llms.txt — generated from your codebase or website and delivered to your inbox in minutes. €5, one-time." />
+  <meta name="description" content="KCP manifest, CLAUDE.md, AGENTS.md, and llms.txt — generated from your website or codebase, delivered to your inbox in minutes. €5, one-time." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ægis" />
   <meta property="og:title" content="AI-Readiness Package · Ægis" />
@@ -161,10 +161,20 @@
           Delivered.
         </h1>
         <p class="pkg-lede">
-          A 10-file knowledge package generated from your codebase or website.
+          A structured knowledge package generated from your website or codebase.
           Drop it in and your AI tools — Claude, Cursor, agents — immediately
           understand what you build, who you serve, and how you work.
         </p>
+        <div style="display:flex;gap:16px;margin-top:32px;flex-wrap:wrap;">
+          <div style="border:1px solid var(--line);padding:12px 20px;font-size:12px;cursor:pointer;" id="tab-web" onclick="switchTab('web')">
+            <div style="font-size:10px;letter-spacing:0.1em;color:var(--fg-dim);margin-bottom:4px;">FOR WEBSITES</div>
+            <div>Make your company AI-discoverable</div>
+          </div>
+          <div style="border:1px solid var(--line);padding:12px 20px;font-size:12px;cursor:pointer;" id="tab-code" onclick="switchTab('code')">
+            <div style="font-size:10px;letter-spacing:0.1em;color:var(--fg-dim);margin-bottom:4px;">FOR CODEBASES</div>
+            <div>Make your codebase agent-ready</div>
+          </div>
+        </div>
         <div class="pkg-price-pill">
           <span class="price-big">€5</span>
           <span>·</span>
@@ -178,65 +188,116 @@
       <!-- file tree + form -->
       <section class="pkg-body">
         <div>
-          <div class="pkg-tree">
-            <div class="pkg-tree-head">// what you receive</div>
+          <div class="pkg-tree" id="tree-web">
+            <div class="pkg-tree-head">// what you receive — website</div>
             <div class="tree-root">your-company/</div>
             <div style="padding-left: 20px;">
-              <div class="tree-file">knowledge.yaml<span class="tree-note"> ← root manifest</span></div>
-              <div class="tree-dir">knowledge/</div>
-              <div style="padding-left: 20px;">
-                <div class="tree-file">products.yaml<span class="tree-note"> ← offerings + pricing model</span></div>
-                <div class="tree-file">people.yaml<span class="tree-note"> ← key team &amp; roles</span></div>
-                <div class="tree-file">technology.yaml<span class="tree-note"> ← stack + integrations</span></div>
-                <div class="tree-file">customers.yaml<span class="tree-note"> ← segments + ICP</span></div>
-                <div class="tree-file">compliance.yaml<span class="tree-note"> ← certs + regulatory</span></div>
-              </div>
+              <div class="tree-file">knowledge.yaml<span class="tree-note"> ← company, products, team, customers</span></div>
+              <div class="tree-file">knowledge.yaml.sig<span class="tree-note"> ← ED25519 signed</span></div>
               <div class="tree-file">llms.txt<span class="tree-note"> ← llmstxt.org standard</span></div>
-              <div class="tree-file">CLAUDE.md<span class="tree-note"> ← Claude / Cursor / Zed</span></div>
+              <div class="tree-file">llms-full.txt<span class="tree-note"> ← full-detail for agent pipelines</span></div>
+              <div class="tree-file">CLAUDE.md<span class="tree-note"> ← company context hub</span></div>
               <div class="tree-file">AGENTS.md<span class="tree-note"> ← any agent framework</span></div>
-              <div class="tree-file">SETUP.md<span class="tree-note"> ← deployment guide</span></div>
+              <div class="tree-file">SETUP.md<span class="tree-note"> ← deploy to web root in minutes</span></div>
             </div>
           </div>
-          <p style="font-size:13px;color:var(--fg-mute);margin:20px 0 0;line-height:1.7;">
-            Federated YAML — each sub-file is self-contained and can be loaded
-            individually into your pipeline, RAG system, or agent session.
+          <div class="pkg-tree" id="tree-code" style="display:none;">
+            <div class="pkg-tree-head">// what you receive — codebase</div>
+            <div class="tree-root">your-codebase/</div>
+            <div style="padding-left: 20px;">
+              <div class="tree-file">knowledge.yaml<span class="tree-note"> ← architecture, patterns, structure</span></div>
+              <div class="tree-file">knowledge.yaml.sig<span class="tree-note"> ← ED25519 signed</span></div>
+              <div class="tree-file">CLAUDE.md<span class="tree-note"> ← Claude Code navigation hub</span></div>
+              <div class="tree-file">AGENTS.md<span class="tree-note"> ← agent instructions for your stack</span></div>
+              <div class="tree-file">tech-index.yaml<span class="tree-note"> ← directory purposes, dependency map</span></div>
+              <div class="tree-file">SETUP.md<span class="tree-note"> ← how to drop this into your workflow</span></div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--fg-mute);margin:20px 0 0;line-height:1.7;" id="tree-note-web">
+            Crawled from your public site. Federated YAML — each file is self-contained
+            and can be loaded individually into any pipeline, RAG system, or agent session.
+          </p>
+          <p style="font-size:13px;color:var(--fg-mute);margin:20px 0 0;line-height:1.7;display:none;" id="tree-note-code">
+            Generated from your codebase. Supports public GitHub repos today —
+            ZIP upload for private repos launching soon.
           </p>
         </div>
 
         <div class="pkg-form-wrap">
-          <div class="pkg-form-head">// submit your repo or website</div>
-          <form class="pkg-form" id="pkg-form" novalidate>
-            <div class="pkg-input-row">
-              <span class="pkg-arrow">▸</span>
-              <input
-                class="pkg-input"
-                id="pkg-url"
-                type="url"
-                placeholder="https://github.com/you/your-repo"
-                autocomplete="url"
-              />
+          <!-- website form -->
+          <div id="form-web">
+            <div class="pkg-form-head">// submit your website</div>
+            <form class="pkg-form" id="pkg-form-web" novalidate>
+              <div class="pkg-input-row">
+                <span class="pkg-arrow">▸</span>
+                <input class="pkg-input" id="web-url" type="url"
+                  placeholder="https://yourcompany.com" autocomplete="url" />
+              </div>
+              <div class="pkg-input-row">
+                <span class="pkg-arrow">@</span>
+                <input class="pkg-input" id="web-email" type="email"
+                  placeholder="your@email.com (package delivered here)" autocomplete="email" />
+              </div>
+              <div class="pkg-error" id="web-error" style="display:none;"></div>
+              <button type="submit" class="pkg-submit">
+                <span><span style="color:var(--fg-mute)">$</span> pay €5 · get your package</span>
+                <span class="submit-price">€5 →</span>
+              </button>
+            </form>
+          </div>
+          <!-- codebase form -->
+          <div id="form-code" style="display:none;">
+            <div class="pkg-form-head">// submit your codebase</div>
+            <div style="display:flex;gap:4px;margin-bottom:10px;">
+              <button type="button" onclick="setCodeInput('github')" id="btn-github"
+                style="font-family:var(--t-mono);font-size:11px;letter-spacing:0.08em;padding:4px 12px;cursor:pointer;border:1px solid var(--accent-hex);background:var(--accent-hex);color:var(--bg);">
+                GitHub URL
+              </button>
+              <button type="button" onclick="setCodeInput('zip')" id="btn-zip"
+                style="font-family:var(--t-mono);font-size:11px;letter-spacing:0.08em;padding:4px 12px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fg-mute);">
+                ZIP upload
+              </button>
             </div>
-            <div class="pkg-input-row">
-              <span class="pkg-arrow">@</span>
-              <input
-                class="pkg-input"
-                id="pkg-email"
-                type="email"
-                placeholder="your@email.com (package delivered here)"
-                autocomplete="email"
-              />
+            <form class="pkg-form" id="pkg-form-code" novalidate>
+              <div class="pkg-input-row">
+                <span class="pkg-arrow">▸</span>
+                <input class="pkg-input" id="code-url" type="url"
+                  placeholder="https://github.com/you/your-repo" autocomplete="url" />
+              </div>
+              <div class="pkg-input-row">
+                <span class="pkg-arrow">@</span>
+                <input class="pkg-input" id="code-email" type="email"
+                  placeholder="your@email.com (package delivered here)" autocomplete="email" />
+              </div>
+              <div class="pkg-error" id="code-error" style="display:none;"></div>
+              <button type="submit" class="pkg-submit">
+                <span><span style="color:var(--fg-mute)">$</span> pay €5 · get your package</span>
+                <span class="submit-price">€5 →</span>
+              </button>
+            </form>
+            <!-- zip waitlist -->
+            <div id="zip-area" style="display:none;flex-direction:column;gap:10px;">
+              <div style="font-size:12px;color:var(--fg-mute);line-height:1.6;">
+                Private or closed-source? ZIP upload launching soon — join the list.
+              </div>
+              <form id="zip-form" novalidate style="display:flex;flex-direction:column;gap:10px;">
+                <div class="pkg-input-row">
+                  <span class="pkg-arrow">@</span>
+                  <input class="pkg-input" id="zip-email" type="email"
+                    placeholder="your@email.com" autocomplete="email" />
+                </div>
+                <div class="pkg-error" id="zip-error" style="display:none;"></div>
+                <button type="submit" class="pkg-submit">
+                  <span><span style="color:var(--fg-mute)">$</span> notify me when ZIP is live</span>
+                  <span>→</span>
+                </button>
+              </form>
             </div>
-            <div class="pkg-error" id="pkg-error" style="display:none;"></div>
-            <button type="submit" class="pkg-submit">
-              <span><span style="color:var(--fg-mute)">$</span> pay €5 · get your package</span>
-              <span class="submit-price">€5 →</span>
-            </button>
-          </form>
+          </div>
           <div class="pkg-fine">
-            Stripe-secured payment. After checkout, the pipeline runs automatically —
-            your package arrives by email within minutes.<br/>
-            If anything goes wrong, reply to the email or write to
-            <a href="mailto:selina@exoreaction.com" style="color:var(--accent-hex);">selina@exoreaction.com</a>.
+            Stripe-secured payment. Pipeline runs automatically after checkout —
+            package arrives by email within minutes.<br/>
+            Questions? <a href="mailto:selina@exoreaction.com" style="color:var(--accent-hex);">selina@exoreaction.com</a>
           </div>
         </div>
       </section>
@@ -314,22 +375,92 @@
   </div>
 
   <script>
-    document.getElementById("pkg-form").addEventListener("submit", function(e) {
+    var STRIPE = "https://buy.stripe.com/4gM5kE2LM57Q1bB5WE14400";
+    var PROXY  = "https://aegis-proxy.totto.workers.dev/waitlist";
+    var currentTab = "web";
+    var currentCodeInput = "github";
+
+    function switchTab(tab) {
+      currentTab = tab;
+      var isWeb = tab === "web";
+      document.getElementById("form-web").style.display  = isWeb ? "block" : "none";
+      document.getElementById("form-code").style.display = isWeb ? "none"  : "block";
+      document.getElementById("tree-web").style.display  = isWeb ? "block" : "none";
+      document.getElementById("tree-code").style.display = isWeb ? "none"  : "block";
+      document.getElementById("tree-note-web").style.display  = isWeb ? "block" : "none";
+      document.getElementById("tree-note-code").style.display = isWeb ? "none"  : "block";
+      var accent = "var(--accent-hex)";
+      document.getElementById("tab-web").style.borderColor  = isWeb ? accent : "var(--line)";
+      document.getElementById("tab-code").style.borderColor = isWeb ? "var(--line)" : accent;
+    }
+
+    function setCodeInput(mode) {
+      currentCodeInput = mode;
+      var isGh = mode === "github";
+      document.getElementById("pkg-form-code").style.display = isGh ? "flex" : "none";
+      document.getElementById("zip-area").style.display      = isGh ? "none" : "flex";
+      document.getElementById("btn-github").style.background = isGh ? "var(--accent-hex)" : "transparent";
+      document.getElementById("btn-github").style.color      = isGh ? "var(--bg)" : "var(--fg-mute)";
+      document.getElementById("btn-github").style.borderColor = isGh ? "var(--accent-hex)" : "var(--line)";
+      document.getElementById("btn-zip").style.background    = isGh ? "transparent" : "var(--accent-hex)";
+      document.getElementById("btn-zip").style.color         = isGh ? "var(--fg-mute)" : "var(--bg)";
+      document.getElementById("btn-zip").style.borderColor   = isGh ? "var(--line)" : "var(--accent-hex)";
+    }
+
+    function goStripe(ref, email) {
+      var params = new URLSearchParams({ client_reference_id: ref, prefilled_email: email });
+      window.location.href = STRIPE + "?" + params.toString();
+    }
+
+    document.getElementById("pkg-form-web").addEventListener("submit", function(e) {
       e.preventDefault();
-      var errorEl = document.getElementById("pkg-error");
-      var url = document.getElementById("pkg-url").value.trim();
-      var email = document.getElementById("pkg-email").value.trim();
-
-      errorEl.style.display = "none";
-      errorEl.textContent = "";
-
-      if (!url) { errorEl.textContent = "⚠ enter a GitHub repo or website URL"; errorEl.style.display = "block"; return; }
-      if (!email) { errorEl.textContent = "⚠ enter your email address"; errorEl.style.display = "block"; return; }
-      try { new URL(url); } catch(_) { errorEl.textContent = "⚠ not a valid URL — include https://"; errorEl.style.display = "block"; return; }
-
-      var params = new URLSearchParams({ client_reference_id: url, prefilled_email: email });
-      window.location.href = "https://buy.stripe.com/4gM5kE2LM57Q1bB5WE14400?" + params.toString();
+      var err = document.getElementById("web-error");
+      var url = document.getElementById("web-url").value.trim();
+      var email = document.getElementById("web-email").value.trim();
+      err.style.display = "none";
+      if (!url)   { err.textContent = "⚠ enter your website URL"; err.style.display = "block"; return; }
+      if (!email) { err.textContent = "⚠ enter your email address"; err.style.display = "block"; return; }
+      try { new URL(url); } catch(_) { err.textContent = "⚠ not a valid URL — include https://"; err.style.display = "block"; return; }
+      goStripe(url, email);
     });
+
+    document.getElementById("pkg-form-code").addEventListener("submit", function(e) {
+      e.preventDefault();
+      var err = document.getElementById("code-error");
+      var url = document.getElementById("code-url").value.trim();
+      var email = document.getElementById("code-email").value.trim();
+      err.style.display = "none";
+      if (!url)   { err.textContent = "⚠ enter the GitHub repo URL"; err.style.display = "block"; return; }
+      if (!email) { err.textContent = "⚠ enter your email address"; err.style.display = "block"; return; }
+      try { new URL(url); } catch(_) { err.textContent = "⚠ not a valid URL — include https://"; err.style.display = "block"; return; }
+      goStripe(url, email);
+    });
+
+    document.getElementById("zip-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      var err = document.getElementById("zip-error");
+      var email = document.getElementById("zip-email").value.trim();
+      err.style.display = "none";
+      if (!email || !email.includes("@")) { err.textContent = "⚠ enter a valid email"; err.style.display = "block"; return; }
+      try {
+        await fetch(PROXY, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email: email, product: "ai-readiness-zip" }),
+        });
+        document.getElementById("zip-form").innerHTML =
+          '<div style="color:var(--accent-hex);font-size:13px;line-height:1.8;">✓ you\'re on the list. we\'ll email you when ZIP goes live.</div>';
+      } catch(_) {
+        err.textContent = "⚠ something went wrong — try selina@exoreaction.com";
+        err.style.display = "block";
+      }
+    });
+
+    // init
+    switchTab("web");
+    document.getElementById("pkg-form-code").style.display = "flex";
+    document.getElementById("pkg-form-code").style.flexDirection = "column";
+    document.getElementById("pkg-form-code").style.gap = "10px";
   </script>
 </body>
 </html>

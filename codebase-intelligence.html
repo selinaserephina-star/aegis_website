@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Codebase Intelligence · Ægis</title>
+  <meta name="description" content="Deep technical analysis of any codebase. Architecture map, security findings, debt inventory, and modernization roadmap — delivered to your inbox in 30–60 minutes." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ægis" />
+  <meta property="og:title" content="Codebase Intelligence · Ægis" />
+  <meta property="og:description" content="Upload your codebase. Get a full technical analysis — architecture, security, debt, modernization roadmap — in under an hour." />
+  <meta property="og:url" content="https://xn--gis-xla.no/codebase-intelligence.html" />
+  <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* ---- launch badge ---- */
+    .launch-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--accent-hex); padding: 6px 14px;
+      font-size: 11px; letter-spacing: 0.14em; color: var(--accent-hex);
+      margin-bottom: 32px;
+    }
+    .launch-badge .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-hex);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    /* ---- hero ---- */
+    .pkg-hero {
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .pkg-eyebrow {
+      font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px;
+    }
+    .pkg-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(36px, 6vw, 96px);
+      line-height: 0.97; letter-spacing: -0.04em; margin: 0;
+    }
+    .pkg-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .pkg-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.2vw, 26px); line-height: 1.45;
+      color: var(--fg-mute); max-width: 52ch; margin: 32px 0 0;
+    }
+    .pkg-price-pill {
+      display: inline-flex; align-items: center; gap: 12px;
+      border: 1px solid var(--line); padding: 10px 20px;
+      font-size: 13px; letter-spacing: 0.06em; margin-top: 40px;
+      color: var(--fg-mute);
+    }
+    .pkg-price-pill .price-big { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; color: var(--fg); }
+
+    /* ---- body layout ---- */
+    .pkg-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--line);
+    }
+    @media (max-width: 720px) { .pkg-body { grid-template-columns: 1fr; gap: 40px; } }
+
+    /* ---- report preview tree ---- */
+    .pkg-tree {
+      background: var(--bg-2); border: 1px solid var(--line);
+      padding: 28px; font-size: 13px; line-height: 1.9;
+    }
+    .pkg-tree .tree-root { color: var(--accent-hex); font-weight: 500; }
+    .pkg-tree .tree-dir  { color: var(--fg-mute); }
+    .pkg-tree .tree-file { color: var(--fg); }
+    .pkg-tree .tree-note { color: var(--fg-dim); margin-left: 4px; }
+    .pkg-tree-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 16px; }
+
+    /* ---- form ---- */
+    .pkg-form-wrap { display: flex; flex-direction: column; gap: 0; }
+    .pkg-form-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
+    .pkg-form { display: flex; flex-direction: column; gap: 10px; }
+    .pkg-input-row {
+      display: flex; align-items: center; gap: 10px;
+      border: 1px solid var(--line); padding: 10px 14px;
+      background: var(--bg-2);
+    }
+    .pkg-input-row:focus-within { border-color: var(--fg-mute); }
+    .pkg-arrow { color: var(--accent-hex); font-size: 13px; flex-shrink: 0; }
+    .pkg-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px;
+      line-height: 1.4;
+    }
+    .pkg-input::placeholder { color: var(--fg-dim); }
+    .pkg-error { font-size: 12px; color: var(--warn); letter-spacing: 0.02em; padding: 4px 0; }
+    .pkg-submit {
+      display: flex; align-items: center; gap: 8px; justify-content: space-between;
+      padding: 14px 20px; border: 1px solid var(--accent-hex); background: transparent;
+      color: var(--accent-hex); font-family: var(--t-mono); font-size: 13px; letter-spacing: 0.04em;
+      cursor: pointer; transition: background 0.15s; margin-top: 6px;
+      text-align: left; width: 100%;
+    }
+    .pkg-submit:hover { background: color-mix(in oklch, var(--accent-hex), transparent 85%); }
+    .pkg-fine {
+      font-size: 11px; color: var(--fg-dim); line-height: 1.7; margin-top: 16px;
+    }
+    .pkg-success {
+      font-size: 13px; color: var(--accent-hex); line-height: 1.7;
+      border: 1px solid var(--accent-hex); padding: 16px 20px;
+      background: color-mix(in oklch, var(--accent-hex), transparent 90%);
+    }
+
+    /* ---- how it works ---- */
+    .pkg-how { padding: 64px 0; border-bottom: 1px solid var(--line); }
+    .pkg-how-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 32px; }
+    .pkg-steps {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;
+    }
+    @media (max-width: 900px) { .pkg-steps { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .pkg-steps { grid-template-columns: 1fr; } }
+    .pkg-step {
+      background: var(--bg-2); padding: 24px 20px; border: 1px solid var(--line);
+    }
+    .pkg-step-n { font-size: 11px; color: var(--fg-dim); margin-bottom: 12px; }
+    .pkg-step-t { font-size: 13px; font-weight: 500; color: var(--fg); margin-bottom: 8px; }
+    .pkg-step-d { font-size: 12px; color: var(--fg-mute); line-height: 1.6; }
+
+    /* ---- what is it ---- */
+    .pkg-what { padding: 64px 0; border-bottom: 1px solid var(--line); max-width: 64ch; }
+    .pkg-what h2 {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.03em; margin: 0 0 24px;
+    }
+    .pkg-what p { font-size: 15px; line-height: 1.7; color: var(--fg); margin: 0 0 16px; }
+    .pkg-what p.mute { color: var(--fg-mute); font-family: var(--t-disp); font-style: italic; font-size: 18px; }
+
+    /* ---- sample output ---- */
+    .pkg-sample { padding: 64px 0; border-bottom: 1px solid var(--line); }
+    .pkg-sample-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 32px; }
+    .pkg-findings {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;
+    }
+    @media (max-width: 720px) { .pkg-findings { grid-template-columns: 1fr; } }
+    .pkg-finding {
+      background: var(--bg-2); border: 1px solid var(--line); padding: 24px 20px;
+    }
+    .pkg-finding-cat { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-dim); margin-bottom: 12px; }
+    .pkg-finding-val { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--accent-hex); margin-bottom: 8px; }
+    .pkg-finding-label { font-size: 12px; color: var(--fg-mute); line-height: 1.6; }
+
+    /* ---- back ---- */
+    .pkg-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
+    .pkg-back:hover { color: var(--accent-hex); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="ai-readiness-package.html">ai-readiness</a>
+          <a href="workshops.html">workshops</a>
+          <a href="advisory.html">advisory</a>
+          <a href="index.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">// launching soon</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- hero -->
+      <section class="pkg-hero">
+        <div class="launch-badge">
+          <span class="badge-dot"></span>
+          LAUNCHING SOON
+        </div>
+        <div class="pkg-eyebrow">// product · codebase intelligence</div>
+        <h1 class="pkg-title">
+          Any codebase.<br/>
+          <em>Fully understood.</em><br/>
+          In an hour.
+        </h1>
+        <p class="pkg-lede">
+          Upload a zip of any codebase. Within 30–60 minutes you receive a
+          complete technical analysis — architecture, security, debt, and
+          a prioritised modernization roadmap.
+        </p>
+        <div class="pkg-price-pill">
+          <span class="price-big">9 950 NOK</span>
+          <span>·</span>
+          <div>
+            <div>agent-run · no subscription</div>
+            <div style="color:var(--fg-dim);font-size:11px;">pricing confirmed at launch · join the list</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- report tree + waitlist form -->
+      <section class="pkg-body">
+        <div>
+          <div class="pkg-tree">
+            <div class="pkg-tree-head">// what you receive</div>
+            <div class="tree-root">your-codebase-analysis/</div>
+            <div style="padding-left: 20px;">
+              <div class="tree-file">architecture-report.md<span class="tree-note"> ← directory map + pattern analysis</span></div>
+              <div class="tree-file">security-findings.md<span class="tree-note"> ← 21 signal types, severity rated</span></div>
+              <div class="tree-file">technical-debt.md<span class="tree-note"> ← quantified inventory, prioritized</span></div>
+              <div class="tree-file">modernization-roadmap.md<span class="tree-note"> ← quick wins + structural changes</span></div>
+              <div class="tree-dir">knowledge/</div>
+              <div style="padding-left: 20px;">
+                <div class="tree-file">knowledge.yaml<span class="tree-note"> ← KCP manifest for the codebase</span></div>
+                <div class="tree-file">CLAUDE.md<span class="tree-note"> ← Claude Code navigation hub</span></div>
+                <div class="tree-file">AGENTS.md<span class="tree-note"> ← agent instructions</span></div>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--fg-mute);margin:20px 0 0;line-height:1.7;">
+            Works on any language or stack. Supports private repos — upload a zip,
+            nothing reaches a third-party server beyond our analysis pipeline.
+          </p>
+        </div>
+
+        <div class="pkg-form-wrap" id="form-area">
+          <div class="pkg-form-head">// join the waitlist · get notified at launch</div>
+          <form class="pkg-form" id="waitlist-form" novalidate>
+            <div class="pkg-input-row">
+              <span class="pkg-arrow">@</span>
+              <input
+                class="pkg-input"
+                id="wl-email"
+                type="email"
+                placeholder="your@email.com"
+                autocomplete="email"
+              />
+            </div>
+            <div class="pkg-error" id="wl-error" style="display:none;"></div>
+            <button type="submit" class="pkg-submit" id="wl-submit">
+              <span><span style="color:var(--fg-mute)">$</span> join the waitlist</span>
+              <span>→</span>
+            </button>
+          </form>
+          <div class="pkg-fine">
+            We'll email you when Codebase Intelligence launches.
+            No spam — one email, when it's ready.<br/>
+            Questions now?
+            <a href="mailto:selina@exoreaction.com" style="color:var(--accent-hex);">selina@exoreaction.com</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- how it works -->
+      <section class="pkg-how">
+        <div class="pkg-how-head">// how it works</div>
+        <div class="pkg-steps">
+          <div class="pkg-step">
+            <div class="pkg-step-n">01</div>
+            <div class="pkg-step-t">You upload</div>
+            <div class="pkg-step-d">Zip your codebase. Drop it on the upload page. Enter your email. Pay.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">02</div>
+            <div class="pkg-step-t">Synthesis runs</div>
+            <div class="pkg-step-d">Lucene-based indexer maps your architecture — directories, archetypes, 21 security signal types.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">03</div>
+            <div class="pkg-step-t">ExoCortex analyses</div>
+            <div class="pkg-step-d">Agentic workflow: declare → execute → verify. Debt quantified, patterns extracted, roadmap drafted.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">04</div>
+            <div class="pkg-step-t">Report built</div>
+            <div class="pkg-step-d">7-file package: architecture map, security findings, debt inventory, roadmap, KCP manifest.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">05</div>
+            <div class="pkg-step-t">Delivered</div>
+            <div class="pkg-step-d">Zip sent to your email within 30–60 minutes of submission.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- sample output callout -->
+      <section class="pkg-sample">
+        <div class="pkg-sample-head">// example output — real numbers from a production codebase</div>
+        <div class="pkg-findings">
+          <div class="pkg-finding">
+            <div class="pkg-finding-cat">// SECURITY</div>
+            <div class="pkg-finding-val">10</div>
+            <div class="pkg-finding-label">committed credentials found — API keys and tokens in git history</div>
+          </div>
+          <div class="pkg-finding">
+            <div class="pkg-finding-cat">// DEBT</div>
+            <div class="pkg-finding-val">1 257</div>
+            <div class="pkg-finding-label">stored procedures — none documented, none tested</div>
+          </div>
+          <div class="pkg-finding">
+            <div class="pkg-finding-cat">// ARCHITECTURE</div>
+            <div class="pkg-finding-val">4 yrs</div>
+            <div class="pkg-finding-label">developer-years of manual effort estimated. Agentic path: 8–12 weeks.</div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--fg-dim);margin-top:16px;line-height:1.7;">
+          Numbers from the LetsReg technical due diligence engagement (March 2026).
+          Your report will reflect your actual codebase.
+        </p>
+      </section>
+
+      <!-- what is it -->
+      <section class="pkg-what">
+        <h2>What is Codebase Intelligence?</h2>
+        <p class="mute">
+          The analysis you'd get from a senior architect — run by an agent, delivered in an hour.
+        </p>
+        <p>
+          Most teams know their codebase has issues. They don't know which ones matter, how bad they are,
+          or where to start. Codebase Intelligence answers all three — quantified, prioritized, actionable.
+        </p>
+        <p>
+          It runs the same toolchain we use for enterprise technical due diligence engagements:
+          Synthesis for knowledge indexing, ExoCortex for agentic analysis, Claude Opus for synthesis.
+          The difference is it's automated and delivered for a fraction of the cost.
+        </p>
+        <p>
+          The output package drops straight into Claude Code, Cursor, or any agent framework
+          via the included KCP manifest — your AI tools immediately understand what the codebase
+          does and what's wrong with it.
+        </p>
+        <p style="margin-top:32px;">
+          <a class="cta-primary" href="#form-area" style="display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border:1px solid var(--accent-hex);color:var(--accent-hex);font-size:13px;">
+            <span>$</span> join the waitlist <span>↑</span>
+          </a>
+        </p>
+        <a class="pkg-back" href="index.html">← back to ægis</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    var PROXY = "https://aegis-proxy.totto.workers.dev/waitlist";
+
+    document.getElementById("waitlist-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      var errorEl = document.getElementById("wl-error");
+      var btn = document.getElementById("wl-submit");
+      var email = document.getElementById("wl-email").value.trim();
+
+      errorEl.style.display = "none";
+      errorEl.textContent = "";
+
+      if (!email || !email.includes("@")) {
+        errorEl.textContent = "⚠ enter a valid email address";
+        errorEl.style.display = "block";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "joining...";
+
+      try {
+        await fetch(PROXY, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email: email, product: "codebase-intelligence" }),
+        });
+        document.getElementById("form-area").innerHTML =
+          '<div style="border:1px solid var(--accent-hex);padding:24px 20px;color:var(--accent-hex);font-size:13px;line-height:1.8;">' +
+          '✓ you\'re on the list.<br/>' +
+          '<span style="color:var(--fg-mute)">we\'ll email you at ' + email + ' when Codebase Intelligence launches.</span>' +
+          '</div>';
+      } catch (_) {
+        btn.disabled = false;
+        btn.textContent = "$ join the waitlist →";
+        errorEl.textContent = "⚠ something went wrong — try selina@exoreaction.com";
+        errorEl.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
