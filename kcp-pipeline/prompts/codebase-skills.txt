@@ -1,0 +1,44 @@
+You are generating Claude Code skill files for a codebase. Your working directory is the root of the codebase being analysed.
+
+Repository: {repo}
+Date: {date}
+
+Use your file tools (Glob, Grep, Read, Bash) to explore the codebase before generating skills. Skills must reference real file paths and real patterns found in THIS codebase — not generic advice.
+
+CRITICAL OUTPUT FORMAT: Output ONLY skill XML blocks. No preamble, no explanation, no text outside skill tags. Start immediately with the first <skill> tag.
+
+---
+
+Generate exactly 20 Claude Code skill YAML files for this specific codebase. Skills must be concrete and actionable — not generic. Each skill should encode real knowledge about how things are done in THIS codebase.
+
+Cover these categories (adjust to what actually exists in the codebase):
+- 3–4 domain concept skills: core abstractions, how the domain model works
+- 3–4 add-feature skills: step-by-step how to add a new module/endpoint/component following existing patterns
+- 2–3 architecture navigation skills: how to find things, understand the data flow
+- 2–3 testing skills: how to write tests, what test utilities and patterns exist
+- 2 configuration skills: how config is structured, where to add new config values
+- 2 security / auth skills: the auth model, how to add authentication to new routes
+- remaining: specific to the actual subsystems found (e.g. reactive streams, event sourcing, DI patterns, CLI patterns — whatever is real in this codebase)
+
+Format each skill using this tag:
+
+<skill id="SKILL-SLUG">
+name: SKILL-SLUG
+version: "1.0"
+description: "One-line description of what invoking this skill tells Claude Code to do"
+target: "{repo}"
+reusability: low  # low = codebase-specific, medium = pattern-portable, high = generic
+invoke:
+  prompt: |
+    [Write a full, self-contained prompt (200-500 words) that Claude Code should execute
+     when this skill is invoked. The prompt must:
+     - Reference actual file paths found in this codebase
+     - Explain the relevant pattern with specific examples
+     - Give step-by-step instructions for the task
+     - Name the conventions to follow and the anti-patterns to avoid
+     - Be standalone — usable without reading any other file first]
+related_skills:
+  - other-skill-slug   # slugs of 1-3 related skills from the other 19 generated here
+</skill>
+
+Use actual slugs as IDs (lowercase, hyphenated, 2-5 words). Generate exactly 20 skill blocks.

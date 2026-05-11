@@ -42,7 +42,8 @@ CF_BASE = (
 
 PROMPTS_DIR     = os.path.join(os.path.dirname(os.path.abspath(__file__)), "prompts")
 PROMPT_PATH     = os.path.join(PROMPTS_DIR, "kcp-generate.txt")
-CODEBASE_PROMPT = os.path.join(PROMPTS_DIR, "codebase-intelligence.txt")
+CODEBASE_ARCHITECTURE_PROMPT = os.path.join(PROMPTS_DIR, "codebase-architecture.txt")
+CODEBASE_SKILLS_PROMPT       = os.path.join(PROMPTS_DIR, "codebase-skills.txt")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("kcp-poller")
@@ -370,32 +371,43 @@ def clone_repo(github_url, dest_dir):
     log.info(f"Cloned to {dest_dir}")
     return dest_dir
 
-def generate_codebase_intelligence(repo_path, repo_name):
-    template = open(CODEBASE_PROMPT).read()
-    prompt = (template
-        .replace("{repo}", repo_name)
-        .replace("{date}", str(date.today()))
-    )
+def _run_claude(prompt_text, repo_path, repo_name, label, timeout=900):
+    """Run a single claude CLI call and return stdout. Saves raw output for diagnostics."""
     env = os.environ.copy()
     result = subprocess.run(
         [
-            "claude", "-p", prompt,
+            "claude", "-p", prompt_text,
             "--output-format", "text",
             "--model", "claude-sonnet-4-6",
             "--allowedTools", "Read,Glob,Grep,Bash",
             "--dangerously-skip-permissions",
         ],
-        capture_output=True, text=True, timeout=900, env=env,
+        capture_output=True, text=True, timeout=timeout, env=env,
         cwd=repo_path,
     )
-    if result.returncode != 0:
-        raise RuntimeError(f"claude CLI failed (rc={result.returncode}): {result.stderr[:400]}")
-    # Save raw output for diagnostics
-    debug_path = os.path.expanduser(f"~/kcp-deliveries/{repo_name.replace('/', '-')}-raw.txt")
+    debug_path = os.path.expanduser(f"~/kcp-deliveries/{repo_name.replace('/', '-')}-raw-{label}.txt")
     os.makedirs(os.path.dirname(debug_path), exist_ok=True)
     with open(debug_path, "w") as f:
         f.write(result.stdout)
+    if result.returncode != 0:
+        raise RuntimeError(f"claude CLI failed [{label}] (rc={result.returncode}): {result.stderr[:400]}")
     return result.stdout
+
+def generate_codebase_intelligence(repo_path, repo_name):
+    today = str(date.today())
+
+    def render(template_path):
+        return (open(template_path).read()
+            .replace("{repo}", repo_name)
+            .replace("{date}", today))
+
+    log.info(f"[{repo_name}] Phase 1+2: architecture + modules")
+    arch_output = _run_claude(render(CODEBASE_ARCHITECTURE_PROMPT), repo_path, repo_name, "architecture", timeout=900)
+
+    log.info(f"[{repo_name}] Phase 3: skills")
+    skills_output = _run_claude(render(CODEBASE_SKILLS_PROMPT), repo_path, repo_name, "skills", timeout=900)
+
+    return arch_output + "\n" + skills_output
 
 def parse_codebase_output(text):
     files = {}
