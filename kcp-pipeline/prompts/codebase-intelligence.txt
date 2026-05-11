@@ -7,7 +7,9 @@ Use your file tools (Glob, Grep, Read, Bash) to explore the codebase thoroughly 
 
 The audience is a CTO or tech lead who will act on these findings. Conservative, accurate claims outperform aggressive ones.
 
-Generate the following output files wrapped in XML tags. Output ONLY the tagged blocks — no commentary outside them.
+CRITICAL OUTPUT FORMAT: Your response must begin IMMEDIATELY with `<architecture_report>` — no preamble, no acknowledgment, no "I'll analyze...", no explanation before the first tag. Every character of your response must be inside one of the XML tags defined below. Violation of this rule causes a hard parse failure.
+
+Generate the following output files wrapped in XML tags. Output ONLY the tagged blocks.
 
 ---
 
