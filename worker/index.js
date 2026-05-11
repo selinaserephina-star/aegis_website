@@ -1,7 +1,8 @@
 // Ægis Claude Proxy — Cloudflare Worker
 // API key stored as CF secret (never reaches the browser).
 // Deploy: wrangler deploy
-// Set key: wrangler secret put CLAUDE_API_KEY
+// Set key:   wrangler secret put CLAUDE_API_KEY
+//            wrangler secret put RESEND_API_KEY
 
 const ALLOWED_ORIGINS = ["https://ægis.no", "https://xn--gis-xla.no", "http://localhost"];
 
@@ -26,6 +27,14 @@ export default {
       return new Response("Method not allowed", { status: 405 });
     }
 
+    const url = new URL(request.url);
+
+    // --- waitlist signup ---
+    if (url.pathname === "/waitlist") {
+      return handleWaitlist(request, env, origin);
+    }
+
+    // --- Claude API proxy ---
     let body;
     try {
       body = await request.json();
@@ -53,6 +62,49 @@ export default {
     });
   },
 };
+
+async function handleWaitlist(request, env, origin) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response("Invalid JSON", { status: 400 });
+  }
+
+  const email = (body.email || "").trim();
+  const product = (body.product || "unknown").trim();
+
+  if (!email || !email.includes("@")) {
+    return new Response(JSON.stringify({ error: "invalid email" }), {
+      status: 400,
+      headers: { "content-type": "application/json", ...corsHeaders(origin) },
+    });
+  }
+
+  // Notify via Resend
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "waitlist@xn--gis-xla.no",
+        to: "selina@exoreaction.com",
+        subject: `[Ægis Waitlist] ${product}: ${email}`,
+        text: `New waitlist signup\n\nProduct: ${product}\nEmail: ${email}\nTime: ${new Date().toISOString()}`,
+      }),
+    });
+  } catch (_) {
+    // Non-fatal — still return success to the user
+  }
+
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: { "content-type": "application/json", ...corsHeaders(origin) },
+  });
+}
 
 function corsHeaders(origin) {
   return {

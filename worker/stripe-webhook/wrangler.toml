@@ -6,6 +6,10 @@ compatibility_date = "2024-01-01"
 #   STRIPE_WEBHOOK_SECRET   — from Stripe dashboard → Webhooks → signing secret
 #   RESEND_API_KEY          — from resend.com → API Keys
 
+[[queues.producers]]
+queue = "kcp-jobs"
+binding = "KCP_JOBS"
+
 # Route: map to a path on ægis.no
 # Requires ægis.no DNS to be managed on Cloudflare.
 # Uncomment and update after adding the domain to Cloudflare:

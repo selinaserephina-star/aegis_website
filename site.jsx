@@ -687,6 +687,12 @@ $ exo verify   --human`}
       {/* AI-Readiness Package — self-service KCP generation */}
       <KcpPackage />
 
+      {/* Codebase Intelligence — launching soon */}
+      <CodebaseIntelligenceTeaser />
+
+      {/* ExoCortex as a Service — launching soon */}
+      <ExoCortexServiceTeaser />
+
       <p className="footnote">
         Implementation engagement available — we wire these into your stack and hand it back maintained.
       </p>
@@ -697,23 +703,102 @@ $ exo verify   --human`}
 // ---------- ai-readiness package (self-service KCP) ----------
 
 function KcpPackage() {
-  const [url, setUrl] = useState("");
-  const [email, setEmail] = useState("");
+  const [target, setTarget] = useState("web"); // "web" | "code"
+  // web
+  const [webUrl, setWebUrl] = useState("");
+  const [webEmail, setWebEmail] = useState("");
+  // codebase
+  const [codeInput, setCodeInput] = useState("github"); // "github" | "zip"
+  const [codeUrl, setCodeUrl] = useState("");
+  const [codeEmail, setCodeEmail] = useState("");
+  const [zipEmail, setZipEmail] = useState("");
+  const [zipSubmitted, setZipSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  const STRIPE = "https://buy.stripe.com/4gM5kE2LM57Q1bB5WE14400";
+
+  function goStripe(ref, email) {
+    const params = new URLSearchParams({ client_reference_id: ref, prefilled_email: email });
+    window.location.href = STRIPE + "?" + params.toString();
+  }
+
+  function handleWebSubmit(e) {
     e.preventDefault();
     setError("");
-    if (!url.trim()) { setError("enter a GitHub repo or website URL"); return; }
-    if (!email.trim()) { setError("enter your email address"); return; }
-    try { new URL(url.trim()); } catch { setError("not a valid URL — include https://"); return; }
-
-    const params = new URLSearchParams({
-      client_reference_id: url.trim(),
-      prefilled_email: email.trim(),
-    });
-    window.location.href = "https://buy.stripe.com/4gM5kE2LM57Q1bB5WE14400?" + params.toString();
+    if (!webUrl.trim()) { setError("enter your website URL"); return; }
+    if (!webEmail.trim()) { setError("enter your email address"); return; }
+    try { new URL(webUrl.trim()); } catch { setError("not a valid URL — include https://"); return; }
+    goStripe(webUrl.trim(), webEmail.trim());
   }
+
+  function handleCodeSubmit(e) {
+    e.preventDefault();
+    setError("");
+    if (!codeUrl.trim()) { setError("enter the GitHub repo URL"); return; }
+    if (!codeEmail.trim()) { setError("enter your email address"); return; }
+    try { new URL(codeUrl.trim()); } catch { setError("not a valid URL — include https://"); return; }
+    goStripe(codeUrl.trim(), codeEmail.trim());
+  }
+
+  async function handleZipWaitlist(e) {
+    e.preventDefault();
+    setError("");
+    if (!zipEmail.trim()) { setError("enter your email address"); return; }
+    try {
+      await fetch("https://aegis-proxy.totto.workers.dev/waitlist", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: zipEmail.trim(), product: "ai-readiness-zip" }),
+      });
+      setZipSubmitted(true);
+    } catch {
+      setError("something went wrong — email selina@exoreaction.com");
+    }
+  }
+
+  const tabBtn = (v, label, sub) => (
+    <button type="button" onClick={() => { setTarget(v); setError(""); }} style={{
+      flex: 1, background: target === v ? "var(--bg-2)" : "transparent",
+      color: target === v ? "var(--fg)" : "var(--fg-dim)",
+      border: "1px solid " + (target === v ? "var(--accent-hex)" : "var(--line)"),
+      fontFamily: "var(--t-mono)", fontSize: "12px", letterSpacing: "0.06em",
+      padding: "10px 14px", cursor: "pointer", textAlign: "left",
+    }}>
+      <div style={{ color: target === v ? "var(--accent-hex)" : "var(--fg-dim)", fontSize: "10px", letterSpacing: "0.1em", marginBottom: "2px" }}>{label}</div>
+      <div style={{ fontSize: "11px", color: target === v ? "var(--fg-mute)" : "var(--fg-dim)" }}>{sub}</div>
+    </button>
+  );
+
+  const inputBtn = (v, label) => (
+    <button type="button" onClick={() => { setCodeInput(v); setError(""); }} style={{
+      background: codeInput === v ? "var(--accent-hex)" : "transparent",
+      color: codeInput === v ? "var(--bg)" : "var(--fg-mute)",
+      border: "1px solid " + (codeInput === v ? "var(--accent-hex)" : "var(--line)"),
+      fontFamily: "var(--t-mono)", fontSize: "11px", letterSpacing: "0.08em",
+      padding: "4px 10px", cursor: "pointer",
+    }}>{label}</button>
+  );
+
+  const WEB_FILES = [
+    { f: "knowledge.yaml",      n: "company, products, team, customers, compliance" },
+    { f: "knowledge.yaml.sig",  n: "ED25519 signed, verifiable provenance" },
+    { f: "llms.txt",            n: "AI crawler format (llmstxt.org standard)" },
+    { f: "llms-full.txt",       n: "full-detail version for agent pipelines" },
+    { f: "CLAUDE.md",           n: "company context hub for Claude / Cursor / Zed" },
+    { f: "AGENTS.md",           n: "agent instructions (all frameworks)" },
+    { f: "SETUP.md",            n: "deploy to web root in minutes" },
+  ];
+
+  const CODE_FILES = [
+    { f: "knowledge.yaml",      n: "codebase architecture, patterns, structure" },
+    { f: "knowledge.yaml.sig",  n: "ED25519 signed, verifiable provenance" },
+    { f: "CLAUDE.md",           n: "Claude Code navigation hub — sessions start faster" },
+    { f: "AGENTS.md",           n: "agent instructions for your tech stack" },
+    { f: "tech-index.yaml",     n: "directory purposes, dependency map" },
+    { f: "SETUP.md",            n: "how to drop this into your workflow" },
+  ];
+
+  const files = target === "web" ? WEB_FILES : CODE_FILES;
 
   return (
     <div className="skills-product" id="kcp-package" style={{ marginTop: "32px" }}>
@@ -724,58 +809,305 @@ function KcpPackage() {
           <span style={{ color: "var(--accent-hex)" }}>€5</span>.
         </div>
       </div>
+
+      {/* top-level split */}
+      <div style={{ display: "flex", gap: "2px", marginBottom: "24px" }}>
+        {tabBtn("web",  "FOR WEBSITES",   "Make your company AI-discoverable")}
+        {tabBtn("code", "FOR CODEBASES",  "Make your codebase agent-ready")}
+      </div>
+
+      <div className="skills-grid">
+        {/* left: file list */}
+        <div>
+          <div className="col-label">// what you receive</div>
+          <ul className="check-list dense">
+            {files.map(({ f, n }) => (
+              <li key={f}><code>{f}</code> — {n}</li>
+            ))}
+          </ul>
+          <div style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)", lineHeight: "1.6" }}>
+            {target === "web"
+              ? "Crawled from your public site. Delivered to your inbox in minutes."
+              : "Generated from your code. Delivered to your inbox in minutes."}
+            {" "}One-time payment. No subscription.
+          </div>
+        </div>
+
+        {/* right: form */}
+        <div>
+          {target === "web" && (
+            <form onSubmit={handleWebSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div className="col-label" style={{ marginBottom: "4px" }}>// your website</div>
+              <div className="demo-input-row">
+                <span className="prompt-arrow">▸</span>
+                <input className="demo-input" type="url"
+                  placeholder="https://yourcompany.com"
+                  value={webUrl} onChange={e => setWebUrl(e.target.value)}
+                  autoComplete="url" />
+              </div>
+              <div className="demo-input-row">
+                <span className="prompt-arrow">@</span>
+                <input className="demo-input" type="email"
+                  placeholder="your@email.com (delivered here)"
+                  value={webEmail} onChange={e => setWebEmail(e.target.value)}
+                  autoComplete="email" />
+              </div>
+              {error && <div style={{ fontSize: "12px", color: "var(--accent-hex)" }}>⚠ {error}</div>}
+              <button type="submit" className="cta-primary outline" style={{ marginTop: "4px" }}>
+                <span>$</span> pay €5 · get your package <span className="arrow">→</span>
+              </button>
+            </form>
+          )}
+
+          {target === "code" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
+                <div className="col-label" style={{ marginRight: "8px" }}>// input:</div>
+                {inputBtn("github", "GitHub URL")}
+                {inputBtn("zip", "ZIP upload")}
+              </div>
+
+              {codeInput === "github" && (
+                <form onSubmit={handleCodeSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <div className="demo-input-row">
+                    <span className="prompt-arrow">▸</span>
+                    <input className="demo-input" type="url"
+                      placeholder="https://github.com/you/your-repo"
+                      value={codeUrl} onChange={e => setCodeUrl(e.target.value)}
+                      autoComplete="url" />
+                  </div>
+                  <div className="demo-input-row">
+                    <span className="prompt-arrow">@</span>
+                    <input className="demo-input" type="email"
+                      placeholder="your@email.com (delivered here)"
+                      value={codeEmail} onChange={e => setCodeEmail(e.target.value)}
+                      autoComplete="email" />
+                  </div>
+                  {error && <div style={{ fontSize: "12px", color: "var(--accent-hex)" }}>⚠ {error}</div>}
+                  <button type="submit" className="cta-primary outline" style={{ marginTop: "4px" }}>
+                    <span>$</span> pay €5 · get your package <span className="arrow">→</span>
+                  </button>
+                </form>
+              )}
+
+              {codeInput === "zip" && (
+                zipSubmitted ? (
+                  <div style={{ fontSize: "13px", color: "var(--accent-hex)", lineHeight: "1.8", padding: "8px 0" }}>
+                    ✓ you're on the list. we'll email you when ZIP upload goes live.
+                  </div>
+                ) : (
+                  <form onSubmit={handleZipWaitlist} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <div style={{ fontSize: "12px", color: "var(--fg-mute)", lineHeight: "1.6" }}>
+                      Private or closed-source? ZIP upload launching soon — join the list.
+                    </div>
+                    <div className="demo-input-row">
+                      <span className="prompt-arrow">@</span>
+                      <input className="demo-input" type="email"
+                        placeholder="your@email.com"
+                        value={zipEmail} onChange={e => setZipEmail(e.target.value)}
+                        autoComplete="email" />
+                    </div>
+                    {error && <div style={{ fontSize: "12px", color: "var(--accent-hex)" }}>⚠ {error}</div>}
+                    <button type="submit" className="cta-primary outline" style={{ marginTop: "4px" }}>
+                      <span>$</span> notify me when ZIP is live <span className="arrow">→</span>
+                    </button>
+                  </form>
+                )
+              )}
+            </div>
+          )}
+
+          <p style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)" }}>
+            <a href="ai-readiness-package.html" className="link-amber">full product page →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------- exocortex as a service teaser ----------
+
+function ExoCortexServiceTeaser() {
+  const [email, setEmail] = useState("");
+  const [tier, setTier] = useState("auto");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    if (!email.trim()) { setError("enter your email address"); return; }
+    try {
+      await fetch("https://aegis-proxy.totto.workers.dev/waitlist", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), product: `exocortex-service-${tier}` }),
+      });
+      setSubmitted(true);
+    } catch {
+      setError("something went wrong — email selina@exoreaction.com");
+    }
+  }
+
+  const tierBtn = (v, label) => (
+    <button type="button" onClick={() => setTier(v)} style={{
+      background: tier === v ? "var(--accent-hex)" : "transparent",
+      color: tier === v ? "var(--bg)" : "var(--fg-mute)",
+      border: "1px solid " + (tier === v ? "var(--accent-hex)" : "var(--line)"),
+      fontFamily: "var(--t-mono)", fontSize: "11px", letterSpacing: "0.08em",
+      padding: "5px 12px", cursor: "pointer",
+    }}>{label}</button>
+  );
+
+  return (
+    <div className="skills-product" id="exocortex-service" style={{ marginTop: "32px" }}>
+      <div className="skills-head">
+        <div className="col-label" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          // 07 — exocortex as a service
+          <span style={{
+            fontSize: "10px", letterSpacing: "0.12em", color: "var(--accent-hex)",
+            border: "1px solid var(--accent-hex)", padding: "2px 8px",
+          }}>LAUNCHING SOON</span>
+        </div>
+        <div className="skills-title">
+          Declare → Execute → Verify.{" "}
+          <span style={{ color: "var(--accent-hex)" }}>Auto or HITL.</span>
+        </div>
+      </div>
+      <div className="skills-grid">
+        <div>
+          <div className="col-label">// two tiers</div>
+          <ul className="check-list dense">
+            <li><strong>Auto</strong> — fully agent-run, async delivery, from 25 000 NOK / month</li>
+            <li><strong>HITL</strong> — human in the loop at declare, execute, verify, 125 000 NOK / month</li>
+            <li>Works on any codebase — Synthesis indexed, ExoCortex orchestrated</li>
+            <li>Deliverable: PR, report, or deployed artifact</li>
+            <li>Same workflow used in eXOReaction client engagements</li>
+          </ul>
+          <div style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)", lineHeight: "1.6" }}>
+            You describe the intent. We run the pipeline. You receive the output.
+          </div>
+        </div>
+        <div>
+          <div className="col-label">// join the waitlist</div>
+          {submitted ? (
+            <div style={{ fontSize: "13px", color: "var(--accent-hex)", marginTop: "8px", lineHeight: "1.8" }}>
+              ✓ you're on the list. we'll email you when it launches.
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "8px" }}>
+              <div style={{ display: "flex", gap: "2px" }}>
+                {tierBtn("auto", "Auto")}
+                {tierBtn("hitl", "HITL")}
+                {tierBtn("both", "Both")}
+              </div>
+              <div className="demo-input-row">
+                <span className="prompt-arrow">@</span>
+                <input
+                  className="demo-input"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
+              </div>
+              {error && <div style={{ fontSize: "12px", color: "var(--accent-hex)", letterSpacing: "0.02em" }}>⚠ {error}</div>}
+              <button type="submit" className="cta-primary outline" style={{ marginTop: "4px" }}>
+                <span>$</span> join the waitlist <span className="arrow">→</span>
+              </button>
+            </form>
+          )}
+          <p style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)" }}>
+            <a href="exocortex-as-a-service.html" className="link-amber">full product page →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------- codebase intelligence teaser ----------
+
+function CodebaseIntelligenceTeaser() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    if (!email.trim()) { setError("enter your email address"); return; }
+    try {
+      await fetch("https://aegis-proxy.totto.workers.dev/waitlist", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), product: "codebase-intelligence" }),
+      });
+      setSubmitted(true);
+    } catch {
+      setError("something went wrong — email selina@exoreaction.com");
+    }
+  }
+
+  return (
+    <div className="skills-product" id="codebase-intelligence" style={{ marginTop: "32px" }}>
+      <div className="skills-head">
+        <div className="col-label" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          // 06 — codebase intelligence
+          <span style={{
+            fontSize: "10px", letterSpacing: "0.12em", color: "var(--accent-hex)",
+            border: "1px solid var(--accent-hex)", padding: "2px 8px",
+          }}>LAUNCHING SOON</span>
+        </div>
+        <div className="skills-title">
+          Any codebase, fully understood.{" "}
+          <span style={{ color: "var(--accent-hex)" }}>30–60 min. 9 950 NOK.</span>
+        </div>
+      </div>
       <div className="skills-grid">
         <div>
           <div className="col-label">// what you receive</div>
           <ul className="check-list dense">
-            <li><code>knowledge.yaml</code> — KCP v0.12 manifest, structured for AI agents</li>
-            <li><code>knowledge.yaml.sig</code> — ED25519 signed, verifiable provenance</li>
-            <li><code>CLAUDE.md</code> — Claude Code navigation hub</li>
-            <li><code>AGENTS.md</code> — AI agent instructions (all frameworks)</li>
-            <li><code>llms.txt</code> + <code>llms-full.txt</code> — standard AI crawler format</li>
-            <li>Setup guide — deploy to web root in minutes</li>
+            <li>Architecture map — directory purposes, patterns, anti-patterns</li>
+            <li>Security analysis — 21 signal types, severity rated</li>
+            <li>Technical debt inventory — quantified and prioritized</li>
+            <li>Modernization roadmap — quick wins + structural changes</li>
+            <li>KCP manifest — drop it in, agents understand your codebase</li>
           </ul>
           <div style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)", lineHeight: "1.6" }}>
-            Delivered to your inbox in minutes.
-            One-time payment. No subscription.
+            Upload any zip. Agent-run analysis via Synthesis + ExoCortex.
+            Works on closed-source, private repos.
           </div>
         </div>
         <div>
-          <div className="col-label">// submit your repo or website</div>
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "8px" }}>
-            <div className="demo-input-row">
-              <span className="prompt-arrow">▸</span>
-              <input
-                className="demo-input"
-                type="url"
-                placeholder="https://github.com/you/your-repo"
-                value={url}
-                onChange={e => setUrl(e.target.value)}
-                autoComplete="url"
-              />
+          <div className="col-label">// get notified at launch</div>
+          {submitted ? (
+            <div style={{ fontSize: "13px", color: "var(--accent-hex)", marginTop: "8px", lineHeight: "1.8" }}>
+              ✓ you're on the list. we'll email you when it launches.
             </div>
-            <div className="demo-input-row">
-              <span className="prompt-arrow">@</span>
-              <input
-                className="demo-input"
-                type="email"
-                placeholder="your@email.com (package delivered here)"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-            </div>
-            {error && (
-              <div style={{ fontSize: "12px", color: "var(--accent-hex)", letterSpacing: "0.02em" }}>
-                ⚠ {error}
+          ) : (
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "8px" }}>
+              <div className="demo-input-row">
+                <span className="prompt-arrow">@</span>
+                <input
+                  className="demo-input"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
               </div>
-            )}
-            <button type="submit" className="cta-primary outline" style={{ marginTop: "4px" }}>
-              <span>$</span> pay €5 · get your package <span className="arrow">→</span>
-            </button>
-          </form>
-          <p style={{marginTop:"16px",fontSize:"12px",color:"var(--fg-mute)"}}>
-            <a href="ai-readiness-package.html" className="link-amber">full product page →</a>
+              {error && <div style={{ fontSize: "12px", color: "var(--accent-hex)", letterSpacing: "0.02em" }}>⚠ {error}</div>}
+              <button type="submit" className="cta-primary outline" style={{ marginTop: "4px" }}>
+                <span>$</span> join the waitlist <span className="arrow">→</span>
+              </button>
+            </form>
+          )}
+          <p style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)" }}>
+            <a href="codebase-intelligence.html" className="link-amber">full product page →</a>
           </p>
         </div>
       </div>

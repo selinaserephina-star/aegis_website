@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ExoCortex as a Service · Ægis</title>
+  <meta name="description" content="The ExoCortex agentic workflow — declare, execute, verify — as a managed service. Run with full automation or with a human in the loop at every decision point." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ægis" />
+  <meta property="og:title" content="ExoCortex as a Service · Ægis" />
+  <meta property="og:description" content="Declare → Execute → Verify. Agentic development workflows, without the infrastructure. Auto or HITL." />
+  <meta property="og:url" content="https://xn--gis-xla.no/exocortex-as-a-service.html" />
+  <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    .launch-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--accent-hex); padding: 6px 14px;
+      font-size: 11px; letter-spacing: 0.14em; color: var(--accent-hex);
+      margin-bottom: 32px;
+    }
+    .launch-badge .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-hex); animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .pkg-hero { padding: 120px 0 80px; border-bottom: 1px solid var(--line); }
+    .pkg-eyebrow { font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px; }
+    .pkg-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(32px, 5.5vw, 88px);
+      line-height: 0.97; letter-spacing: -0.04em; margin: 0;
+    }
+    .pkg-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .pkg-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.2vw, 26px); line-height: 1.45;
+      color: var(--fg-mute); max-width: 52ch; margin: 32px 0 0;
+    }
+
+    /* ---- tier cards ---- */
+    .tier-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      padding: 80px 0 64px; border-bottom: 1px solid var(--line);
+    }
+    @media (max-width: 720px) { .tier-grid { grid-template-columns: 1fr; } }
+    .tier-card {
+      background: var(--bg-2); border: 1px solid var(--line);
+      padding: 40px 36px;
+    }
+    .tier-card.featured { border-color: var(--accent-hex); }
+    .tier-label { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-dim); margin-bottom: 16px; }
+    .tier-name {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(22px, 2.5vw, 32px); letter-spacing: -0.03em;
+      margin: 0 0 8px;
+    }
+    .tier-tagline { font-size: 13px; color: var(--fg-mute); margin: 0 0 32px; line-height: 1.6; }
+    .tier-list { list-style: none; padding: 0; margin: 0 0 32px; }
+    .tier-list li { font-size: 13px; color: var(--fg-mute); line-height: 1.8; padding-left: 16px; position: relative; }
+    .tier-list li::before { content: "+"; position: absolute; left: 0; color: var(--accent-hex); }
+    .tier-price {
+      font-family: var(--t-mono); font-size: 11px; letter-spacing: 0.08em;
+      color: var(--fg-dim); margin-top: 24px; padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+    .tier-price .price-val { font-size: 22px; font-weight: 600; color: var(--fg); letter-spacing: -0.02em; margin-right: 6px; }
+
+    /* ---- workflow diagram ---- */
+    .pkg-flow { padding: 64px 0; border-bottom: 1px solid var(--line); }
+    .pkg-flow-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 32px; }
+    .flow-steps { display: flex; flex-direction: column; gap: 2px; }
+    .flow-step {
+      display: grid; grid-template-columns: 120px 1fr;
+      background: var(--bg-2); border: 1px solid var(--line);
+    }
+    .flow-step-cmd {
+      padding: 20px; border-right: 1px solid var(--line);
+      font-family: var(--t-mono); font-size: 14px; font-weight: 500;
+      color: var(--accent-hex); display: flex; align-items: center;
+    }
+    .flow-step-desc { padding: 20px 24px; }
+    .flow-step-title { font-size: 13px; font-weight: 500; color: var(--fg); margin-bottom: 6px; }
+    .flow-step-body { font-size: 12px; color: var(--fg-mute); line-height: 1.6; }
+    .flow-hitl {
+      display: inline-block; font-size: 10px; letter-spacing: 0.1em;
+      color: var(--accent-hex); border: 1px solid var(--accent-hex);
+      padding: 2px 7px; margin-left: 8px;
+    }
+    @media (max-width: 600px) { .flow-step { grid-template-columns: 80px 1fr; } }
+
+    /* ---- what is it ---- */
+    .pkg-what { padding: 64px 0; border-bottom: 1px solid var(--line); max-width: 64ch; }
+    .pkg-what h2 {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.03em; margin: 0 0 24px;
+    }
+    .pkg-what p { font-size: 15px; line-height: 1.7; color: var(--fg); margin: 0 0 16px; }
+    .pkg-what p.mute { color: var(--fg-mute); font-family: var(--t-disp); font-style: italic; font-size: 18px; }
+
+    /* ---- form ---- */
+    .pkg-form-wrap { padding: 64px 0; border-bottom: 1px solid var(--line); max-width: 480px; }
+    .pkg-form-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
+    .pkg-form { display: flex; flex-direction: column; gap: 10px; }
+    .pkg-input-row {
+      display: flex; align-items: center; gap: 10px;
+      border: 1px solid var(--line); padding: 10px 14px; background: var(--bg-2);
+    }
+    .pkg-input-row:focus-within { border-color: var(--fg-mute); }
+    .pkg-arrow { color: var(--accent-hex); font-size: 13px; flex-shrink: 0; }
+    .pkg-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px; line-height: 1.4;
+    }
+    .pkg-input::placeholder { color: var(--fg-dim); }
+    .pkg-error { font-size: 12px; color: var(--warn); letter-spacing: 0.02em; padding: 4px 0; }
+    .pkg-submit {
+      display: flex; align-items: center; gap: 8px; justify-content: space-between;
+      padding: 14px 20px; border: 1px solid var(--accent-hex); background: transparent;
+      color: var(--accent-hex); font-family: var(--t-mono); font-size: 13px; letter-spacing: 0.04em;
+      cursor: pointer; transition: background 0.15s; margin-top: 6px; width: 100%;
+    }
+    .pkg-submit:hover { background: color-mix(in oklch, var(--accent-hex), transparent 85%); }
+    .pkg-fine { font-size: 11px; color: var(--fg-dim); line-height: 1.7; margin-top: 16px; }
+
+    .pkg-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
+    .pkg-back:hover { color: var(--accent-hex); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="codebase-intelligence.html">codebase intel</a>
+          <a href="ai-readiness-package.html">ai-readiness</a>
+          <a href="advisory.html">advisory</a>
+          <a href="index.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">// launching soon</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- hero -->
+      <section class="pkg-hero">
+        <div class="launch-badge">
+          <span class="badge-dot"></span>
+          LAUNCHING SOON
+        </div>
+        <div class="pkg-eyebrow">// product · exocortex as a service</div>
+        <h1 class="pkg-title">
+          Declare.<br/>
+          Execute.<br/>
+          <em>Verify.</em>
+        </h1>
+        <p class="pkg-lede">
+          The ExoCortex agentic development workflow — as a managed service.
+          You define the intent. We run the pipeline. Ship production-grade changes
+          with or without a human in the loop.
+        </p>
+      </section>
+
+      <!-- tier cards -->
+      <section class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-label">// tier 01</div>
+          <h2 class="tier-name">Auto</h2>
+          <p class="tier-tagline">
+            Fully agent-run. You declare the intent — the pipeline executes, verifies,
+            and delivers. Zero human time required.
+          </p>
+          <ul class="tier-list">
+            <li>Declare intent in natural language</li>
+            <li>ExoCortex plans and executes the work</li>
+            <li>Automated verification at every step</li>
+            <li>Deliverable: PR, report, or artifact — your choice</li>
+            <li>Synthesis-indexed codebase for zero discovery overhead</li>
+            <li>Async — kick off and receive results</li>
+          </ul>
+          <div class="tier-price">
+            <span class="price-val">from 25 000 NOK</span> /month
+            <div style="color:var(--fg-dim);font-size:11px;margin-top:4px;">exact pricing at launch</div>
+          </div>
+        </div>
+        <div class="tier-card featured">
+          <div class="tier-label">// tier 02</div>
+          <h2 class="tier-name">HITL</h2>
+          <p class="tier-tagline">
+            Human-in-the-loop at every decision point. Totto or a senior Ægis engineer
+            reviews intent, approves execution, and signs off on verification.
+          </p>
+          <ul class="tier-list">
+            <li>Everything in Auto</li>
+            <li>Senior engineer reviews declared intent before execution</li>
+            <li>Human approval gate before any destructive operation</li>
+            <li>Verification sign-off by a human — not just a test suite</li>
+            <li>Async communication in your Slack or ours</li>
+            <li>Suitable for production systems, compliance environments</li>
+          </ul>
+          <div class="tier-price">
+            <span class="price-val">125 000 NOK</span> /month
+            <div style="color:var(--fg-dim);font-size:11px;margin-top:4px;">exact pricing at launch</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- workflow diagram -->
+      <section class="pkg-flow">
+        <div class="pkg-flow-head">// the exocortex workflow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-cmd">$ exo<br/>declare</div>
+            <div class="flow-step-desc">
+              <div class="flow-step-title">
+                You describe the outcome
+                <span class="flow-hitl">HITL: reviewed</span>
+              </div>
+              <div class="flow-step-body">
+                "Refactor the authentication module to use JWT. Maintain backwards compatibility.
+                No new dependencies." Plain language. ExoCortex structures it into a verifiable intent.
+              </div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-step-cmd">$ exo<br/>execute</div>
+            <div class="flow-step-desc">
+              <div class="flow-step-title">
+                Agent runs the work
+                <span class="flow-hitl">HITL: approved</span>
+              </div>
+              <div class="flow-step-body">
+                Synthesis indexes the codebase (sub-second retrieval). ExoCortex executes the
+                plan — reads files, makes changes, runs tests. Dry-run mode available before commit.
+              </div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-step-cmd">$ exo<br/>verify</div>
+            <div class="flow-step-desc">
+              <div class="flow-step-title">
+                Intent verified against reality
+                <span class="flow-hitl">HITL: signed off</span>
+              </div>
+              <div class="flow-step-body">
+                Did the output match the declared intent? Automated checks + (HITL tier) human review.
+                Deliverable shipped — PR, report, or deployed artifact.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- what is it -->
+      <section class="pkg-what">
+        <h2>What is ExoCortex?</h2>
+        <p class="mute">
+          The workflow layer between intent and production.
+        </p>
+        <p>
+          ExoCortex is an agentic development workflow built on the principle that humans
+          should be in the loop at <em>decisions</em> — not at every keystroke.
+          It separates declaration (what should happen) from execution (making it happen)
+          from verification (confirming it did).
+        </p>
+        <p>
+          As a service, you don't run any infrastructure. You describe what you need,
+          we run the pipeline against your codebase (via Synthesis indexing + ExoCortex workflow),
+          and you receive the output. Auto tier for routine work, HITL tier for anything that
+          touches production systems or requires compliance oversight.
+        </p>
+        <p>
+          This is the same workflow we run internally on eXOReaction client engagements —
+          made available as a self-service product for the first time.
+        </p>
+        <a class="pkg-back" href="index.html">← back to ægis</a>
+      </section>
+
+      <!-- waitlist form -->
+      <div class="pkg-form-wrap" id="form-area">
+        <div class="pkg-form-head">// join the waitlist · get notified at launch</div>
+        <form class="pkg-form" id="waitlist-form" novalidate>
+          <div class="pkg-input-row">
+            <span class="pkg-arrow">@</span>
+            <input
+              class="pkg-input"
+              id="wl-email"
+              type="email"
+              placeholder="your@email.com"
+              autocomplete="email"
+            />
+          </div>
+          <div style="display:flex;gap:4px;margin-top:2px;">
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg-mute);cursor:pointer;">
+              <input type="radio" name="tier" value="auto" checked style="accent-color:var(--accent-hex);" />
+              Auto
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg-mute);cursor:pointer;margin-left:12px;">
+              <input type="radio" name="tier" value="hitl" style="accent-color:var(--accent-hex);" />
+              HITL
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg-mute);cursor:pointer;margin-left:12px;">
+              <input type="radio" name="tier" value="both" style="accent-color:var(--accent-hex);" />
+              Both
+            </label>
+          </div>
+          <div class="pkg-error" id="wl-error" style="display:none;"></div>
+          <button type="submit" class="pkg-submit" id="wl-submit">
+            <span><span style="color:var(--fg-mute)">$</span> join the waitlist</span>
+            <span>→</span>
+          </button>
+        </form>
+        <div class="pkg-fine">
+          We'll email you when ExoCortex as a Service launches.
+          Questions now? <a href="mailto:selina@exoreaction.com" style="color:var(--accent-hex);">selina@exoreaction.com</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    var PROXY = "https://aegis-proxy.totto.workers.dev/waitlist";
+
+    document.getElementById("waitlist-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      var errorEl = document.getElementById("wl-error");
+      var btn = document.getElementById("wl-submit");
+      var email = document.getElementById("wl-email").value.trim();
+      var tier = document.querySelector('input[name="tier"]:checked').value;
+
+      errorEl.style.display = "none";
+      if (!email || !email.includes("@")) {
+        errorEl.textContent = "⚠ enter a valid email address";
+        errorEl.style.display = "block";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.querySelector("span").textContent = "joining...";
+
+      try {
+        await fetch(PROXY, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email: email, product: "exocortex-service-" + tier }),
+        });
+        document.getElementById("form-area").innerHTML =
+          '<div style="border:1px solid var(--accent-hex);padding:24px 20px;color:var(--accent-hex);font-size:13px;line-height:1.8;">' +
+          '✓ you\'re on the list.<br/>' +
+          '<span style="color:var(--fg-mute)">we\'ll email you at ' + email + ' when ExoCortex as a Service launches.</span>' +
+          '</div>';
+      } catch (_) {
+        btn.disabled = false;
+        btn.querySelector("span").textContent = "$ join the waitlist";
+        errorEl.textContent = "⚠ something went wrong — try selina@exoreaction.com";
+        errorEl.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
