@@ -13,20 +13,17 @@
 <table cellpadding="0" cellspacing="0" border="0" width="640">
 <tr><td>
 
-<p>
-Your Codebase Intelligence report for <strong>{repo_name}</strong> is attached.
-</p>
+<p>Your Codebase Intelligence report for <strong>{repo_name}</strong> is attached.</p>
+
+<p>{overview}</p>
 
 <p>
-Here is what we found: the full architecture topology of your codebase — every directory mapped,
-every coupling path traced, every anti-pattern named. The security analysis covers 21 signal
-types and rates every finding by severity, from credential exposure and input validation gaps
-to infrastructure misconfigurations and supply-chain risks. Technical debt is not described
-in vague terms — it is quantified: file-level complexity, deprecated API usage, dependency
-staleness, test coverage gaps on critical paths, and estimated remediation effort for each item.
-The modernization roadmap separates quick wins you can ship this week from structural changes
-that require planning, so your team knows exactly where to start and what to defer.
+<strong>By the numbers:</strong>
+{high_count} HIGH · {medium_count} MEDIUM · {low_count} LOW severity security findings.
+{quick_win_count} quick wins you can close this week.
 </p>
+
+<hr/>
 
 <h3>What you are getting</h3>
 
@@ -53,7 +50,7 @@ effort estimates.<br/>
 
 <p>
 <strong>Modernization Roadmap</strong> — Quick wins (under a day each), medium-effort items
-(1-5 days), and strategic migrations (multi-sprint). Each item names the files to change,
+(1–5 days), and strategic migrations (multi-sprint). Each item names the files to change,
 the risk level, and the outcome. Includes an AI-readiness gap analysis for teams using
 agentic dev tools.<br/>
 <code>modernization-roadmap.md</code>
@@ -83,9 +80,7 @@ board can read — reply to this email. Engagements run
 Questions about anything in the report — reply directly. This is not a no-reply address.
 </p>
 
-<p>
-&mdash; &AElig;gis
-</p>
+<p>&mdash; &AElig;gis</p>
 
 </td></tr>
 </table>

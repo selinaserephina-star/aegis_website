@@ -557,11 +557,47 @@ def parse_codebase_output(text):
 
     return files
 
-def deliver_codebase_report(repo_name, email, zip_bytes, file_manifest=None):
+def _extract_email_signals(files):
+    """Extract personalisation signals from report files for the delivery email."""
+    signals = {"overview": "", "high_count": 0, "medium_count": 0, "low_count": 0, "quick_win_count": 0}
+
+    # Overview paragraph from architecture report
+    arch = files.get("architecture-report.md", "")
+    m = re.search(r"## Overview\s*\n\n?(.*?)(?=\n## |\Z)", arch, re.DOTALL)
+    if m:
+        signals["overview"] = m.group(1).strip()
+
+    # Security severity counts from summary table
+    sec = files.get("security-findings.md", "")
+    for sev in ("high", "medium", "low"):
+        m = re.search(rf"\| {sev.upper()}\s*\|\s*(\d+)", sec, re.IGNORECASE)
+        if m:
+            signals[f"{sev}_count"] = int(m.group(1))
+
+    # Quick win count
+    roadmap = files.get("modernization-roadmap.md", "")
+    m = re.search(r"## Quick Wins.*?\n(.*?)(?=\n## |\Z)", roadmap, re.DOTALL)
+    if m:
+        signals["quick_win_count"] = len(re.findall(r"^\d+\.", m.group(1), re.MULTILINE))
+
+    return signals
+
+
+def deliver_codebase_report(repo_name, email, zip_bytes, file_manifest=None, files=None):
     skill_count = sum(1 for f in (file_manifest or []) if f.startswith("skills/"))
     module_count = sum(1 for f in (file_manifest or []) if f.startswith("knowledge/modules/"))
+    signals = _extract_email_signals(files or {})
     email_template = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "email-delivery.html")).read()
-    email_html = email_template.replace("{repo_name}", repo_name).replace("{module_count}", str(module_count)).replace("{skill_count}", str(skill_count))
+    email_html = (email_template
+        .replace("{repo_name}", repo_name)
+        .replace("{module_count}", str(module_count))
+        .replace("{skill_count}", str(skill_count))
+        .replace("{overview}", signals["overview"])
+        .replace("{high_count}", str(signals["high_count"]))
+        .replace("{medium_count}", str(signals["medium_count"]))
+        .replace("{low_count}", str(signals["low_count"]))
+        .replace("{quick_win_count}", str(signals["quick_win_count"]))
+    )
     send_resend(
         to=email,
         subject=f"Your codebase analysis is ready — {repo_name}",
@@ -599,7 +635,7 @@ def process_codebase_job(github_url, email, job_id=None):
 
         zip_bytes = build_zip(short_name, files)
 
-        deliver_codebase_report(short_name, email, zip_bytes, file_manifest=list(files.keys()))
+        deliver_codebase_report(short_name, email, zip_bytes, file_manifest=list(files.keys()), files=files)
 
         send_resend(
             to=NOTIFY_EMAIL,
