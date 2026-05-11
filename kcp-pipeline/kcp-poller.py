@@ -562,31 +562,35 @@ def deliver_codebase_report(repo_name, email, zip_bytes, file_manifest=None):
     module_count = sum(1 for f in (file_manifest or []) if f.startswith("knowledge/modules/"))
     send_resend(
         to=email,
-        subject=f"Your Aegis Codebase Intelligence Report -- {repo_name}",
-        html=f"""<p>Hi,</p>
-<p>Your Aegis Codebase Intelligence report for <strong>{repo_name}</strong> is attached.</p>
-<h3>Reports</h3>
+        subject=f"Ægis Codebase Intelligence — {repo_name} is ready",
+        html=f"""<p>Your Codebase Intelligence report for <strong>{repo_name}</strong> is ready and attached as a zip.</p>
+
+<p>Here is what you have:</p>
+
+<p><strong>Four engineering reports</strong></p>
 <ul>
-  <li><code>architecture-report.md</code> -- directory map, patterns, data flow, coupling</li>
-  <li><code>security-findings.md</code> -- severity-rated security findings</li>
-  <li><code>technical-debt.md</code> -- quantified debt, large files, test coverage</li>
-  <li><code>modernization-roadmap.md</code> -- quick wins, medium effort, strategic items</li>
+  <li><strong>Architecture</strong> — directory map, service boundaries, data flow, coupling analysis. What the codebase actually does and how it hangs together.</li>
+  <li><strong>Security findings</strong> — severity-rated across 21 signal types. Secrets, auth gaps, injection vectors, AI-specific risks.</li>
+  <li><strong>Technical debt</strong> — quantified inventory with effort estimates. Large files, missing tests, structural problems.</li>
+  <li><strong>Modernisation roadmap</strong> — prioritised: quick wins you can ship this week, medium-effort improvements, and strategic rewrites worth planning.</li>
 </ul>
-<h3>AI Context Files</h3>
+
+<p><strong>AI context package</strong> — makes any AI tool immediately useful in this codebase</p>
 <ul>
-  <li><code>knowledge.yaml</code> -- root KCP manifest</li>
-  <li><code>knowledge/modules/*.yaml</code> -- {module_count} per-module knowledge files</li>
-  <li><code>llms.txt</code> -- navigation manifest for AI tools</li>
-  <li><code>CLAUDE.md</code> -- drop-in context file for Claude Code</li>
-  <li><code>AGENTS.md</code> -- agent instructions for any AI framework</li>
+  <li><code>CLAUDE.md</code> — drop into the repo root. Claude Code reads it automatically and knows the codebase on first prompt.</li>
+  <li><code>AGENTS.md</code> — same for any other agent framework (Cursor, Copilot, etc.).</li>
+  <li><code>llms.txt</code> — navigation manifest. Points AI tools to the right files without wasting context.</li>
+  <li><code>knowledge.yaml</code> + <code>knowledge/modules/</code> ({module_count} module files) — structured KCP manifest for deeper AI navigation.</li>
 </ul>
-<h3>Skills ({skill_count} files)</h3>
-<p>Drop the <code>skills/</code> directory into <code>~/.claude/skills/</code> to give Claude Code
-deep knowledge of this codebase. Covers domain concepts, add-feature patterns,
-testing, config, security, and key subsystems.</p>
-<p>Questions or follow-up engagement? Reply here or write to
-<a href="mailto:selina@exoreaction.com">selina@exoreaction.com</a>.</p>
-<p>-- Aegis</p>""",
+
+<p><strong>Skills library ({skill_count} skill files)</strong></p>
+<p>Drop the <code>skills/</code> directory into <code>~/.claude/skills/</code>. Each skill encodes knowledge that is obvious to a senior developer but invisible to an AI: domain concepts, how to add features, testing conventions, security patterns, architecture decisions. Claude Code picks them up automatically and stops asking questions it should already know the answers to.</p>
+
+<p style="border-left: 3px solid #ccc; padding-left: 12px; color: #555;">
+  <em>Want to go deeper? Ægis Technical Due Diligence wraps this same machine analysis with expert review, investor-grade framing, and a signed PDF — for PE/VC decisions, M&amp;A support, or pre-funding validation. Reply to this email or write to <a href="mailto:selina@exoreaction.com">selina@exoreaction.com</a>.</em>
+</p>
+
+<p>— Ægis</p>""",
         attachments=[{
             "filename": f"{repo_name.replace('/', '-')}-intelligence.zip",
             "content": base64.b64encode(zip_bytes).decode(),
