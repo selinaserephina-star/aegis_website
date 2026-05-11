@@ -14,6 +14,14 @@ from urllib.request import urlopen, Request
 from urllib.parse import urlparse, quote_plus
 from urllib.error import URLError, HTTPError
 from datetime import date
+from pathlib import Path
+
+# Load .env if present (python-dotenv)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent / ".env")
+except ImportError:
+    pass
 
 # ── Config ────────────────────────────────────────────────────────────────────
 CF_ACCOUNT_ID  = os.environ["CF_ACCOUNT_ID"]
