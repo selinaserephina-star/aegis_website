@@ -10,10 +10,11 @@ Env (from ~/.kcp/kcp.env via systemd EnvironmentFile):
 """
 
 import os, json, subprocess, zipfile, io, re, time, logging, base64, shutil, tempfile
+import sys, sqlite3, multiprocessing
 from urllib.request import urlopen, Request
 from urllib.parse import urlparse, quote_plus
 from urllib.error import URLError, HTTPError
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 # Load .env if present (python-dotenv)
@@ -24,16 +25,18 @@ except ImportError:
     pass
 
 # ── Config ────────────────────────────────────────────────────────────────────
-CF_ACCOUNT_ID  = os.environ["CF_ACCOUNT_ID"]
-CF_QUEUE_ID    = os.environ["CF_QUEUE_ID"]
-CF_API_TOKEN   = os.environ["CF_API_TOKEN"]
-RESEND_API_KEY = os.environ["RESEND_API_KEY"]
+CF_ACCOUNT_ID  = os.environ.get("CF_ACCOUNT_ID", "")
+CF_QUEUE_ID    = os.environ.get("CF_QUEUE_ID", "")
+CF_API_TOKEN   = os.environ.get("CF_API_TOKEN", "")
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 FROM_EMAIL     = "aegis@exoreaction.com"
 NOTIFY_EMAIL   = "selina@exoreaction.com"
 DELIVERY_DIR   = os.path.expanduser("~/kcp-deliveries")
 POLL_INTERVAL  = 30     # seconds between empty-queue polls
 VISIBILITY_TIMEOUT = 600  # seconds — time allowed to process one job
 BATCH_SIZE     = 1      # process one job at a time (claude takes 30-60s)
+MAX_CODEBASE_WORKERS = 2  # max concurrent codebase jobs
+PHASE3_MAX_RETRIES   = 2  # retry Phase 3 up to 2 times on failure
 
 CF_BASE = (
     f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}"
@@ -47,6 +50,81 @@ CODEBASE_SKILLS_PROMPT       = os.path.join(PROMPTS_DIR, "codebase-skills.txt")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("kcp-poller")
+
+# ── SQLite job state ─────────────────────────────────────────────────────────
+
+JOBS_DB_PATH = os.path.expanduser("~/kcp-pipeline/jobs.db")
+
+def _init_db():
+    """Create the jobs table if it doesn't exist. Returns a connection."""
+    os.makedirs(os.path.dirname(JOBS_DB_PATH), exist_ok=True)
+    conn = sqlite3.connect(JOBS_DB_PATH, timeout=10)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS jobs (
+            id TEXT PRIMARY KEY,
+            type TEXT,
+            repo TEXT,
+            status TEXT,
+            phase1_output_path TEXT,
+            phase3_output_path TEXT,
+            error TEXT,
+            created_at TEXT,
+            updated_at TEXT
+        )
+    """)
+    conn.commit()
+    return conn
+
+def _update_job(job_id, **kwargs):
+    """Update job fields. Thread-safe via separate connection per call."""
+    conn = sqlite3.connect(JOBS_DB_PATH, timeout=10)
+    try:
+        kwargs["updated_at"] = datetime.utcnow().isoformat()
+        sets = ", ".join(f"{k} = ?" for k in kwargs)
+        vals = list(kwargs.values())
+        conn.execute(f"UPDATE jobs SET {sets} WHERE id = ?", vals + [job_id])
+        conn.commit()
+    finally:
+        conn.close()
+
+def _create_job(job_id, job_type, repo):
+    """Insert a new job record."""
+    conn = sqlite3.connect(JOBS_DB_PATH, timeout=10)
+    try:
+        now = datetime.utcnow().isoformat()
+        conn.execute(
+            "INSERT OR REPLACE INTO jobs (id, type, repo, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
+            (job_id, job_type, repo, "queued", now, now),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+def status():
+    """Print a table of recent jobs (last 20)."""
+    if not os.path.exists(JOBS_DB_PATH):
+        print("No jobs database found.")
+        return
+    conn = sqlite3.connect(JOBS_DB_PATH, timeout=10)
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute(
+        "SELECT id, type, repo, status, created_at, error FROM jobs ORDER BY created_at DESC LIMIT 20"
+    ).fetchall()
+    conn.close()
+
+    if not rows:
+        print("No jobs recorded yet.")
+        return
+
+    # Header
+    print(f"{'ID':<20} {'TYPE':<10} {'REPO':<35} {'STATUS':<16} {'CREATED':<20} {'ERROR'}")
+    print("-" * 130)
+    for r in rows:
+        err = (r["error"] or "")[:50]
+        repo = (r["repo"] or "")[:34]
+        jid = (r["id"] or "")[:19]
+        created = (r["created_at"] or "")[:19]
+        print(f"{jid:<20} {r['type'] or '':<10} {repo:<35} {r['status'] or '':<16} {created:<20} {err}")
 
 # ── Cloudflare Queue helpers ──────────────────────────────────────────────────
 
@@ -308,31 +386,31 @@ def send_resend(to, subject, html, attachments=None):
 def notify_started(domain, email):
     send_resend(
         to=NOTIFY_EMAIL,
-        subject=f"[Ægis] 🔄 Pipeline started — {domain}",
-        html=f"<p>Neuron picked up the job for <strong>{domain}</strong> → <strong>{email}</strong>. Generating now…</p>",
+        subject=f"[Aegis] Pipeline started -- {domain}",
+        html=f"<p>Neuron picked up the job for <strong>{domain}</strong> -> <strong>{email}</strong>. Generating now...</p>",
     )
 
 def deliver_to_customer(domain, email, zip_bytes):
     send_resend(
         to=email,
-        subject=f"Your Ægis AI-Readiness Package — {domain}",
+        subject=f"Your Aegis AI-Readiness Package -- {domain}",
         html=f"""<p>Hi,</p>
-<p>Your Ægis AI-Readiness Package for <strong>{domain}</strong> is attached.</p>
+<p>Your Aegis AI-Readiness Package for <strong>{domain}</strong> is attached.</p>
 <ul>
-  <li><code>knowledge.yaml</code> — root manifest with identity &amp; imports</li>
-  <li><code>knowledge/products.yaml</code> — products &amp; services</li>
-  <li><code>knowledge/people.yaml</code> — key people &amp; leadership</li>
-  <li><code>knowledge/technology.yaml</code> — tech stack, integrations, AI context</li>
-  <li><code>knowledge/customers.yaml</code> — target customer segments</li>
-  <li><code>knowledge/compliance.yaml</code> — certifications &amp; regulatory context</li>
-  <li><code>llms.txt</code> — plain-text summary for AI tools</li>
-  <li><code>CLAUDE.md</code> — context file for Claude / Cursor</li>
-  <li><code>AGENTS.md</code> — context file for AI agents</li>
-  <li><code>SETUP.md</code> — deployment instructions</li>
+  <li><code>knowledge.yaml</code> -- root manifest with identity &amp; imports</li>
+  <li><code>knowledge/products.yaml</code> -- products &amp; services</li>
+  <li><code>knowledge/people.yaml</code> -- key people &amp; leadership</li>
+  <li><code>knowledge/technology.yaml</code> -- tech stack, integrations, AI context</li>
+  <li><code>knowledge/customers.yaml</code> -- target customer segments</li>
+  <li><code>knowledge/compliance.yaml</code> -- certifications &amp; regulatory context</li>
+  <li><code>llms.txt</code> -- plain-text summary for AI tools</li>
+  <li><code>CLAUDE.md</code> -- context file for Claude / Cursor</li>
+  <li><code>AGENTS.md</code> -- context file for AI agents</li>
+  <li><code>SETUP.md</code> -- deployment instructions</li>
 </ul>
 <p>See <code>SETUP.md</code> for how to deploy these files. Questions? Reply here or
 write to <a href="mailto:selina@exoreaction.com">selina@exoreaction.com</a>.</p>
-<p>— Ægis</p>""",
+<p>-- Aegis</p>""",
         attachments=[{
             "filename": f"{domain}-kcp-package.zip",
             "content": base64.b64encode(zip_bytes).decode(),
@@ -342,7 +420,7 @@ write to <a href="mailto:selina@exoreaction.com">selina@exoreaction.com</a>.</p>
 def notify_completed(domain, email):
     send_resend(
         to=NOTIFY_EMAIL,
-        subject=f"[Ægis] ✅ Delivered — {domain}",
+        subject=f"[Aegis] Delivered -- {domain}",
         html=f"<p>Package delivered to <strong>{email}</strong> for <strong>{domain}</strong>.</p>",
     )
 
@@ -393,19 +471,63 @@ def _run_claude(prompt_text, repo_path, repo_name, label, timeout=900):
         raise RuntimeError(f"claude CLI failed [{label}] (rc={result.returncode}): {result.stderr[:400]}")
     return result.stdout
 
-def generate_codebase_intelligence(repo_path, repo_name):
+def generate_codebase_intelligence(repo_path, repo_name, job_id=None):
+    """Run Phase 1 (architecture) and Phase 3 (skills) with checkpoint and retry."""
     today = str(date.today())
+    short_name = repo_name.replace("/", "-")
 
     def render(template_path):
         return (open(template_path).read()
             .replace("{repo}", repo_name)
             .replace("{date}", today))
 
+    # ── Phase 1+2: architecture + modules ──
+    if job_id:
+        _update_job(job_id, status="phase1_running")
+
     log.info(f"[{repo_name}] Phase 1+2: architecture + modules")
     arch_output = _run_claude(render(CODEBASE_ARCHITECTURE_PROMPT), repo_path, repo_name, "architecture", timeout=900)
 
+    # Checkpoint: Phase 1 output is already saved by _run_claude to the debug path.
+    # Record the path in job state before proceeding to Phase 3.
+    phase1_path = os.path.expanduser(f"~/kcp-deliveries/{short_name}-raw-architecture.txt")
+    if job_id:
+        _update_job(job_id, status="phase1_done", phase1_output_path=phase1_path)
+    log.info(f"[{repo_name}] Phase 1 checkpointed to {phase1_path}")
+
+    # ── Phase 3: skills (with retry) ──
+    if job_id:
+        _update_job(job_id, status="phase3_running")
+
     log.info(f"[{repo_name}] Phase 3: skills")
-    skills_output = _run_claude(render(CODEBASE_SKILLS_PROMPT), repo_path, repo_name, "skills", timeout=900)
+    skills_output = None
+    last_error = None
+    for attempt in range(1 + PHASE3_MAX_RETRIES):
+        try:
+            skills_output = _run_claude(render(CODEBASE_SKILLS_PROMPT), repo_path, repo_name, "skills", timeout=900)
+            if not skills_output or not skills_output.strip():
+                raise RuntimeError("Phase 3 returned empty output")
+            # Quick sanity check: must contain at least one <skill> tag
+            if "<skill " not in skills_output and "<skill>" not in skills_output:
+                raise RuntimeError("Phase 3 output missing <skill> tags — likely unparseable")
+            last_error = None
+            break
+        except Exception as e:
+            last_error = e
+            if attempt < PHASE3_MAX_RETRIES:
+                log.warning(f"[{repo_name}] Phase 3 attempt {attempt+1} failed: {e} — retrying...")
+                time.sleep(5)
+            else:
+                log.error(f"[{repo_name}] Phase 3 failed after {1 + PHASE3_MAX_RETRIES} attempts: {e}")
+
+    if last_error:
+        if job_id:
+            _update_job(job_id, status="failed", error=str(last_error)[:500])
+        raise RuntimeError(f"Phase 3 failed after retries: {last_error}")
+
+    phase3_path = os.path.expanduser(f"~/kcp-deliveries/{short_name}-raw-skills.txt")
+    if job_id:
+        _update_job(job_id, phase3_output_path=phase3_path)
 
     return arch_output + "\n" + skills_output
 
@@ -438,23 +560,23 @@ def deliver_codebase_report(repo_name, email, zip_bytes, file_manifest=None):
     module_count = sum(1 for f in (file_manifest or []) if f.startswith("knowledge/modules/"))
     send_resend(
         to=email,
-        subject=f"Your Ægis Codebase Intelligence Report — {repo_name}",
+        subject=f"Your Aegis Codebase Intelligence Report -- {repo_name}",
         html=f"""<p>Hi,</p>
-<p>Your Ægis Codebase Intelligence report for <strong>{repo_name}</strong> is attached.</p>
+<p>Your Aegis Codebase Intelligence report for <strong>{repo_name}</strong> is attached.</p>
 <h3>Reports</h3>
 <ul>
-  <li><code>architecture-report.md</code> — directory map, patterns, data flow, coupling</li>
-  <li><code>security-findings.md</code> — severity-rated security findings</li>
-  <li><code>technical-debt.md</code> — quantified debt, large files, test coverage</li>
-  <li><code>modernization-roadmap.md</code> — quick wins, medium effort, strategic items</li>
+  <li><code>architecture-report.md</code> -- directory map, patterns, data flow, coupling</li>
+  <li><code>security-findings.md</code> -- severity-rated security findings</li>
+  <li><code>technical-debt.md</code> -- quantified debt, large files, test coverage</li>
+  <li><code>modernization-roadmap.md</code> -- quick wins, medium effort, strategic items</li>
 </ul>
 <h3>AI Context Files</h3>
 <ul>
-  <li><code>knowledge.yaml</code> — root KCP manifest</li>
-  <li><code>knowledge/modules/*.yaml</code> — {module_count} per-module knowledge files</li>
-  <li><code>llms.txt</code> — navigation manifest for AI tools</li>
-  <li><code>CLAUDE.md</code> — drop-in context file for Claude Code</li>
-  <li><code>AGENTS.md</code> — agent instructions for any AI framework</li>
+  <li><code>knowledge.yaml</code> -- root KCP manifest</li>
+  <li><code>knowledge/modules/*.yaml</code> -- {module_count} per-module knowledge files</li>
+  <li><code>llms.txt</code> -- navigation manifest for AI tools</li>
+  <li><code>CLAUDE.md</code> -- drop-in context file for Claude Code</li>
+  <li><code>AGENTS.md</code> -- agent instructions for any AI framework</li>
 </ul>
 <h3>Skills ({skill_count} files)</h3>
 <p>Drop the <code>skills/</code> directory into <code>~/.claude/skills/</code> to give Claude Code
@@ -462,22 +584,23 @@ deep knowledge of this codebase. Covers domain concepts, add-feature patterns,
 testing, config, security, and key subsystems.</p>
 <p>Questions or follow-up engagement? Reply here or write to
 <a href="mailto:selina@exoreaction.com">selina@exoreaction.com</a>.</p>
-<p>— Ægis</p>""",
+<p>-- Aegis</p>""",
         attachments=[{
             "filename": f"{repo_name.replace('/', '-')}-intelligence.zip",
             "content": base64.b64encode(zip_bytes).decode(),
         }],
     )
 
-def process_codebase_job(github_url, email):
+def process_codebase_job(github_url, email, job_id=None):
+    """Process a codebase intelligence job. Can run in a subprocess."""
     repo_name = github_url.rstrip("/").split("github.com/")[-1]  # e.g. "directus/directus"
     short_name = repo_name.replace("/", "-")
     log.info(f"[{short_name}] starting codebase intelligence pipeline")
 
     send_resend(
         to=NOTIFY_EMAIL,
-        subject=f"[Ægis] 🔄 Codebase Intelligence started — {short_name}",
-        html=f"<p>Neuron picked up codebase job for <strong>{repo_name}</strong> → <strong>{email}</strong>. Cloning &amp; analysing…</p>",
+        subject=f"[Aegis] Codebase Intelligence started -- {short_name}",
+        html=f"<p>Neuron picked up codebase job for <strong>{repo_name}</strong> -> <strong>{email}</strong>. Cloning &amp; analysing...</p>",
     )
 
     tmp = tempfile.mkdtemp(prefix="aegis-codebase-")
@@ -486,7 +609,7 @@ def process_codebase_job(github_url, email):
         clone_repo(github_url, repo_path)
 
         log.info(f"[{short_name}] running claude analysis")
-        raw_output = generate_codebase_intelligence(repo_path, repo_name)
+        raw_output = generate_codebase_intelligence(repo_path, repo_name, job_id=job_id)
 
         log.info(f"[{short_name}] parsing output")
         files = parse_codebase_output(raw_output)
@@ -499,19 +622,45 @@ def process_codebase_job(github_url, email):
 
         send_resend(
             to=NOTIFY_EMAIL,
-            subject=f"[Ægis] ✅ Codebase Intelligence delivered — {short_name}",
+            subject=f"[Aegis] Codebase Intelligence delivered -- {short_name}",
             html=f"<p>Report delivered to <strong>{email}</strong> for <strong>{repo_name}</strong>.</p>",
         )
 
-        log.info(f"[{short_name}] ✅ complete")
+        if job_id:
+            _update_job(job_id, status="complete")
+
+        log.info(f"[{short_name}] complete")
+    except Exception as e:
+        if job_id:
+            _update_job(job_id, status="failed", error=str(e)[:500])
+        raise
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
+# ── Background worker wrapper ────────────────────────────────────────────────
+
+def _codebase_worker(github_url, email, job_id, lease_id):
+    """Entry point for multiprocessing.Process — runs codebase job, acks/nacks queue."""
+    try:
+        process_codebase_job(github_url, email, job_id=job_id)
+        ack_message(lease_id)
+        log.info(f"[worker] acked lease for job {job_id}")
+    except Exception as e:
+        log.error(f"[worker] codebase job {job_id} failed: {e}", exc_info=True)
+        try:
+            nack_message(lease_id)
+            log.info(f"[worker] nacked lease for job {job_id}")
+        except Exception as ne:
+            log.warning(f"[worker] nack failed for {job_id}: {ne}")
+
 # ── Pipeline ──────────────────────────────────────────────────────────────────
 
-def process_job(url, email):
+def process_job(url, email, job_id=None):
     domain = urlparse(url).hostname or url.replace("https://", "").split("/")[0]
     log.info(f"[{domain}] starting pipeline")
+
+    if job_id:
+        _update_job(job_id, status="phase1_running")
 
     notify_started(domain, email)
 
@@ -531,15 +680,41 @@ def process_job(url, email):
     deliver_to_customer(domain, email, zip_bytes)
     notify_completed(domain, email)
 
-    log.info(f"[{domain}] ✅ complete")
+    if job_id:
+        _update_job(job_id, status="complete")
+
+    log.info(f"[{domain}] complete")
 
 # ── Poll loop ─────────────────────────────────────────────────────────────────
 
+def _reap_workers(workers):
+    """Remove finished processes from the workers list."""
+    still_running = []
+    for w in workers:
+        if w.is_alive():
+            still_running.append(w)
+        else:
+            w.join(timeout=1)
+            log.info(f"[reap] worker pid={w.pid} finished (exit={w.exitcode})")
+    return still_running
+
 def main():
+    # Require env vars for polling mode
+    for var in ("CF_ACCOUNT_ID", "CF_QUEUE_ID", "CF_API_TOKEN", "RESEND_API_KEY"):
+        if not os.environ.get(var):
+            log.error(f"Missing required env var: {var}")
+            sys.exit(1)
+
     os.makedirs(DELIVERY_DIR, exist_ok=True)
-    log.info(f"kcp-poller started — queue {CF_QUEUE_ID} — polling every {POLL_INTERVAL}s")
+    _init_db()
+    log.info(f"kcp-poller started -- queue {CF_QUEUE_ID} -- polling every {POLL_INTERVAL}s")
+
+    codebase_workers = []  # list of multiprocessing.Process
 
     while True:
+        # Reap finished workers
+        codebase_workers = _reap_workers(codebase_workers)
+
         try:
             messages = pull_messages()
         except Exception as e:
@@ -549,27 +724,61 @@ def main():
 
         for msg in messages:
             lease_id = msg["lease_id"]
+            job_id = None
             try:
                 raw_body = msg["body"]
                 body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
                 job_type = body.get("type", "website")
                 email    = body["email"]
+                job_id   = body.get("job_id", f"{job_type}-{int(time.time())}")
 
                 if job_type == "codebase":
                     github_url = body["github_url"]
-                    log.info(f"Claimed codebase job: {github_url} → {email} (lease {str(lease_id)[:12]}…)")
-                    process_codebase_job(github_url, email)
+                    log.info(f"Claimed codebase job: {github_url} -> {email} (lease {str(lease_id)[:12]}...)")
+
+                    _create_job(job_id, "codebase", github_url)
+
+                    # Check capacity
+                    codebase_workers = _reap_workers(codebase_workers)
+                    if len(codebase_workers) >= MAX_CODEBASE_WORKERS:
+                        log.warning(f"At capacity ({MAX_CODEBASE_WORKERS} codebase workers) — nacking job {job_id}")
+                        _update_job(job_id, status="queued", error="at capacity, returned to queue")
+                        nack_message(lease_id)
+                        continue
+
+                    # Launch in background subprocess
+                    p = multiprocessing.Process(
+                        target=_codebase_worker,
+                        args=(github_url, email, job_id, lease_id),
+                        name=f"codebase-{job_id}",
+                        daemon=True,
+                    )
+                    p.start()
+                    codebase_workers.append(p)
+                    log.info(f"Launched codebase worker pid={p.pid} for {job_id}")
+                    # Do NOT ack here — the worker will ack/nack when done
+
                 else:
                     url = body["url"]
-                    log.info(f"Claimed website job: {url} → {email} (lease {str(lease_id)[:12]}…)")
-                    process_job(url, email)
+                    log.info(f"Claimed website job: {url} -> {email} (lease {str(lease_id)[:12]}...)")
 
-                ack_message(lease_id)
+                    _create_job(job_id, "website", url)
+
+                    # Website jobs run inline (fast, ~2 min)
+                    process_job(url, email, job_id=job_id)
+                    ack_message(lease_id)
+
             except Exception as e:
                 log.error(f"Job failed: {e}", exc_info=True)
                 try:
+                    # Try to update job status if we have a job_id
+                    if job_id:
+                        _update_job(job_id, status="failed", error=str(e)[:500])
+                except Exception:
+                    pass
+                try:
                     nack_message(lease_id)
-                    log.info(f"Nacked — will retry after visibility timeout")
+                    log.info(f"Nacked -- will retry after visibility timeout")
                 except Exception as ne:
                     log.warning(f"Nack also failed: {ne}")
 
@@ -577,4 +786,8 @@ def main():
             time.sleep(POLL_INTERVAL)
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "status":
+        # Status command doesn't need queue env vars — just reads the DB
+        status()
+    else:
+        main()
