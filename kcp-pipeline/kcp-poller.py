@@ -332,6 +332,7 @@ def generate_kcp(url, domain, website_text):
         .replace("{date}", str(date.today()))
     )
     env = os.environ.copy()
+    env.pop('ANTHROPIC_API_KEY', None)  # use subscription credentials, not API key
     result = subprocess.run(
         ["claude", "-p", prompt, "--output-format", "text", "--model", "claude-sonnet-4-6"],
         capture_output=True, text=True, timeout=300, env=env,
@@ -452,6 +453,7 @@ def clone_repo(github_url, dest_dir):
 def _run_claude(prompt_text, repo_path, repo_name, label, timeout=900):
     """Run a single claude CLI call and return stdout. Saves raw output for diagnostics."""
     env = os.environ.copy()
+    env.pop('ANTHROPIC_API_KEY', None)  # use subscription credentials, not API key
     result = subprocess.run(
         [
             "claude", "-p", prompt_text,
