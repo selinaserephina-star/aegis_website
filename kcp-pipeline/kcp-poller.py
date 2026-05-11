@@ -348,13 +348,14 @@ def notify_completed(domain, email):
 # ── Codebase Intelligence ─────────────────────────────────────────────────────
 
 CODEBASE_TAG_MAP = {
-    "architecture_report":  "architecture-report.md",
-    "security_findings":    "security-findings.md",
-    "technical_debt":       "technical-debt.md",
-    "modernization_roadmap":"modernization-roadmap.md",
-    "knowledge_yaml":       "knowledge.yaml",
-    "claude_md":            "CLAUDE.md",
-    "agents_md":            "AGENTS.md",
+    "architecture_report":   "architecture-report.md",
+    "security_findings":     "security-findings.md",
+    "technical_debt":        "technical-debt.md",
+    "modernization_roadmap": "modernization-roadmap.md",
+    "knowledge_yaml":        "knowledge.yaml",
+    "llms_txt":              "llms.txt",
+    "claude_md":             "CLAUDE.md",
+    "agents_md":             "AGENTS.md",
 }
 
 def clone_repo(github_url, dest_dir):
@@ -384,7 +385,7 @@ def generate_codebase_intelligence(repo_path, repo_name):
             "--allowedTools", "Read,Glob,Grep,Bash",
             "--dangerously-skip-permissions",
         ],
-        capture_output=True, text=True, timeout=600, env=env,
+        capture_output=True, text=True, timeout=900, env=env,
         cwd=repo_path,
     )
     if result.returncode != 0:
@@ -393,28 +394,55 @@ def generate_codebase_intelligence(repo_path, repo_name):
 
 def parse_codebase_output(text):
     files = {}
+
+    # Fixed tags
     for tag, filename in CODEBASE_TAG_MAP.items():
         m = re.search(rf"<{tag}>(.*?)</{tag}>", text, re.DOTALL)
         if not m:
             raise ValueError(f"Missing <{tag}> block in claude output")
         files[filename] = m.group(1).strip()
+
+    # Per-module knowledge: <module_knowledge id="module-slug">...</module_knowledge>
+    for m in re.finditer(r'<module_knowledge\s+id="([^"]+)">(.*?)</module_knowledge>', text, re.DOTALL):
+        slug = m.group(1).strip()
+        content = m.group(2).strip()
+        files[f"knowledge/modules/{slug}.yaml"] = content
+
+    # Skills: <skill id="skill-slug">...</skill>
+    for m in re.finditer(r'<skill\s+id="([^"]+)">(.*?)</skill>', text, re.DOTALL):
+        slug = m.group(1).strip()
+        content = m.group(2).strip()
+        files[f"skills/{slug}.yaml"] = content
+
     return files
 
-def deliver_codebase_report(repo_name, email, zip_bytes):
+def deliver_codebase_report(repo_name, email, zip_bytes, file_manifest=None):
+    skill_count = sum(1 for f in (file_manifest or []) if f.startswith("skills/"))
+    module_count = sum(1 for f in (file_manifest or []) if f.startswith("knowledge/modules/"))
     send_resend(
         to=email,
         subject=f"Your Ægis Codebase Intelligence Report — {repo_name}",
         html=f"""<p>Hi,</p>
 <p>Your Ægis Codebase Intelligence report for <strong>{repo_name}</strong> is attached.</p>
+<h3>Reports</h3>
 <ul>
   <li><code>architecture-report.md</code> — directory map, patterns, data flow, coupling</li>
   <li><code>security-findings.md</code> — severity-rated security findings</li>
   <li><code>technical-debt.md</code> — quantified debt, large files, test coverage</li>
   <li><code>modernization-roadmap.md</code> — quick wins, medium effort, strategic items</li>
-  <li><code>knowledge.yaml</code> — KCP manifest for AI tools</li>
+</ul>
+<h3>AI Context Files</h3>
+<ul>
+  <li><code>knowledge.yaml</code> — root KCP manifest</li>
+  <li><code>knowledge/modules/*.yaml</code> — {module_count} per-module knowledge files</li>
+  <li><code>llms.txt</code> — navigation manifest for AI tools</li>
   <li><code>CLAUDE.md</code> — drop-in context file for Claude Code</li>
   <li><code>AGENTS.md</code> — agent instructions for any AI framework</li>
 </ul>
+<h3>Skills ({skill_count} files)</h3>
+<p>Drop the <code>skills/</code> directory into <code>~/.claude/skills/</code> to give Claude Code
+deep knowledge of this codebase. Covers domain concepts, add-feature patterns,
+testing, config, security, and key subsystems.</p>
 <p>Questions or follow-up engagement? Reply here or write to
 <a href="mailto:selina@exoreaction.com">selina@exoreaction.com</a>.</p>
 <p>— Ægis</p>""",
@@ -450,7 +478,7 @@ def process_codebase_job(github_url, email):
 
         zip_bytes = build_zip(short_name, files)
 
-        deliver_codebase_report(short_name, email, zip_bytes)
+        deliver_codebase_report(short_name, email, zip_bytes, file_manifest=list(files.keys()))
 
         send_resend(
             to=NOTIFY_EMAIL,
