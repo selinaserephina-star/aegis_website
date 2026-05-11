@@ -9,7 +9,7 @@ Env (from ~/.kcp/kcp.env via systemd EnvironmentFile):
   RESEND_API_KEY, ANTHROPIC_API_KEY
 """
 
-import os, json, subprocess, zipfile, io, re, time, logging, base64
+import os, json, subprocess, zipfile, io, re, time, logging, base64, shutil, tempfile
 from urllib.request import urlopen, Request
 from urllib.parse import urlparse, quote_plus
 from urllib.error import URLError, HTTPError
@@ -32,7 +32,9 @@ CF_BASE = (
     f"/queues/{CF_QUEUE_ID}/messages"
 )
 
-PROMPT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "prompts", "kcp-generate.txt")
+PROMPTS_DIR     = os.path.join(os.path.dirname(os.path.abspath(__file__)), "prompts")
+PROMPT_PATH     = os.path.join(PROMPTS_DIR, "kcp-generate.txt")
+CODEBASE_PROMPT = os.path.join(PROMPTS_DIR, "codebase-intelligence.txt")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("kcp-poller")
@@ -335,6 +337,122 @@ def notify_completed(domain, email):
         html=f"<p>Package delivered to <strong>{email}</strong> for <strong>{domain}</strong>.</p>",
     )
 
+# ── Codebase Intelligence ─────────────────────────────────────────────────────
+
+CODEBASE_TAG_MAP = {
+    "architecture_report":  "architecture-report.md",
+    "security_findings":    "security-findings.md",
+    "technical_debt":       "technical-debt.md",
+    "modernization_roadmap":"modernization-roadmap.md",
+    "knowledge_yaml":       "knowledge.yaml",
+    "claude_md":            "CLAUDE.md",
+    "agents_md":            "AGENTS.md",
+}
+
+def clone_repo(github_url, dest_dir):
+    """Shallow clone a public GitHub repo into dest_dir. Returns path."""
+    log.info(f"Cloning {github_url}")
+    result = subprocess.run(
+        ["git", "clone", "--depth=1", github_url, dest_dir],
+        capture_output=True, text=True, timeout=120,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"git clone failed: {result.stderr[:300]}")
+    log.info(f"Cloned to {dest_dir}")
+    return dest_dir
+
+def generate_codebase_intelligence(repo_path, repo_name):
+    template = open(CODEBASE_PROMPT).read()
+    prompt = (template
+        .replace("{repo}", repo_name)
+        .replace("{date}", str(date.today()))
+    )
+    env = os.environ.copy()
+    result = subprocess.run(
+        [
+            "claude", "-p", prompt,
+            "--output-format", "text",
+            "--model", "claude-sonnet-4-6",
+            "--allowedTools", "Read,Glob,Grep,Bash",
+            "--cwd", repo_path,
+        ],
+        capture_output=True, text=True, timeout=600, env=env,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"claude CLI failed (rc={result.returncode}): {result.stderr[:400]}")
+    return result.stdout
+
+def parse_codebase_output(text):
+    files = {}
+    for tag, filename in CODEBASE_TAG_MAP.items():
+        m = re.search(rf"<{tag}>(.*?)</{tag}>", text, re.DOTALL)
+        if not m:
+            raise ValueError(f"Missing <{tag}> block in claude output")
+        files[filename] = m.group(1).strip()
+    return files
+
+def deliver_codebase_report(repo_name, email, zip_bytes):
+    send_resend(
+        to=email,
+        subject=f"Your Ægis Codebase Intelligence Report — {repo_name}",
+        html=f"""<p>Hi,</p>
+<p>Your Ægis Codebase Intelligence report for <strong>{repo_name}</strong> is attached.</p>
+<ul>
+  <li><code>architecture-report.md</code> — directory map, patterns, data flow, coupling</li>
+  <li><code>security-findings.md</code> — severity-rated security findings</li>
+  <li><code>technical-debt.md</code> — quantified debt, large files, test coverage</li>
+  <li><code>modernization-roadmap.md</code> — quick wins, medium effort, strategic items</li>
+  <li><code>knowledge.yaml</code> — KCP manifest for AI tools</li>
+  <li><code>CLAUDE.md</code> — drop-in context file for Claude Code</li>
+  <li><code>AGENTS.md</code> — agent instructions for any AI framework</li>
+</ul>
+<p>Questions or follow-up engagement? Reply here or write to
+<a href="mailto:selina@exoreaction.com">selina@exoreaction.com</a>.</p>
+<p>— Ægis</p>""",
+        attachments=[{
+            "filename": f"{repo_name.replace('/', '-')}-intelligence.zip",
+            "content": base64.b64encode(zip_bytes).decode(),
+        }],
+    )
+
+def process_codebase_job(github_url, email):
+    repo_name = github_url.rstrip("/").split("github.com/")[-1]  # e.g. "directus/directus"
+    short_name = repo_name.replace("/", "-")
+    log.info(f"[{short_name}] starting codebase intelligence pipeline")
+
+    send_resend(
+        to=NOTIFY_EMAIL,
+        subject=f"[Ægis] 🔄 Codebase Intelligence started — {short_name}",
+        html=f"<p>Neuron picked up codebase job for <strong>{repo_name}</strong> → <strong>{email}</strong>. Cloning &amp; analysing…</p>",
+    )
+
+    tmp = tempfile.mkdtemp(prefix="aegis-codebase-")
+    try:
+        repo_path = os.path.join(tmp, short_name)
+        clone_repo(github_url, repo_path)
+
+        log.info(f"[{short_name}] running claude analysis")
+        raw_output = generate_codebase_intelligence(repo_path, repo_name)
+
+        log.info(f"[{short_name}] parsing output")
+        files = parse_codebase_output(raw_output)
+
+        archive_to_disk(short_name, files)
+
+        zip_bytes = build_zip(short_name, files)
+
+        deliver_codebase_report(short_name, email, zip_bytes)
+
+        send_resend(
+            to=NOTIFY_EMAIL,
+            subject=f"[Ægis] ✅ Codebase Intelligence delivered — {short_name}",
+            html=f"<p>Report delivered to <strong>{email}</strong> for <strong>{repo_name}</strong>.</p>",
+        )
+
+        log.info(f"[{short_name}] ✅ complete")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
 # ── Pipeline ──────────────────────────────────────────────────────────────────
 
 def process_job(url, email):
@@ -380,10 +498,18 @@ def main():
             try:
                 raw_body = msg["body"]
                 body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
-                url   = body["url"]
-                email = body["email"]
-                log.info(f"Claimed job: {url} → {email} (lease {str(lease_id)[:12]}…)")
-                process_job(url, email)
+                job_type = body.get("type", "website")
+                email    = body["email"]
+
+                if job_type == "codebase":
+                    github_url = body["github_url"]
+                    log.info(f"Claimed codebase job: {github_url} → {email} (lease {str(lease_id)[:12]}…)")
+                    process_codebase_job(github_url, email)
+                else:
+                    url = body["url"]
+                    log.info(f"Claimed website job: {url} → {email} (lease {str(lease_id)[:12]}…)")
+                    process_job(url, email)
+
                 ack_message(lease_id)
             except Exception as e:
                 log.error(f"Job failed: {e}", exc_info=True)
