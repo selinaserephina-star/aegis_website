@@ -83,8 +83,8 @@ function Header() {
         <nav className="topbar-nav">
           <a href="#demo">demo</a>
           <a href="#offerings">offerings</a>
-          <a href="#workshops">workshops</a>
-          <a href="#advisory">advisory</a>
+          <a href="workshops.html">workshops</a>
+          <a href="advisory.html">advisory</a>
           <a href="#hands-on">hands-on</a>
           <a href="#tooling">tooling</a>
           <a href="#who">who</a>
@@ -103,8 +103,8 @@ function Header() {
         <div className="mobile-nav" onClick={close}>
           <a href="#demo" onClick={close}>demo</a>
           <a href="#offerings" onClick={close}>offerings</a>
-          <a href="#workshops" onClick={close}>workshops</a>
-          <a href="#advisory" onClick={close}>advisory</a>
+          <a href="workshops.html" onClick={close}>workshops</a>
+          <a href="advisory.html" onClick={close}>advisory</a>
           <a href="#hands-on" onClick={close}>hands-on</a>
           <a href="#tooling" onClick={close}>tooling</a>
           <a href="#who" onClick={close}>who</a>
@@ -332,6 +332,9 @@ function Workshops() {
           </MailCTAGroup>
         </div>
       </div>
+      <p className="footnote" style={{marginTop:"32px"}}>
+        <a href="workshops.html" className="link-amber">full workshop page →</a>
+      </p>
     </section>
   );
 }
@@ -410,6 +413,9 @@ function Advisory() {
       <div className="callout">
         Available as a one-off engagement or as a monthly retainer for continuous access.
       </div>
+      <p className="footnote" style={{marginTop:"32px"}}>
+        <a href="advisory.html" className="link-amber">full advisory page →</a>
+      </p>
     </section>
   );
 }
@@ -768,9 +774,74 @@ function KcpPackage() {
               <span>$</span> pay €5 · get your package <span className="arrow">→</span>
             </button>
           </form>
+          <p style={{marginTop:"16px",fontSize:"12px",color:"var(--fg-mute)"}}>
+            <a href="ai-readiness-package.html" className="link-amber">full product page →</a>
+          </p>
         </div>
       </div>
     </div>
+  );
+}
+
+// ---------- writing ----------
+
+function Writing() {
+  const posts = [
+    {
+      date: "2026-05-08",
+      slug: "trustfall-and-why-kcp-is-passive-data",
+      title: "TrustFall and why KCP is passive data",
+      tag: "security · kcp",
+    },
+    {
+      date: "2026-05-07",
+      slug: "making-aegis-machine-readable-in-one-session",
+      title: "Making Ægis machine-readable in one session",
+      tag: "kcp · build-in-public",
+    },
+    {
+      date: "2026-04-16",
+      slug: "seven-out-of-eight-models-lied-about-finishing",
+      title: "Seven out of eight models lied about finishing",
+      tag: "quality · verification",
+    },
+    {
+      date: "2026-04-06",
+      slug: "agent-memory-rots-heres-how-we-stopped-it",
+      title: "Agent memory rots. Here's how we stopped it.",
+      tag: "synthesis · exocortex",
+    },
+    {
+      date: "2026-03-08",
+      slug: "the-front-door-and-the-filing-cabinet-a2a-agent-cards-meet-kcp",
+      title: "The front door and the filing cabinet",
+      tag: "kcp · a2a · protocol",
+    },
+  ];
+  return (
+    <section className="section" id="writing">
+      <Rule label="// writing" />
+      <h2 className="section-title small">From the field.</h2>
+      <div className="writing-list">
+        {posts.map((p) => {
+          const [y, m, d] = p.date.split("-");
+          const url = `https://wiki.totto.org/blog/${y}/${m}/${d}/${p.slug}/`;
+          return (
+            <a key={p.slug} className="writing-row" href={url} target="_blank" rel="noopener">
+              <span className="writing-date dim">{p.date}</span>
+              <span className="writing-title">{p.title}</span>
+              <span className="writing-tag dim">{p.tag}</span>
+              <span className="writing-arrow dim">→</span>
+            </a>
+          );
+        })}
+      </div>
+      <p className="footnote" style={{marginTop:"24px"}}>
+        <a href="https://wiki.totto.org/blog/" target="_blank" rel="noopener" className="link-amber">
+          all writing → wiki.totto.org
+        </a>
+      </p>
+    </section>
   );
 }
 
@@ -948,6 +1019,7 @@ function App() {
         <HandsOn />
         <Tooling />
         <Mimir />
+        <Writing />
         <Who />
         <Rollout />
         <Engage />

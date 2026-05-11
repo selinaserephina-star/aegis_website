@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI-Maturity Review · Ægis Advisory</title>
+  <meta name="description" content="A structured assessment of your codebase, team, and organisation for agentic AI adoption. 6–8 technical reports. Architecture guards. Prioritised roadmap." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ægis" />
+  <meta property="og:title" content="AI-Maturity Review · Ægis Advisory" />
+  <meta property="og:description" content="Make your codebase and team agent-ready. 6–8 deliverables. One-off or monthly retainer." />
+  <meta property="og:url" content="https://xn--gis-xla.no/advisory.html" />
+  <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* ---- hero ---- */
+    .adv-hero {
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .adv-eyebrow { font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px; }
+    .adv-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(36px, 6.5vw, 96px);
+      line-height: 0.97; letter-spacing: -0.04em; margin: 0;
+    }
+    .adv-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .adv-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.2vw, 26px); line-height: 1.45;
+      color: var(--fg-mute); max-width: 52ch; margin: 32px 0 0;
+    }
+
+    /* ---- assess + deliverables ---- */
+    .adv-body {
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+    }
+    @media (max-width: 720px) { .adv-body { grid-template-columns: 1fr; gap: 40px; } }
+
+    .adv-label { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
+    .adv-check { list-style: none; padding: 0; margin: 0 0 32px; }
+    .adv-check li {
+      font-size: 14px; line-height: 1.7; padding: 7px 0;
+      border-bottom: 1px solid var(--line-2); display: flex; align-items: baseline; gap: 10px;
+    }
+    .adv-check li::before { content: "→"; color: var(--accent-hex); flex-shrink: 0; }
+
+    /* ---- deliverables table ---- */
+    .adv-deliverables {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .adv-table {
+      width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 13px;
+    }
+    .adv-table th {
+      text-align: left; font-size: 11px; letter-spacing: 0.1em;
+      color: var(--fg-mute); padding: 10px 16px; border-bottom: 1px solid var(--line);
+      font-weight: 400;
+    }
+    .adv-table td {
+      padding: 12px 16px; border-bottom: 1px solid var(--line-2);
+      color: var(--fg); line-height: 1.5; vertical-align: top;
+    }
+    .adv-table tr:hover td { background: var(--bg-2); }
+    .adv-table .td-id { color: var(--fg-dim); font-size: 12px; white-space: nowrap; }
+    .adv-table .td-how { color: var(--fg-mute); font-size: 12px; }
+
+    /* ---- engagement model ---- */
+    .adv-models {
+      padding: 64px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-bottom: 1px solid var(--line);
+    }
+    @media (max-width: 640px) { .adv-models { grid-template-columns: 1fr; } }
+
+    .adv-model-card {
+      background: var(--bg-2); border: 1px solid var(--line); padding: 40px 36px;
+    }
+    .adv-model-tag { font-size: 10px; letter-spacing: 0.14em; color: var(--fg-mute); margin-bottom: 20px; }
+    .adv-model-title {
+      font-size: clamp(24px, 3vw, 36px); font-weight: 600;
+      letter-spacing: -0.03em; color: var(--fg); line-height: 1; margin-bottom: 8px;
+    }
+    .adv-model-desc { font-size: 13px; color: var(--fg-mute); margin: 0 0 28px; line-height: 1.6; }
+    .adv-cta {
+      display: block; padding: 14px 20px; border: 1px solid var(--fg-mute);
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px; letter-spacing: 0.04em;
+      text-decoration: none; transition: border-color 0.15s, color 0.15s; margin-top: 24px;
+      text-align: center;
+    }
+    .adv-cta:hover, .adv-cta.primary { border-color: var(--accent-hex); color: var(--accent-hex); }
+
+    /* ---- case stat ---- */
+    .adv-case {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .adv-case-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin: 32px 0;
+    }
+    @media (max-width: 500px) { .adv-case-stats { grid-template-columns: 1fr; } }
+    .adv-stat { background: var(--bg-2); border: 1px solid var(--line); padding: 28px 24px; }
+    .adv-stat-val { font-size: clamp(36px, 5vw, 56px); font-weight: 600; letter-spacing: -0.04em; color: var(--accent-hex); line-height: 1; }
+    .adv-stat-lbl { font-size: 12px; color: var(--fg-mute); margin-top: 8px; }
+
+    .adv-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
+    .adv-back:hover { color: var(--accent-hex); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="workshops.html">workshops</a>
+          <a href="ai-readiness-package.html">ai-readiness</a>
+          <a href="index.html#tooling">tooling</a>
+          <a href="index.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">// advisory</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- hero -->
+      <section class="adv-hero">
+        <div class="adv-eyebrow">// product · advisory</div>
+        <h1 class="adv-title">
+          Make your<br/>
+          codebase<br/>
+          <em>agent-ready.</em>
+        </h1>
+        <p class="adv-lede">
+          A structured assessment of your organisation, team, and codebase —
+          with a prioritised roadmap for ægentisk adoption and the guardrails
+          to make it safe.
+        </p>
+      </section>
+
+      <!-- assess + deliverables overview -->
+      <section class="adv-body">
+        <div>
+          <div class="adv-label">// what we assess</div>
+          <ul class="adv-check">
+            <li>Organisation and team readiness</li>
+            <li>Tech stacks and codebase fit for agents</li>
+            <li>Which areas can be automated — and how</li>
+            <li>Blast radius: where human-in-the-loop is non-negotiable</li>
+            <li>Security posture and secret hygiene</li>
+            <li>Cost structure: where AI spend will accrue</li>
+          </ul>
+        </div>
+        <div>
+          <div class="adv-label">// what you get</div>
+          <ul class="adv-check">
+            <li>6–8 technical reports (architecture, security, cost, team, tooling…)</li>
+            <li>Architecture guards for safe agentic rollout</li>
+            <li>Security analysis — 21 signal types including AI-specific</li>
+            <li>Prioritised ægentisk adoption roadmap</li>
+            <li>Tooling recommendations and licensing options</li>
+            <li>Optional: 6-week implementation plan</li>
+          </ul>
+          <a href="mailto:selina@exoreaction.com?subject=Advisory enquiry"
+             class="adv-cta primary" style="margin-top:8px;display:inline-block;padding:12px 20px;">
+            <span>$</span> book a scoping call →
+          </a>
+        </div>
+      </section>
+
+      <!-- deliverables table -->
+      <section class="adv-deliverables">
+        <div class="adv-label">// example deliverables — recent engagement</div>
+        <table class="adv-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Deliverable</th>
+              <th>Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-id">D01</td><td>Architecture map · all services</td><td class="td-how">synthesis index</td></tr>
+            <tr><td class="td-id">D02</td><td>Threat model · 21 signal types</td><td class="td-how">automated scan + human review</td></tr>
+            <tr><td class="td-id">D03</td><td>Secret rotation · CI hardening</td><td class="td-how">guardrail script + paired</td></tr>
+            <tr><td class="td-id">D04</td><td>Frontend perf budget + fixes</td><td class="td-how">characterisation tests</td></tr>
+            <tr><td class="td-id">D05</td><td>Backend N+1 audit + remediation</td><td class="td-how">pattern refactor</td></tr>
+            <tr><td class="td-id">D06</td><td>API contract documentation</td><td class="td-how">auto-generated + reviewed</td></tr>
+            <tr><td class="td-id">D07</td><td>Test pyramid restructure</td><td class="td-how">characterisation testing</td></tr>
+            <tr><td class="td-id">D08</td><td>AI-ready team · skills library configured</td><td class="td-how">session-pattern mining</td></tr>
+            <tr><td class="td-id">D09</td><td>Cost model · AI usage caps</td><td class="td-how">live spend tracker</td></tr>
+            <tr><td class="td-id">D10</td><td>Strategic roadmap · 2 quarters</td><td class="td-how">synthesis + workshop</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- engagement models -->
+      <section style="padding: 64px 0 0; border-bottom: 1px solid var(--line);">
+        <div class="adv-label">// engagement model</div>
+        <div class="adv-models" style="padding: 0; border: none; margin-top: 24px; margin-bottom: 64px;">
+          <div class="adv-model-card">
+            <div class="adv-model-tag">ONE-OFF · MATURITY REVIEW</div>
+            <div class="adv-model-title">Review</div>
+            <div class="adv-model-desc">
+              Full assessment, all deliverables. Scoping call → 5–10 working days →
+              reports + roadmap handed over. No ongoing commitment.
+            </div>
+            <ul class="adv-check" style="margin-bottom:0;">
+              <li>Scoping call included</li>
+              <li>Full codebase and org access (NDA first)</li>
+              <li>Synthesis indexing included</li>
+              <li>6–8 reports + prioritised roadmap</li>
+            </ul>
+            <a href="mailto:selina@exoreaction.com?subject=Advisory - one-off review enquiry"
+               class="adv-cta primary">
+              <span>$</span> enquire →
+            </a>
+          </div>
+          <div class="adv-model-card">
+            <div class="adv-model-tag">RETAINER · CONTINUOUS ACCESS</div>
+            <div class="adv-model-title">Retainer</div>
+            <div class="adv-model-desc">
+              Monthly access for questions, decisions, and ongoing guidance as your
+              agentic adoption compounds. Architecture reviews as needed.
+            </div>
+            <ul class="adv-check" style="margin-bottom:0;">
+              <li>Async Slack channel access</li>
+              <li>Monthly architecture review session</li>
+              <li>Escalation path for production issues</li>
+              <li>Synthesis re-indexing on demand</li>
+            </ul>
+            <a href="mailto:selina@exoreaction.com?subject=Advisory - retainer enquiry"
+               class="adv-cta">
+              <span>$</span> enquire →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- proof stat -->
+      <section class="adv-case">
+        <div class="adv-label">// recent engagement · Mar–Apr 2026</div>
+        <div class="adv-case-stats">
+          <div class="adv-stat">
+            <div class="adv-stat-val">21</div>
+            <div class="adv-stat-lbl">deliverables · 7 days</div>
+          </div>
+          <div class="adv-stat">
+            <div class="adv-stat-val">1.75M</div>
+            <div class="adv-stat-lbl">NOK · value at Oslo rates</div>
+          </div>
+          <div class="adv-stat">
+            <div class="adv-stat-val">10×</div>
+            <div class="adv-stat-lbl">throughput vs conventional</div>
+          </div>
+        </div>
+        <p style="font-size:14px;color:var(--fg-mute);max-width:60ch;line-height:1.7;">
+          Architecture map, threat model, security remediation, frontend and backend performance fixes,
+          test pyramid restructure, deploy pipeline, observability stack, skills library, knowledge graph,
+          strategic roadmap — all within a single 7-day engagement.
+        </p>
+        <a href="index.html#case" style="color:var(--accent-hex);font-size:13px;">
+          read the full case study →
+        </a>
+        <br />
+        <a class="adv-back" href="index.html">← back to ægis</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

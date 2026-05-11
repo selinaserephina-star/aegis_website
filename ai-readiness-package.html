@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI-Readiness Package · Ægis</title>
+  <meta name="description" content="Your KCP manifest, CLAUDE.md, AGENTS.md, and llms.txt — generated from your codebase or website and delivered to your inbox in minutes. €5, one-time." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ægis" />
+  <meta property="og:title" content="AI-Readiness Package · Ægis" />
+  <meta property="og:description" content="10-file KCP package generated from your repo or website. Delivered in minutes. €5, one-time." />
+  <meta property="og:url" content="https://xn--gis-xla.no/ai-readiness-package.html" />
+  <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* ---- hero ---- */
+    .pkg-hero {
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .pkg-eyebrow {
+      font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px;
+    }
+    .pkg-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(40px, 7vw, 104px);
+      line-height: 0.97; letter-spacing: -0.04em; margin: 0;
+    }
+    .pkg-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .pkg-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.2vw, 26px); line-height: 1.45;
+      color: var(--fg-mute); max-width: 52ch; margin: 32px 0 0;
+    }
+    .pkg-price-pill {
+      display: inline-flex; align-items: center; gap: 12px;
+      border: 1px solid var(--accent-hex); padding: 10px 20px;
+      font-size: 13px; letter-spacing: 0.06em; margin-top: 40px;
+      color: var(--accent-hex);
+    }
+    .pkg-price-pill .price-big { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+    .pkg-price-pill .price-note { color: var(--fg-mute); font-size: 12px; }
+
+    /* ---- body layout ---- */
+    .pkg-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--line);
+    }
+    @media (max-width: 720px) { .pkg-body { grid-template-columns: 1fr; gap: 40px; } }
+
+    /* ---- file tree ---- */
+    .pkg-tree {
+      background: var(--bg-2); border: 1px solid var(--line);
+      padding: 28px; font-size: 13px; line-height: 1.9;
+    }
+    .pkg-tree .tree-root { color: var(--accent-hex); font-weight: 500; }
+    .pkg-tree .tree-dir  { color: var(--fg-mute); }
+    .pkg-tree .tree-file { color: var(--fg); }
+    .pkg-tree .tree-note { color: var(--fg-dim); margin-left: 4px; }
+    .pkg-tree-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 16px; }
+
+    /* ---- form ---- */
+    .pkg-form-wrap { display: flex; flex-direction: column; gap: 0; }
+    .pkg-form-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
+    .pkg-form { display: flex; flex-direction: column; gap: 10px; }
+    .pkg-input-row {
+      display: flex; align-items: center; gap: 10px;
+      border: 1px solid var(--line); padding: 10px 14px;
+      background: var(--bg-2);
+    }
+    .pkg-input-row:focus-within { border-color: var(--fg-mute); }
+    .pkg-arrow { color: var(--accent-hex); font-size: 13px; flex-shrink: 0; }
+    .pkg-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px;
+      line-height: 1.4;
+    }
+    .pkg-input::placeholder { color: var(--fg-dim); }
+    .pkg-error { font-size: 12px; color: var(--warn); letter-spacing: 0.02em; padding: 4px 0; }
+    .pkg-submit {
+      display: flex; align-items: center; gap: 8px; justify-content: space-between;
+      padding: 14px 20px; border: 1px solid var(--fg-mute); background: transparent;
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px; letter-spacing: 0.04em;
+      cursor: pointer; transition: border-color 0.15s, color 0.15s; margin-top: 6px;
+      text-align: left; width: 100%;
+    }
+    .pkg-submit:hover { border-color: var(--accent-hex); color: var(--accent-hex); }
+    .pkg-submit .submit-price { color: var(--accent-hex); font-weight: 600; font-size: 16px; }
+    .pkg-fine {
+      font-size: 11px; color: var(--fg-dim); line-height: 1.7; margin-top: 16px;
+    }
+
+    /* ---- how it works ---- */
+    .pkg-how { padding: 64px 0; border-bottom: 1px solid var(--line); }
+    .pkg-how-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 32px; }
+    .pkg-steps {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;
+    }
+    @media (max-width: 900px) { .pkg-steps { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .pkg-steps { grid-template-columns: 1fr; } }
+    .pkg-step {
+      background: var(--bg-2); padding: 24px 20px; border: 1px solid var(--line);
+    }
+    .pkg-step-n { font-size: 11px; color: var(--fg-dim); margin-bottom: 12px; }
+    .pkg-step-t { font-size: 13px; font-weight: 500; color: var(--fg); margin-bottom: 8px; }
+    .pkg-step-d { font-size: 12px; color: var(--fg-mute); line-height: 1.6; }
+
+    /* ---- what is KCP ---- */
+    .pkg-what { padding: 64px 0; border-bottom: 1px solid var(--line); max-width: 64ch; }
+    .pkg-what h2 {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.03em; margin: 0 0 24px;
+    }
+    .pkg-what p { font-size: 15px; line-height: 1.7; color: var(--fg); margin: 0 0 16px; }
+    .pkg-what p.mute { color: var(--fg-mute); font-family: var(--t-disp); font-style: italic; font-size: 18px; }
+
+    /* ---- back ---- */
+    .pkg-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
+    .pkg-back:hover { color: var(--accent-hex); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="workshops.html">workshops</a>
+          <a href="index.html#tooling">tooling</a>
+          <a href="advisory.html">advisory</a>
+          <a href="index.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">// €5</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- hero -->
+      <section class="pkg-hero">
+        <div class="pkg-eyebrow">// product · ai-readiness package</div>
+        <h1 class="pkg-title">
+          Your AI context.<br/>
+          <em>Structured.</em><br/>
+          Delivered.
+        </h1>
+        <p class="pkg-lede">
+          A 10-file knowledge package generated from your codebase or website.
+          Drop it in and your AI tools — Claude, Cursor, agents — immediately
+          understand what you build, who you serve, and how you work.
+        </p>
+        <div class="pkg-price-pill">
+          <span class="price-big">€5</span>
+          <span>·</span>
+          <div>
+            <div>one-time payment</div>
+            <div class="price-note">no subscription · delivered in minutes</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- file tree + form -->
+      <section class="pkg-body">
+        <div>
+          <div class="pkg-tree">
+            <div class="pkg-tree-head">// what you receive</div>
+            <div class="tree-root">your-company/</div>
+            <div style="padding-left: 20px;">
+              <div class="tree-file">knowledge.yaml<span class="tree-note"> ← root manifest</span></div>
+              <div class="tree-dir">knowledge/</div>
+              <div style="padding-left: 20px;">
+                <div class="tree-file">products.yaml<span class="tree-note"> ← offerings + pricing model</span></div>
+                <div class="tree-file">people.yaml<span class="tree-note"> ← key team &amp; roles</span></div>
+                <div class="tree-file">technology.yaml<span class="tree-note"> ← stack + integrations</span></div>
+                <div class="tree-file">customers.yaml<span class="tree-note"> ← segments + ICP</span></div>
+                <div class="tree-file">compliance.yaml<span class="tree-note"> ← certs + regulatory</span></div>
+              </div>
+              <div class="tree-file">llms.txt<span class="tree-note"> ← llmstxt.org standard</span></div>
+              <div class="tree-file">CLAUDE.md<span class="tree-note"> ← Claude / Cursor / Zed</span></div>
+              <div class="tree-file">AGENTS.md<span class="tree-note"> ← any agent framework</span></div>
+              <div class="tree-file">SETUP.md<span class="tree-note"> ← deployment guide</span></div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--fg-mute);margin:20px 0 0;line-height:1.7;">
+            Federated YAML — each sub-file is self-contained and can be loaded
+            individually into your pipeline, RAG system, or agent session.
+          </p>
+        </div>
+
+        <div class="pkg-form-wrap">
+          <div class="pkg-form-head">// submit your repo or website</div>
+          <form class="pkg-form" id="pkg-form" novalidate>
+            <div class="pkg-input-row">
+              <span class="pkg-arrow">▸</span>
+              <input
+                class="pkg-input"
+                id="pkg-url"
+                type="url"
+                placeholder="https://github.com/you/your-repo"
+                autocomplete="url"
+              />
+            </div>
+            <div class="pkg-input-row">
+              <span class="pkg-arrow">@</span>
+              <input
+                class="pkg-input"
+                id="pkg-email"
+                type="email"
+                placeholder="your@email.com (package delivered here)"
+                autocomplete="email"
+              />
+            </div>
+            <div class="pkg-error" id="pkg-error" style="display:none;"></div>
+            <button type="submit" class="pkg-submit">
+              <span><span style="color:var(--fg-mute)">$</span> pay €5 · get your package</span>
+              <span class="submit-price">€5 →</span>
+            </button>
+          </form>
+          <div class="pkg-fine">
+            Stripe-secured payment. After checkout, the pipeline runs automatically —
+            your package arrives by email within minutes.<br/>
+            If anything goes wrong, reply to the email or write to
+            <a href="mailto:selina@exoreaction.com" style="color:var(--accent-hex);">selina@exoreaction.com</a>.
+          </div>
+        </div>
+      </section>
+
+      <!-- how it works -->
+      <section class="pkg-how">
+        <div class="pkg-how-head">// how it works</div>
+        <div class="pkg-steps">
+          <div class="pkg-step">
+            <div class="pkg-step-n">01</div>
+            <div class="pkg-step-t">You submit</div>
+            <div class="pkg-step-d">Paste your GitHub repo URL or website. Enter your email. Pay €5.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">02</div>
+            <div class="pkg-step-t">Stripe notifies</div>
+            <div class="pkg-step-d">Payment confirmed → webhook fires → job queued automatically.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">03</div>
+            <div class="pkg-step-t">Pipeline runs</div>
+            <div class="pkg-step-d">We scrape your site, run it through Claude Opus, extract structured knowledge.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">04</div>
+            <div class="pkg-step-t">Package built</div>
+            <div class="pkg-step-d">10 files assembled: federated YAML hierarchy + agent context files.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">05</div>
+            <div class="pkg-step-t">Delivered</div>
+            <div class="pkg-step-d">Zip sent to your email. Under 2 minutes from payment to inbox.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- what is KCP -->
+      <section class="pkg-what">
+        <h2>What is a KCP manifest?</h2>
+        <p class="mute">
+          The missing layer between your organisation and your AI tools.
+        </p>
+        <p>
+          KCP (Knowledge Context Protocol) is a structured YAML format that describes what
+          your company does, what it builds, who it serves, and how it works — in a form
+          that AI tools can read directly without needing to be told every session.
+        </p>
+        <p>
+          Drop <code style="background:var(--bg-2);border:1px solid var(--line);padding:2px 7px;font-size:12px;color:var(--accent-hex);">knowledge.yaml</code>
+          in your repo root and Claude Code, Cursor, and any MCP-compatible agent picks it up
+          automatically. Place <code style="background:var(--bg-2);border:1px solid var(--line);padding:2px 7px;font-size:12px;color:var(--accent-hex);">llms.txt</code>
+          on your web root and your site becomes AI-discoverable without a crawl.
+        </p>
+        <p>
+          Most teams write these by hand once, let them rot, and wonder why their agents
+          give generic answers. The AI-Readiness Package generates yours from what actually
+          exists — your codebase, your website, your public information.
+        </p>
+        <p style="margin-top:32px;">
+          <a class="cta-primary" href="#pkg-form" style="display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border:1px solid var(--accent-hex);color:var(--accent-hex);font-size:13px;">
+            <span>$</span> get your package for €5 <span>↑</span>
+          </a>
+        </p>
+        <a class="pkg-back" href="index.html">← back to ægis</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("pkg-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      var errorEl = document.getElementById("pkg-error");
+      var url = document.getElementById("pkg-url").value.trim();
+      var email = document.getElementById("pkg-email").value.trim();
+
+      errorEl.style.display = "none";
+      errorEl.textContent = "";
+
+      if (!url) { errorEl.textContent = "⚠ enter a GitHub repo or website URL"; errorEl.style.display = "block"; return; }
+      if (!email) { errorEl.textContent = "⚠ enter your email address"; errorEl.style.display = "block"; return; }
+      try { new URL(url); } catch(_) { errorEl.textContent = "⚠ not a valid URL — include https://"; errorEl.style.display = "block"; return; }
+
+      var params = new URLSearchParams({ client_reference_id: url, prefilled_email: email });
+      window.location.href = "https://buy.stripe.com/4gM5kE2LM57Q1bB5WE14400?" + params.toString();
+    });
+  </script>
+</body>
+</html>
