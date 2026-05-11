@@ -400,9 +400,9 @@ def generate_codebase_intelligence(repo_path, repo_name):
 def parse_codebase_output(text):
     files = {}
 
-    # Fixed tags
+    # Fixed tags — allow optional attributes e.g. <architecture_report id="...">
     for tag, filename in CODEBASE_TAG_MAP.items():
-        m = re.search(rf"<{tag}>(.*?)</{tag}>", text, re.DOTALL)
+        m = re.search(rf"<{tag}[^>]*>(.*?)</{tag}>", text, re.DOTALL)
         if not m:
             raise ValueError(f"Missing <{tag}> block in claude output")
         files[filename] = m.group(1).strip()
