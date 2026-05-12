@@ -488,6 +488,19 @@ function CaseStudy({ enabled }) {
           </div>
         )}
       </div>
+
+      <Rule label="// 50-week sustained outcome · git log --shortstat" />
+      <div className="case-stats">
+        <Stat value="10.7×" label="velocity multiplier" />
+        <Stat value="~12×" label="per-developer efficiency after 85% headcount departed" />
+        <Stat value="100×" label="test coverage · 40 → 4,000 tests" />
+        <Stat value="22.8" label="PR / FTE / week · DORA Elite / Spike" />
+      </div>
+      <p className="footnote" style={{marginTop:"20px"}}>
+        All figures from git history — not surveys.
+        Team size fell 85%. Engineering output grew 10.7×.
+        Same client, June 2025 – May 2026.
+      </p>
     </section>
   );
 }
