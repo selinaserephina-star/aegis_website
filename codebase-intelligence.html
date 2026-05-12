@@ -238,7 +238,7 @@
         </div>
 
         <div class="pkg-form-wrap" id="form-area">
-          <div class="pkg-form-head">// join the waitlist · get notified at launch</div>
+          <div class="pkg-form-head">// register interest · launching soon</div>
           <form class="pkg-form" id="waitlist-form" novalidate>
             <div class="pkg-input-row">
               <span class="pkg-arrow">@</span>
@@ -252,15 +252,15 @@
             </div>
             <div class="pkg-error" id="wl-error" style="display:none;"></div>
             <button type="submit" class="pkg-submit" id="wl-submit">
-              <span><span style="color:var(--fg-mute)">$</span> join the waitlist</span>
+              <span><span style="color:var(--fg-mute)">$</span> register interest</span>
               <span>→</span>
             </button>
           </form>
           <div class="pkg-fine">
-            We'll email you when Codebase Intelligence launches.
+            First in line when Codebase Intelligence launches.
             No spam — one email, when it's ready.<br/>
             Questions now?
-            <a href="mailto:selina@exoreaction.com" style="color:var(--accent-hex);">selina@exoreaction.com</a>
+            <a href="mailto:totto@exoreaction.com" style="color:var(--accent-hex);">totto@exoreaction.com</a>
           </div>
         </div>
       </section>
@@ -271,8 +271,8 @@
         <div class="pkg-steps">
           <div class="pkg-step">
             <div class="pkg-step-n">01</div>
-            <div class="pkg-step-t">You upload</div>
-            <div class="pkg-step-d">Zip your codebase. Drop it on the upload page. Enter your email. Pay.</div>
+            <div class="pkg-step-t">You submit</div>
+            <div class="pkg-step-d">GitHub repo URL or zip archive. Enter your email. Register your interest — you'll be first in line at launch.</div>
           </div>
           <div class="pkg-step">
             <div class="pkg-step-n">02</div>
@@ -390,8 +390,8 @@
         });
         document.getElementById("form-area").innerHTML =
           '<div style="border:1px solid var(--accent-hex);padding:24px 20px;color:var(--accent-hex);font-size:13px;line-height:1.8;">' +
-          '✓ you\'re on the list.<br/>' +
-          '<span style="color:var(--fg-mute)">we\'ll email you at ' + email + ' when Codebase Intelligence launches.</span>' +
+          '✓ interest registered.<br/>' +
+          '<span style="color:var(--fg-mute)">we\'ll email you at ' + email + ' — you\'re first in line when we launch.</span>' +
           '</div>';
       } catch (_) {
         btn.disabled = false;

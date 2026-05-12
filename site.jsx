@@ -1063,7 +1063,7 @@ function CodebaseIntelligenceTeaser() {
         </div>
         <div className="skills-title">
           Any codebase, fully understood.{" "}
-          <span style={{ color: "var(--accent-hex)" }}>30–60 min. 9 950 NOK.</span>
+          <span style={{ color: "var(--accent-hex)" }}>30–60 min. ~€890.</span>
         </div>
       </div>
       <div className="skills-grid">
@@ -1077,15 +1077,15 @@ function CodebaseIntelligenceTeaser() {
             <li>KCP manifest — drop it in, agents understand your codebase</li>
           </ul>
           <div style={{ marginTop: "16px", fontSize: "12px", color: "var(--fg-mute)", lineHeight: "1.6" }}>
-            Upload any zip. Agent-run analysis via Synthesis + ExoCortex.
-            Works on closed-source, private repos.
+            GitHub repo URL or zip archive. Agent-run analysis via Synthesis + ExoCortex.
+            Works on private repos — nothing leaves our pipeline.
           </div>
         </div>
         <div>
-          <div className="col-label">// get notified at launch</div>
+          <div className="col-label">// register interest · launching soon</div>
           {submitted ? (
             <div style={{ fontSize: "13px", color: "var(--accent-hex)", marginTop: "8px", lineHeight: "1.8" }}>
-              ✓ you're on the list. we'll email you when it launches.
+              ✓ registered. we'll email you when it launches.
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "8px" }}>
@@ -1102,7 +1102,7 @@ function CodebaseIntelligenceTeaser() {
               </div>
               {error && <div style={{ fontSize: "12px", color: "var(--accent-hex)", letterSpacing: "0.02em" }}>⚠ {error}</div>}
               <button type="submit" className="cta-primary outline" style={{ marginTop: "4px" }}>
-                <span>$</span> join the waitlist <span className="arrow">→</span>
+                <span>$</span> register interest <span className="arrow">→</span>
               </button>
             </form>
           )}
