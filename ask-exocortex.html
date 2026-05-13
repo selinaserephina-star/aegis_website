@@ -117,6 +117,14 @@
       font-family: var(--t-disp); font-style: italic; font-size: 15px;
       color: var(--fg-mute); margin-top: 24px; line-height: 1.6;
     }
+
+    /* ---- tier card feature list ---- */
+    .ask-check { list-style: none; padding: 0; margin: 0 0 8px; }
+    .ask-check li {
+      font-size: 13px; line-height: 1.7; padding: 6px 0;
+      border-bottom: 1px solid var(--line-2); display: flex; align-items: baseline; gap: 10px;
+    }
+    .ask-check li::before { content: "→"; color: var(--accent-hex); flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -166,7 +174,7 @@
           <div class="ask-tier-tag">BASIC · HAIKU</div>
           <div class="ask-tier-price">EUR 1</div>
           <div class="ask-tier-sub">5 questions · 30-minute window</div>
-          <ul class="adv-check">
+          <ul class="ask-check">
             <li>Claude Haiku — fast, direct answers</li>
             <li>Full conversation context across all 5 turns</li>
             <li>Architecture, stack, and codebase questions</li>
@@ -180,7 +188,7 @@
           <div class="ask-tier-tag">PRO · SONNET</div>
           <div class="ask-tier-price">EUR 10</div>
           <div class="ask-tier-sub">20 questions · 2-hour window</div>
-          <ul class="adv-check">
+          <ul class="ask-check">
             <li>Claude Sonnet — deeper analysis, more nuance</li>
             <li>Full conversation context across all 20 turns</li>
             <li>Architecture, stack, and codebase questions</li>
@@ -273,6 +281,20 @@
     (function() {
       var buyBasic = document.getElementById('ask-buy-basic');
       var buyPro   = document.getElementById('ask-buy-pro');
+      var ready = !STRIPE_LINK_BASIC.includes('REPLACE') && !STRIPE_LINK_PRO.includes('REPLACE');
+      if (!ready) {
+        // Stripe links not yet configured — disable buttons gracefully
+        [buyBasic, buyPro].forEach(function(btn) {
+          if (!btn) return;
+          btn.disabled = true;
+          btn.textContent = 'coming soon';
+          btn.style.opacity = '0.5';
+          btn.style.cursor  = 'default';
+          btn.style.borderColor = 'var(--line)';
+          btn.style.color       = 'var(--fg-mute)';
+        });
+        return;
+      }
       if (buyBasic) buyBasic.addEventListener('click', function() {
         window.location.href = STRIPE_LINK_BASIC;
       });
