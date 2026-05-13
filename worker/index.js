@@ -7,6 +7,12 @@
 
 const ALLOWED_ORIGINS = ["https://ægis.no", "https://xn--gis-xla.no", "http://localhost"];
 
+// ── KCP pipeline config ───────────────────────────────────────────────────────
+const KCP_AMOUNTS = {
+  "ai-readiness":     500,   // EUR 5
+  "codebase-starter": 1900,  // EUR 19
+};
+
 // ── Ask ExoCortex config ──────────────────────────────────────────────────────
 const TIERS = {
   basic: { maxMessages: 5,  model: "claude-haiku-4-5-20251001", expiryMs: 30 * 60 * 1000 },
@@ -36,6 +42,11 @@ export default {
     }
 
     const url = new URL(request.url);
+
+    // KCP pipeline routes
+    if (url.pathname === "/kcp/session" && request.method === "POST") {
+      return handleKcpSession(request, env, origin);
+    }
 
     // Ask ExoCortex routes
     if (url.pathname === "/ask/session" && request.method === "POST") {
@@ -73,6 +84,67 @@ export default {
     });
   },
 };
+
+// ── /kcp/session — validate Stripe checkout and queue Neuron job ──────────────
+async function handleKcpSession(request, env, origin) {
+  let body;
+  try { body = await request.json(); } catch {
+    return jsonError("invalid json", 400, origin);
+  }
+
+  const { checkoutId, product } = body;
+  if (!checkoutId || !KCP_AMOUNTS[product]) {
+    return jsonError("missing checkoutId or invalid product", 400, origin);
+  }
+
+  // Prevent double-submission
+  const redeemed = await env.ASK_SESSIONS.get(`kcp_checkout:${checkoutId}`);
+  if (redeemed) {
+    return jsonError("already queued", 409, origin);
+  }
+
+  // Validate payment with Stripe
+  let stripeSession;
+  try {
+    const stripeResp = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(checkoutId)}`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } }
+    );
+    if (!stripeResp.ok) return jsonError("stripe lookup failed", 402, origin);
+    stripeSession = await stripeResp.json();
+  } catch {
+    return jsonError("stripe unreachable", 502, origin);
+  }
+
+  if (stripeSession.payment_status !== "paid") {
+    return jsonError("payment not completed", 402, origin);
+  }
+
+  if (stripeSession.amount_total !== KCP_AMOUNTS[product]) {
+    return jsonError("product/amount mismatch", 402, origin);
+  }
+
+  const targetUrl = stripeSession.client_reference_id || "";
+  const email = stripeSession.customer_details?.email || "";
+
+  if (!targetUrl || !email) {
+    return jsonError("missing url or email from Stripe checkout", 400, origin);
+  }
+
+  // Determine job type: github.com URL → codebase, otherwise → website
+  const jobType = targetUrl.includes("github.com") ? "codebase" : "website";
+  const jobBody = jobType === "codebase"
+    ? { type: "codebase", github_url: targetUrl, email }
+    : { type: "website", url: targetUrl, email };
+
+  // Push to CF Queue — Neuron polls this
+  await env.KCP_QUEUE.send(jobBody);
+
+  // Mark checkout redeemed for 24h to prevent duplicate submissions
+  await env.ASK_SESSIONS.put(`kcp_checkout:${checkoutId}`, "redeemed", { expirationTtl: 86400 });
+
+  return jsonOk({ queued: true, jobType, url: targetUrl, email }, origin);
+}
 
 // ── /ask/session — exchange Stripe checkout ID for session token ──────────────
 async function handleAskSession(request, env, origin) {
