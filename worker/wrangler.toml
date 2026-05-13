@@ -8,7 +8,7 @@ compatibility_date = "2024-01-01"
 #   → copy the id output below
 [[kv_namespaces]]
 binding = "ASK_SESSIONS"
-id = "REPLACE_WITH_NAMESPACE_ID"
+id = "f64ac16625954aa99beafafcda3c15f1"
 
 # Secrets (set via wrangler secret put):
 #   CLAUDE_API_KEY     — already set
