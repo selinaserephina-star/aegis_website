@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KCP + Skills · Ægis</title>
+  <meta name="description" content="Your KCP manifest generated from your codebase or website, bundled with a personal Skills Library license. Context layer + 50+ Claude Code skills. €19, one-time." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ægis" />
+  <meta property="og:title" content="KCP + Skills · Ægis" />
+  <meta property="og:description" content="KCP manifest + personal Skills Library license. Two tools that work together. €19, one-time." />
+  <meta property="og:url" content="https://xn--gis-xla.no/kcp-skills.html" />
+  <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://xn--gis-xla.no/kcp-skills.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* ---- hero ---- */
+    .pkg-hero {
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .pkg-eyebrow {
+      font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px;
+    }
+    .pkg-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(40px, 7vw, 104px);
+      line-height: 0.97; letter-spacing: -0.04em; margin: 0;
+    }
+    .pkg-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .pkg-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.2vw, 26px); line-height: 1.45;
+      color: var(--fg-mute); max-width: 52ch; margin: 32px 0 0;
+    }
+    .pkg-price-pill {
+      display: inline-flex; align-items: center; gap: 12px;
+      border: 1px solid var(--accent-hex); padding: 10px 20px;
+      font-size: 13px; letter-spacing: 0.06em; margin-top: 40px;
+      color: var(--accent-hex);
+    }
+    .pkg-price-pill .price-big { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+    .pkg-price-pill .price-note { color: var(--fg-mute); font-size: 12px; }
+
+    /* ---- body layout ---- */
+    .pkg-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--line);
+    }
+    @media (max-width: 720px) { .pkg-body { grid-template-columns: 1fr; gap: 40px; } }
+
+    /* ---- file tree ---- */
+    .pkg-tree {
+      background: var(--bg-2); border: 1px solid var(--line);
+      padding: 28px; font-size: 13px; line-height: 1.9;
+    }
+    .pkg-tree .tree-root { color: var(--accent-hex); font-weight: 500; }
+    .pkg-tree .tree-dir  { color: var(--fg-mute); }
+    .pkg-tree .tree-file { color: var(--fg); }
+    .pkg-tree .tree-note { color: var(--fg-dim); margin-left: 4px; }
+    .pkg-tree-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 16px; }
+    .pkg-tree-divider { border-top: 1px solid var(--line); margin: 16px 0; }
+    .pkg-tree-section { font-size: 10px; letter-spacing: 0.1em; color: var(--fg-dim); margin-bottom: 8px; }
+
+    /* ---- form ---- */
+    .pkg-form-wrap { display: flex; flex-direction: column; gap: 0; }
+    .pkg-form-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
+    .pkg-form { display: flex; flex-direction: column; gap: 10px; }
+    .pkg-input-row {
+      display: flex; align-items: center; gap: 10px;
+      border: 1px solid var(--line); padding: 10px 14px;
+      background: var(--bg-2);
+    }
+    .pkg-input-row:focus-within { border-color: var(--fg-mute); }
+    .pkg-arrow { color: var(--accent-hex); font-size: 13px; flex-shrink: 0; }
+    .pkg-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px;
+      line-height: 1.4;
+    }
+    .pkg-input::placeholder { color: var(--fg-dim); }
+    .pkg-error { font-size: 12px; color: var(--warn); letter-spacing: 0.02em; padding: 4px 0; }
+    .pkg-submit {
+      display: flex; align-items: center; gap: 8px; justify-content: space-between;
+      padding: 14px 20px; border: 1px solid var(--fg-mute); background: transparent;
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px; letter-spacing: 0.04em;
+      cursor: pointer; transition: border-color 0.15s, color 0.15s; margin-top: 6px;
+      text-align: left; width: 100%;
+    }
+    .pkg-submit:hover { border-color: var(--accent-hex); color: var(--accent-hex); }
+    .pkg-submit .submit-price { color: var(--accent-hex); font-weight: 600; font-size: 16px; }
+    .pkg-fine {
+      font-size: 11px; color: var(--fg-dim); line-height: 1.7; margin-top: 16px;
+    }
+
+    /* ---- how it works ---- */
+    .pkg-how { padding: 64px 0; border-bottom: 1px solid var(--line); }
+    .pkg-how-head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 32px; }
+    .pkg-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    }
+    @media (max-width: 800px) { .pkg-steps { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .pkg-steps { grid-template-columns: 1fr; } }
+    .pkg-step {
+      background: var(--bg-2); padding: 24px 20px; border: 1px solid var(--line);
+    }
+    .pkg-step-n { font-size: 11px; color: var(--fg-dim); margin-bottom: 12px; }
+    .pkg-step-t { font-size: 13px; font-weight: 500; color: var(--fg); margin-bottom: 8px; }
+    .pkg-step-d { font-size: 12px; color: var(--fg-mute); line-height: 1.6; }
+
+    /* ---- check list ---- */
+    .pkg-check { list-style: none; padding: 0; margin: 0; }
+    .pkg-check li {
+      font-size: 14px; line-height: 1.7; padding: 7px 0;
+      border-bottom: 1px solid var(--line-2); display: flex; align-items: baseline; gap: 10px;
+    }
+    .pkg-check li::before { content: "→"; color: var(--accent-hex); flex-shrink: 0; }
+
+    /* ---- what sections ---- */
+    .pkg-what { padding: 64px 0; border-bottom: 1px solid var(--line); }
+    .pkg-what-cols {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-top: 24px;
+    }
+    @media (max-width: 720px) { .pkg-what-cols { grid-template-columns: 1fr; gap: 40px; } }
+    .pkg-what-col-label { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
+    .pkg-what p { font-size: 14px; line-height: 1.7; color: var(--fg-mute); margin: 0 0 16px; }
+
+    /* ---- back ---- */
+    .pkg-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
+    .pkg-back:hover { color: var(--accent-hex); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="ask-exocortex.html">ask</a>
+          <a href="workshops.html">workshops</a>
+          <a href="advisory.html">advisory</a>
+          <a href="codebase-intelligence.html">codebase-intel</a>
+          <a href="exocortex-as-a-service.html">exocortex</a>
+          <a href="index.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">// €19</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- hero -->
+      <section class="pkg-hero">
+        <div class="pkg-eyebrow">// product · kcp + skills</div>
+        <h1 class="pkg-title">
+          Context layer.<br/>
+          Skills<br/>
+          <em>included.</em>
+        </h1>
+        <p class="pkg-lede">
+          Your KCP manifest — generated from your codebase or website — bundled with
+          a personal license to the Ægis Skills Library. The context layer that tells
+          your agents what you build, plus the skills that tell them how to do it.
+        </p>
+        <div class="pkg-price-pill">
+          <span class="price-big">€19</span>
+          <span>·</span>
+          <div>
+            <div>one-time payment</div>
+            <div class="price-note">KCP manifest + personal skills license</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- file tree + form -->
+      <section class="pkg-body">
+        <div>
+          <div class="pkg-tree">
+            <div class="pkg-tree-head">// what you receive</div>
+            <div class="pkg-tree-section">KCP MANIFEST</div>
+            <div class="tree-root">your-project/</div>
+            <div style="padding-left: 20px;">
+              <div class="tree-file">knowledge.yaml<span class="tree-note"> ← architecture, products, team</span></div>
+              <div class="tree-file">knowledge.yaml.sig<span class="tree-note"> ← ED25519 signed</span></div>
+              <div class="tree-file">CLAUDE.md<span class="tree-note"> ← Claude Code navigation hub</span></div>
+              <div class="tree-file">AGENTS.md<span class="tree-note"> ← any agent framework</span></div>
+              <div class="tree-file">llms.txt<span class="tree-note"> ← llmstxt.org standard</span></div>
+              <div class="tree-file">SETUP.md<span class="tree-note"> ← drop-in instructions</span></div>
+            </div>
+            <div class="pkg-tree-divider"></div>
+            <div class="pkg-tree-section">SKILLS LIBRARY (PERSONAL LICENSE)</div>
+            <div class="tree-root">.claude/skills/</div>
+            <div style="padding-left: 20px;">
+              <div class="tree-dir">git/<span class="tree-note"> ← commit, branch, pr, review</span></div>
+              <div class="tree-dir">testing/<span class="tree-note"> ← characterisation, e2e, coverage</span></div>
+              <div class="tree-dir">security/<span class="tree-note"> ← secrets scan, threat model</span></div>
+              <div class="tree-dir">architecture/<span class="tree-note"> ← adr, map, refactor</span></div>
+              <div class="tree-dir">docs/<span class="tree-note"> ← api-docs, changelog, readme</span></div>
+              <div class="tree-file">50+ skills total<span class="tree-note"> ← slash commands in Claude Code</span></div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--fg-mute);margin:20px 0 0;line-height:1.7;">
+            KCP manifest generated from your public website or GitHub repo.
+            Skills Library is a zip of <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.md</code>
+            skill files — install once, available everywhere.
+          </p>
+        </div>
+
+        <div class="pkg-form-wrap">
+          <div class="pkg-form-head">// get your package</div>
+          <form class="pkg-form" id="kcp-form" novalidate>
+            <div class="pkg-input-row">
+              <span class="pkg-arrow">▸</span>
+              <input class="pkg-input" id="kcp-url" type="url"
+                placeholder="https://yoursite.com or github.com/you/repo" autocomplete="url" />
+            </div>
+            <div class="pkg-input-row">
+              <span class="pkg-arrow">@</span>
+              <input class="pkg-input" id="kcp-email" type="email"
+                placeholder="your@email.com (package delivered here)" autocomplete="email" />
+            </div>
+            <div class="pkg-error" id="kcp-error" style="display:none;"></div>
+            <button type="submit" class="pkg-submit">
+              <span><span style="color:var(--fg-mute)">$</span> pay €19 · get your package</span>
+              <span class="submit-price">€19 →</span>
+            </button>
+          </form>
+          <div class="pkg-fine">
+            Stripe-secured payment. KCP manifest generated automatically after checkout.
+            Skills Library zip emailed within minutes.<br/>
+            Questions? <a href="mailto:selina@exoreaction.com" style="color:var(--accent-hex);">selina@exoreaction.com</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- how it works -->
+      <section class="pkg-how">
+        <div class="pkg-how-head">// how it works</div>
+        <div class="pkg-steps">
+          <div class="pkg-step">
+            <div class="pkg-step-n">01</div>
+            <div class="pkg-step-t">You submit</div>
+            <div class="pkg-step-d">Paste your website URL or GitHub repo. Enter your email. Pay €19.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">02</div>
+            <div class="pkg-step-t">KCP pipeline runs</div>
+            <div class="pkg-step-d">We crawl your site or repo, run it through Claude Opus, extract structured knowledge.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">03</div>
+            <div class="pkg-step-t">Both zips delivered</div>
+            <div class="pkg-step-d">KCP manifest + Skills Library zip sent to your inbox. Under 5 minutes from payment.</div>
+          </div>
+          <div class="pkg-step">
+            <div class="pkg-step-n">04</div>
+            <div class="pkg-step-t">Install and go</div>
+            <div class="pkg-step-d">Drop KCP files in repo root. Unzip skills into <code style="font-size:11px;color:var(--accent-hex);">.claude/skills/</code>. Done.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- what's included -->
+      <section class="pkg-what">
+        <div style="font-size:11px;letter-spacing:0.1em;color:var(--fg-mute);margin-bottom:32px;">// what's included</div>
+        <div class="pkg-what-cols">
+          <div>
+            <div class="pkg-what-col-label">// KCP MANIFEST</div>
+            <p>
+              KCP (Knowledge Context Protocol) is a structured YAML format that describes
+              what your organisation builds, who it serves, and how it works — in a form
+              any AI tool can load without being told every session.
+            </p>
+            <p>
+              Drop <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">knowledge.yaml</code>
+              in your repo root and Claude Code, Cursor, and any MCP-compatible agent
+              picks it up automatically. No more repeating yourself.
+            </p>
+            <ul class="pkg-check" style="margin-top:16px;">
+              <li>Generated from your actual codebase or website</li>
+              <li>ED25519 signed — tamper-evident</li>
+              <li>llmstxt.org standard included</li>
+              <li>Works with Claude, Cursor, any MCP agent</li>
+            </ul>
+          </div>
+          <div>
+            <div class="pkg-what-col-label">// SKILLS LIBRARY (PERSONAL)</div>
+            <p>
+              The Ægis Skills Library is a curated collection of
+              <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.md</code>
+              skill files that become slash commands in Claude Code. Pre-built workflows
+              for the things engineers do every day.
+            </p>
+            <p>
+              Install once in <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.claude/skills/</code>
+              — or your global <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">~/.claude/skills/</code>
+              for access across all projects.
+            </p>
+            <ul class="pkg-check" style="margin-top:16px;">
+              <li>50+ skills across git, testing, security, architecture</li>
+              <li>Personal license — one developer, unlimited projects</li>
+              <li>Plain <code style="font-size:12px;color:var(--accent-hex);">.md</code> files — readable, forkable</li>
+              <li>Works with Claude Code and compatible agents</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top:40px;">
+          <a href="mailto:selina@exoreaction.com?subject=KCP + Skills enquiry"
+             style="display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border:1px solid var(--accent-hex);color:var(--accent-hex);font-size:13px;text-decoration:none;">
+            <span>$</span> get the bundle for €19 <span>↑</span>
+          </a>
+        </p>
+        <a class="pkg-back" href="index.html">← back to ægis</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // REPLACE_WITH_STRIPE_LINK once Stripe product is created
+    var STRIPE_KCP_SKILLS = "https://buy.stripe.com/REPLACE_KCP_SKILLS";
+
+    document.getElementById("kcp-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      var err = document.getElementById("kcp-error");
+      var url = document.getElementById("kcp-url").value.trim();
+      var email = document.getElementById("kcp-email").value.trim();
+      err.style.display = "none";
+      if (!url)   { err.textContent = "⚠ enter your website URL or GitHub repo"; err.style.display = "block"; return; }
+      if (!email) { err.textContent = "⚠ enter your email address"; err.style.display = "block"; return; }
+      try { new URL(url.startsWith("http") ? url : "https://" + url); } catch(_) {
+        err.textContent = "⚠ not a valid URL — include https://"; err.style.display = "block"; return;
+      }
+      if (STRIPE_KCP_SKILLS.includes("REPLACE")) {
+        window.location.href = "mailto:selina@exoreaction.com?subject=KCP+%2B+Skills+order&body=URL%3A+" + encodeURIComponent(url) + "%0AEmail%3A+" + encodeURIComponent(email);
+      } else {
+        var params = new URLSearchParams({ client_reference_id: url, prefilled_email: email });
+        window.location.href = STRIPE_KCP_SKILLS + "?" + params.toString();
+      }
+    });
+  </script>
+</body>
+</html>

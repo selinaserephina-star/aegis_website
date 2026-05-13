@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SDD Boost Pack · Ægis</title>
+  <meta name="description" content="~50 curated Claude Code skills for engineering teams. Skills-Driven Development — your playbook encoded as slash commands. €400 team license." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ægis" />
+  <meta property="og:title" content="SDD Boost Pack · Ægis" />
+  <meta property="og:description" content="50 curated Claude Code skills. Install once, use everywhere. €400 team license." />
+  <meta property="og:url" content="https://xn--gis-xla.no/sdd-boost-pack.html" />
+  <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://xn--gis-xla.no/sdd-boost-pack.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* ---- hero ---- */
+    .sdd-hero {
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .sdd-eyebrow { font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px; }
+    .sdd-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(36px, 6.5vw, 96px);
+      line-height: 0.97; letter-spacing: -0.04em; margin: 0;
+    }
+    .sdd-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .sdd-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(18px, 2.2vw, 26px); line-height: 1.45;
+      color: var(--fg-mute); max-width: 52ch; margin: 32px 0 0;
+    }
+    .sdd-price-pill {
+      display: inline-flex; align-items: center; gap: 12px;
+      border: 1px solid var(--accent-hex); padding: 10px 20px;
+      font-size: 13px; letter-spacing: 0.06em; margin-top: 40px;
+      color: var(--accent-hex);
+    }
+    .sdd-price-pill .price-big { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+    .sdd-price-pill .price-note { color: var(--fg-mute); font-size: 12px; }
+
+    /* ---- skill table ---- */
+    .sdd-catalog {
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--line);
+    }
+    .sdd-label { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 24px; }
+    .sdd-table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+    }
+    .sdd-table th {
+      text-align: left; font-size: 11px; letter-spacing: 0.1em;
+      color: var(--fg-mute); padding: 10px 16px; border-bottom: 1px solid var(--line);
+      font-weight: 400;
+    }
+    .sdd-table td {
+      padding: 12px 16px; border-bottom: 1px solid var(--line-2);
+      color: var(--fg); line-height: 1.5; vertical-align: top;
+    }
+    .sdd-table tr:hover td { background: var(--bg-2); }
+    .sdd-table .td-cat { color: var(--accent-hex); font-size: 12px; white-space: nowrap; font-weight: 500; }
+    .sdd-table .td-count { color: var(--fg-dim); font-size: 12px; white-space: nowrap; }
+    .sdd-table .td-skills { color: var(--fg-mute); font-size: 12px; }
+
+    /* ---- how skills work ---- */
+    .sdd-how {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+    }
+    @media (max-width: 720px) { .sdd-how { grid-template-columns: 1fr; gap: 40px; } }
+
+    .sdd-how-label { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
+    .sdd-check { list-style: none; padding: 0; margin: 0; }
+    .sdd-check li {
+      font-size: 14px; line-height: 1.7; padding: 7px 0;
+      border-bottom: 1px solid var(--line-2); display: flex; align-items: baseline; gap: 10px;
+    }
+    .sdd-check li::before { content: "→"; color: var(--accent-hex); flex-shrink: 0; }
+
+    /* ---- code block ---- */
+    .sdd-code {
+      background: var(--bg-2); border: 1px solid var(--line);
+      padding: 20px 24px; font-size: 12px; line-height: 1.8;
+      color: var(--fg-mute);
+    }
+    .sdd-code .c-comment { color: var(--fg-dim); }
+    .sdd-code .c-cmd { color: var(--accent-hex); }
+    .sdd-code .c-path { color: var(--fg); }
+
+    /* ---- cta ---- */
+    .sdd-cta-section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .sdd-model-cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 24px;
+    }
+    @media (max-width: 640px) { .sdd-model-cards { grid-template-columns: 1fr; } }
+    .sdd-card {
+      background: var(--bg-2); border: 1px solid var(--line); padding: 40px 36px;
+    }
+    .sdd-card-tag { font-size: 10px; letter-spacing: 0.14em; color: var(--fg-mute); margin-bottom: 20px; }
+    .sdd-card-title {
+      font-size: clamp(24px, 3vw, 36px); font-weight: 600;
+      letter-spacing: -0.03em; color: var(--fg); line-height: 1; margin-bottom: 8px;
+    }
+    .sdd-card-desc { font-size: 13px; color: var(--fg-mute); margin: 0 0 28px; line-height: 1.6; }
+    .sdd-cta-link {
+      display: block; padding: 14px 20px; border: 1px solid var(--fg-mute);
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px; letter-spacing: 0.04em;
+      text-decoration: none; transition: border-color 0.15s, color 0.15s; margin-top: 24px;
+      text-align: center;
+    }
+    .sdd-cta-link:hover, .sdd-cta-link.primary { border-color: var(--accent-hex); color: var(--accent-hex); }
+
+    /* ---- back ---- */
+    .sdd-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
+    .sdd-back:hover { color: var(--accent-hex); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="ask-exocortex.html">ask</a>
+          <a href="workshops.html">workshops</a>
+          <a href="advisory.html">advisory</a>
+          <a href="codebase-intelligence.html">codebase-intel</a>
+          <a href="exocortex-as-a-service.html">exocortex</a>
+          <a href="index.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">// €400</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- hero -->
+      <section class="sdd-hero">
+        <div class="sdd-eyebrow">// product · sdd boost pack</div>
+        <h1 class="sdd-title">
+          50 skills.<br/>
+          <em>One install.</em>
+        </h1>
+        <p class="sdd-lede">
+          Curated Claude Code skills for engineering teams. Skills-Driven Development —
+          your team's playbook, encoded as slash commands. Install once, available
+          in every repo, every session.
+        </p>
+        <div class="sdd-price-pill">
+          <span class="price-big">€400</span>
+          <span>·</span>
+          <div>
+            <div>team license · one-time</div>
+            <div class="price-note">unlimited devs · unlimited projects</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- skill catalog -->
+      <section class="sdd-catalog">
+        <div class="sdd-label">// skill categories — what's in the pack</div>
+        <table class="sdd-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Skills</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-cat">git</td>
+              <td class="td-skills">commit, branch, pr, review, changelog, release-notes</td>
+              <td class="td-count">6</td>
+            </tr>
+            <tr>
+              <td class="td-cat">testing</td>
+              <td class="td-skills">characterisation-test, e2e, unit, coverage-report, test-pyramid</td>
+              <td class="td-count">5</td>
+            </tr>
+            <tr>
+              <td class="td-cat">security</td>
+              <td class="td-skills">secrets-scan, threat-model, dep-audit, owasp-check, secret-rotation</td>
+              <td class="td-count">5</td>
+            </tr>
+            <tr>
+              <td class="td-cat">architecture</td>
+              <td class="td-skills">adr, architecture-map, refactor-plan, api-design, dependency-graph</td>
+              <td class="td-count">5</td>
+            </tr>
+            <tr>
+              <td class="td-cat">docs</td>
+              <td class="td-skills">api-docs, readme, setup-guide, onboarding, adr-index</td>
+              <td class="td-count">5</td>
+            </tr>
+            <tr>
+              <td class="td-cat">performance</td>
+              <td class="td-skills">n-plus-one, query-audit, bundle-analysis, perf-budget, profiling</td>
+              <td class="td-count">5</td>
+            </tr>
+            <tr>
+              <td class="td-cat">agentic</td>
+              <td class="td-skills">synthesis-index, kcp-update, agent-guard, memory-compact, context-reset</td>
+              <td class="td-count">5</td>
+            </tr>
+            <tr>
+              <td class="td-cat">team</td>
+              <td class="td-skills">standup, retro, pair-prompt, onboard-dev, skills-audit</td>
+              <td class="td-count">5</td>
+            </tr>
+            <tr>
+              <td class="td-cat">ci/cd</td>
+              <td class="td-skills">pipeline-check, deploy-guard, rollback-plan, health-check</td>
+              <td class="td-count">4</td>
+            </tr>
+            <tr>
+              <td class="td-cat">observability</td>
+              <td class="td-skills">log-audit, alert-review, trace-map, error-triage</td>
+              <td class="td-count">4</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:12px;color:var(--fg-dim);margin-top:16px;line-height:1.7;">
+          54 skills total. Plain <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.md</code>
+          files — human-readable, forkable, and composable with your own custom skills.
+          New skills added quarterly; team license covers all future updates.
+        </p>
+      </section>
+
+      <!-- how skills work + install -->
+      <section class="sdd-how">
+        <div>
+          <div class="sdd-how-label">// how skills work</div>
+          <ul class="sdd-check">
+            <li>Each skill is a <code style="font-size:12px;color:var(--accent-hex);">.md</code> file in <code style="font-size:12px;color:var(--accent-hex);">.claude/skills/</code></li>
+            <li>Invoked as <code style="font-size:12px;color:var(--accent-hex);">/skill-name</code> in Claude Code chat</li>
+            <li>Claude reads the skill file, executes the encoded workflow</li>
+            <li>Skills chain tools: Glob, Grep, Bash, Edit — orchestrated</li>
+            <li>Works with any project — no config, no setup beyond install</li>
+            <li>Extend and override per-project: add your own in <code style="font-size:12px;color:var(--accent-hex);">.claude/skills/</code></li>
+          </ul>
+          <p style="font-size:13px;color:var(--fg-mute);margin-top:24px;line-height:1.7;">
+            Skills are the operational layer of Skills-Driven Development (SDD).
+            Instead of prompting from scratch each session, your team encodes
+            proven patterns once — and invokes them.
+          </p>
+        </div>
+        <div>
+          <div class="sdd-how-label">// installation (2 steps)</div>
+          <div class="sdd-code">
+            <div class="c-comment"># 1. Install globally (all projects)</div>
+            <div><span class="c-cmd">mkdir -p</span> <span class="c-path">~/.claude/skills</span></div>
+            <div><span class="c-cmd">cp -r</span> <span class="c-path">sdd-boost-pack/skills/*</span> <span class="c-path">~/.claude/skills/</span></div>
+            <br/>
+            <div class="c-comment"># 2. Verify in Claude Code</div>
+            <div><span class="c-cmd">/commit</span> <span class="c-comment">← git workflow, ready</span></div>
+            <div><span class="c-cmd">/threat-model</span> <span class="c-comment">← security audit, ready</span></div>
+            <div><span class="c-cmd">/characterisation-test</span> <span class="c-comment">← tests, ready</span></div>
+          </div>
+          <p style="font-size:13px;color:var(--fg-mute);margin-top:20px;line-height:1.7;">
+            Or install per-project by placing skills in
+            <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.claude/skills/</code>
+            inside your repo. Per-project skills override global ones of the same name.
+          </p>
+        </div>
+      </section>
+
+      <!-- license tiers -->
+      <section class="sdd-cta-section">
+        <div class="sdd-label">// license options</div>
+        <div class="sdd-model-cards">
+          <div class="sdd-card">
+            <div class="sdd-card-tag">PERSONAL LICENSE</div>
+            <div class="sdd-card-title">Personal</div>
+            <div class="sdd-card-desc">
+              One developer, unlimited projects. Included in the KCP + Skills bundle.
+              Everything in the Boost Pack at the personal tier.
+            </div>
+            <ul class="sdd-check" style="margin-bottom:0;">
+              <li>All 54 skills included</li>
+              <li>One developer license</li>
+              <li>Quarterly updates included</li>
+              <li>Plain <code style="font-size:12px;color:var(--accent-hex);">.md</code> files — yours to customise</li>
+            </ul>
+            <a href="kcp-skills.html" class="sdd-cta-link">
+              included in KCP + Skills · €19 →
+            </a>
+          </div>
+          <div class="sdd-card">
+            <div class="sdd-card-tag">TEAM LICENSE · BOOST PACK</div>
+            <div class="sdd-card-title">Team</div>
+            <div class="sdd-card-desc">
+              Unlimited developers. One install in your shared <code style="font-size:12px;color:var(--accent-hex);">.claude/skills/</code>
+              — every developer on the team gets the full library.
+            </div>
+            <ul class="sdd-check" style="margin-bottom:0;">
+              <li>All 54 skills included</li>
+              <li>Unlimited developer seats</li>
+              <li>Quarterly updates included</li>
+              <li>Optional: onboarding session (2h)</li>
+            </ul>
+            <a href="mailto:selina@exoreaction.com?subject=SDD Boost Pack enquiry"
+               class="sdd-cta-link primary">
+              <span>$</span> enquire · €400 →
+            </a>
+          </div>
+        </div>
+        <a class="sdd-back" href="index.html">← back to ægis</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
