@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ask ExoCortex · Ægis</title>
+  <meta name="description" content="One-off engineering Q&A. Ask ExoCortex your hardest architecture, codebase, and stack questions. EUR 1 for 5 questions · EUR 10 for 20 questions with Sonnet." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ægis" />
+  <meta property="og:title" content="Ask ExoCortex · Ægis" />
+  <meta property="og:description" content="Engineering Q&A on demand. No booking. From EUR 1." />
+  <meta property="og:url" content="https://xn--gis-xla.no/ask-exocortex.html" />
+  <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://xn--gis-xla.no/ask-exocortex.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* ---- hero ---- */
+    .ask-hero {
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .ask-eyebrow { font-size: 12px; letter-spacing: 0.12em; color: var(--fg-mute); margin-bottom: 32px; }
+    .ask-title {
+      font-family: var(--t-mono); font-weight: 500;
+      font-size: clamp(36px, 6.5vw, 80px);
+      line-height: 0.97; letter-spacing: -0.04em; margin: 0;
+    }
+    .ask-title em { font-family: var(--t-disp); font-style: italic; font-weight: 300; color: var(--accent-hex); }
+    .ask-lede {
+      font-family: var(--t-disp); font-style: italic; font-weight: 300;
+      font-size: clamp(16px, 2vw, 22px); line-height: 1.45;
+      color: var(--fg-mute); max-width: 52ch; margin: 28px 0 0;
+    }
+
+    /* ---- tier cards ---- */
+    .ask-tiers {
+      padding: 64px 0;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      border-bottom: 1px solid var(--line);
+    }
+    @media (max-width: 640px) { .ask-tiers { grid-template-columns: 1fr; } }
+
+    .ask-tier-card {
+      background: var(--bg-2); border: 1px solid var(--line); padding: 40px 36px;
+    }
+    .ask-tier-tag { font-size: 10px; letter-spacing: 0.14em; color: var(--fg-mute); margin-bottom: 20px; }
+    .ask-tier-price {
+      font-size: clamp(36px, 5vw, 56px); font-weight: 600;
+      letter-spacing: -0.04em; color: var(--fg); line-height: 1; margin-bottom: 4px;
+    }
+    .ask-tier-sub { font-size: 13px; color: var(--fg-mute); margin: 0 0 24px; }
+    .ask-tier-cta {
+      display: block; padding: 14px 20px; border: 1px solid var(--accent-hex);
+      color: var(--accent-hex); font-family: var(--t-mono); font-size: 13px;
+      letter-spacing: 0.04em; text-align: center; cursor: pointer;
+      background: transparent; width: 100%; margin-top: 24px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ask-tier-cta:hover { background: var(--accent-hex); color: var(--bg); }
+
+    /* ---- scope note ---- */
+    .ask-scope {
+      padding: 32px 0 48px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* ---- chat UI ---- */
+    .ask-chat { padding: 64px 0 80px; }
+    .ask-chat-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 8px;
+    }
+    .ask-counter { font-family: var(--t-mono); font-size: 12px; color: var(--fg-mute); }
+    .ask-counter .count { color: var(--accent-hex); font-weight: 600; }
+
+    .ask-messages {
+      background: var(--bg-2); border: 1px solid var(--line);
+      padding: 24px; min-height: 240px; max-height: 480px;
+      overflow-y: auto; font-size: 13px; line-height: 1.7;
+      font-family: var(--t-mono); margin-bottom: 2px;
+    }
+    .ask-msg { margin-bottom: 20px; }
+    .ask-msg:last-child { margin-bottom: 0; }
+    .ask-msg-role { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 4px; }
+    .ask-msg-role.user { color: var(--accent-hex); }
+    .ask-msg-body { white-space: pre-wrap; word-break: break-word; color: var(--fg); }
+    .ask-msg-body.scope-error { color: var(--fg-mute); font-style: italic; }
+
+    .ask-input-area { display: flex; gap: 2px; }
+    .ask-input {
+      flex: 1; background: var(--bg-2); border: 1px solid var(--line);
+      color: var(--fg); font-family: var(--t-mono); font-size: 13px;
+      padding: 14px 16px; outline: none; resize: none; min-height: 52px;
+      transition: border-color 0.15s;
+    }
+    .ask-input:focus { border-color: var(--accent-hex); }
+    .ask-send {
+      background: transparent; border: 1px solid var(--accent-hex);
+      color: var(--accent-hex); font-family: var(--t-mono); font-size: 13px;
+      padding: 14px 20px; cursor: pointer; letter-spacing: 0.04em;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ask-send:hover:not(:disabled) { background: var(--accent-hex); color: var(--bg); }
+    .ask-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .ask-status-bar {
+      font-size: 11px; color: var(--fg-mute); margin-top: 8px;
+      font-family: var(--t-mono); min-height: 16px;
+    }
+    .ask-exhausted {
+      font-family: var(--t-disp); font-style: italic; font-size: 15px;
+      color: var(--fg-mute); margin-top: 24px; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <a href="index.html" style="display:flex;gap:10px;align-items:center;">
+            <span class="brand">ÆGIS</span>
+            <span class="dim">/</span>
+            <span>ægentisk</span>
+          </a>
+        </div>
+        <nav class="topbar-nav">
+          <a href="workshops.html">workshops</a>
+          <a href="advisory.html">advisory</a>
+          <a href="ai-readiness-package.html">ai-readiness</a>
+          <a href="codebase-intelligence.html">codebase-intel</a>
+          <a href="exocortex-as-a-service.html">exocortex</a>
+          <a href="index.html#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">// ask</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- hero -->
+      <section class="ask-hero">
+        <div class="ask-eyebrow">// product · ask exocortex</div>
+        <h1 class="ask-title">
+          Engineering<br/>
+          questions.<br/>
+          <em>Answered.</em>
+        </h1>
+        <p class="ask-lede">
+          No booking. No meeting. Ask ExoCortex your hardest architecture,
+          codebase, or stack decision questions — right now.
+        </p>
+      </section>
+
+      <!-- tier cards -->
+      <section class="ask-tiers" id="ask-tiers">
+        <div class="ask-tier-card">
+          <div class="ask-tier-tag">BASIC · HAIKU</div>
+          <div class="ask-tier-price">EUR 1</div>
+          <div class="ask-tier-sub">5 questions · 30-minute window</div>
+          <ul class="adv-check">
+            <li>Claude Haiku — fast, direct answers</li>
+            <li>Full conversation context across all 5 turns</li>
+            <li>Architecture, stack, and codebase questions</li>
+            <li>Engineering-scoped only</li>
+          </ul>
+          <button class="ask-tier-cta" id="ask-buy-basic">
+            <span>$</span> pay EUR 1 and start →
+          </button>
+        </div>
+        <div class="ask-tier-card">
+          <div class="ask-tier-tag">PRO · SONNET</div>
+          <div class="ask-tier-price">EUR 10</div>
+          <div class="ask-tier-sub">20 questions · 2-hour window</div>
+          <ul class="adv-check">
+            <li>Claude Sonnet — deeper analysis, more nuance</li>
+            <li>Full conversation context across all 20 turns</li>
+            <li>Architecture, stack, and codebase questions</li>
+            <li>Engineering-scoped only</li>
+          </ul>
+          <button class="ask-tier-cta" id="ask-buy-pro">
+            <span>$</span> pay EUR 10 and start →
+          </button>
+        </div>
+      </section>
+
+      <!-- scope note -->
+      <section class="ask-scope" id="ask-scope-note">
+        <p style="font-size:13px;color:var(--fg-mute);max-width:64ch;line-height:1.7;">
+          <strong style="color:var(--fg)">Engineering questions only.</strong>
+          Architecture, codebases, tech stack decisions, engineering team structure,
+          build-vs-buy tradeoffs, AI adoption. Out-of-scope questions are rejected
+          without using up a message.
+        </p>
+        <p style="font-size:12px;color:var(--fg-dim);max-width:64ch;line-height:1.6;margin-top:8px;">
+          Don't paste personal data. Sessions are not persisted after expiry.
+        </p>
+      </section>
+
+      <!-- loading state (while exchanging checkout ID) -->
+      <section id="ask-loading" style="display:none;padding:64px 0;">
+        <p style="font-family:var(--t-mono);font-size:13px;color:var(--fg-mute);">
+          // verifying payment… <span class="caret">▍</span>
+        </p>
+      </section>
+
+      <!-- error state -->
+      <section id="ask-error-section" style="display:none;padding:64px 0;">
+        <p style="font-family:var(--t-mono);font-size:13px;color:var(--accent-hex);" id="ask-error-msg"></p>
+        <a href="ask-exocortex.html" style="color:var(--fg-mute);font-size:12px;margin-top:16px;display:inline-block;">← start over</a>
+      </section>
+
+      <!-- chat UI (shown when session is active) -->
+      <section class="ask-chat" id="ask-chat" style="display:none;">
+        <div class="ask-chat-header">
+          <div class="col-label">// exocortex · active session</div>
+          <div class="ask-counter">
+            <span class="count" id="ask-count">—</span> messages left
+            &nbsp;·&nbsp; <span id="ask-expiry">—</span>
+          </div>
+        </div>
+        <div class="ask-messages" id="ask-messages">
+          <div class="ask-msg">
+            <div class="ask-msg-role">exocortex</div>
+            <div class="ask-msg-body">Session active. Ask your engineering question.</div>
+          </div>
+        </div>
+        <div class="ask-input-area">
+          <textarea
+            class="ask-input" id="ask-input"
+            placeholder="describe your architecture problem, stack decision, or codebase question…"
+            rows="2"
+          ></textarea>
+          <button class="ask-send" id="ask-send">↵ send</button>
+        </div>
+        <div class="ask-status-bar" id="ask-status-bar"></div>
+        <div class="ask-exhausted" id="ask-exhausted" style="display:none;">
+          Session complete. For deeper work, book a full
+          <a href="advisory.html" style="color:var(--accent-hex)">advisory review</a>
+          or join the <a href="exocortex-as-a-service.html" style="color:var(--accent-hex)">ExoCortex retainer</a>.
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><span class="brand small">ÆGIS</span><span class="dim"> · ægentisk · </span><span class="dim">© 2026</span></div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ── Config ─────────────────────────────────────────────────────────────────
+    // Replace these with your Stripe Payment Link URLs after creating them:
+    //   Stripe dashboard → Payment Links → Create
+    //   Success redirect: https://xn--gis-xla.no/ask-exocortex.html?checkout={CHECKOUT_SESSION_ID}&tier=basic
+    var STRIPE_LINK_BASIC = "https://buy.stripe.com/REPLACE_BASIC_LINK";
+    var STRIPE_LINK_PRO   = "https://buy.stripe.com/REPLACE_PRO_LINK";
+    var PROXY = "https://aegis-proxy.totto.workers.dev";
+    var SESSION_KEY = "ask_exo_session";
+
+    // ── Buy buttons ────────────────────────────────────────────────────────────
+    (function() {
+      var buyBasic = document.getElementById('ask-buy-basic');
+      var buyPro   = document.getElementById('ask-buy-pro');
+      if (buyBasic) buyBasic.addEventListener('click', function() {
+        window.location.href = STRIPE_LINK_BASIC;
+      });
+      if (buyPro) buyPro.addEventListener('click', function() {
+        window.location.href = STRIPE_LINK_PRO;
+      });
+    })();
+
+    // ── Session init ───────────────────────────────────────────────────────────
+    (async function() {
+      var params     = new URLSearchParams(window.location.search);
+      var checkoutId = params.get('checkout');
+      var tier       = params.get('tier');
+
+      // Resume existing session from sessionStorage
+      var stored = sessionStorage.getItem(SESSION_KEY);
+      if (stored) {
+        try {
+          var s = JSON.parse(stored);
+          if (s.token && s.expiresAt > Date.now()) {
+            showChat(s.token, s.messagesLeft, s.expiresAt);
+            return;
+          }
+        } catch (_) {}
+        sessionStorage.removeItem(SESSION_KEY);
+      }
+
+      // Exchange Stripe checkout ID for session token
+      if (checkoutId && tier) {
+        // Remove checkout params from URL to prevent re-redemption on refresh
+        window.history.replaceState({}, '', window.location.pathname);
+
+        showLoading(true);
+        try {
+          var resp = await fetch(PROXY + '/ask/session', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ checkoutId: checkoutId, tier: tier }),
+          });
+          var data = await resp.json();
+          if (!resp.ok) throw new Error(data.error || 'session exchange failed');
+
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+            token: data.token,
+            messagesLeft: data.messagesLeft,
+            expiresAt: data.expiresAt,
+          }));
+          showLoading(false);
+          showChat(data.token, data.messagesLeft, data.expiresAt);
+        } catch (e) {
+          showLoading(false);
+          showErrorSection(
+            (e.message || 'payment verification failed') +
+            '. If you were charged, email selina@exoreaction.com.'
+          );
+        }
+      }
+    })();
+
+    // ── UI helpers ──────────────────────────────────────────────────────────────
+    function showLoading(v) {
+      document.getElementById('ask-loading').style.display    = v ? 'block' : 'none';
+      document.getElementById('ask-tiers').style.display      = v ? 'none'  : '';
+      document.getElementById('ask-scope-note').style.display = v ? 'none'  : '';
+    }
+
+    function showErrorSection(msg) {
+      document.getElementById('ask-error-msg').textContent       = '// error: ' + msg;
+      document.getElementById('ask-error-section').style.display = 'block';
+      document.getElementById('ask-tiers').style.display         = 'none';
+      document.getElementById('ask-scope-note').style.display    = 'none';
+    }
+
+    function showChat(token, messagesLeft, expiresAt) {
+      document.getElementById('ask-tiers').style.display      = 'none';
+      document.getElementById('ask-scope-note').style.display = 'none';
+      document.getElementById('ask-loading').style.display    = 'none';
+      document.getElementById('ask-chat').style.display       = 'block';
+      updateCounter(messagesLeft, expiresAt);
+      wireChat(token, messagesLeft, expiresAt);
+    }
+
+    function updateCounter(messagesLeft, expiresAt) {
+      var countEl  = document.getElementById('ask-count');
+      var expiryEl = document.getElementById('ask-expiry');
+      if (countEl)  countEl.textContent  = messagesLeft;
+      if (expiryEl) {
+        var mins = Math.max(0, Math.round((expiresAt - Date.now()) / 60000));
+        expiryEl.textContent = mins + 'min remaining';
+      }
+    }
+
+    // ── Chat handler ───────────────────────────────────────────────────────────
+    function wireChat(token, initialMessages, expiresAt) {
+      var messagesLeft = initialMessages;
+      var input     = document.getElementById('ask-input');
+      var sendBtn   = document.getElementById('ask-send');
+      var msgList   = document.getElementById('ask-messages');
+      var statusBar = document.getElementById('ask-status-bar');
+      var exhausted = document.getElementById('ask-exhausted');
+      var loading   = false;
+
+      // Expiry countdown — updates every 30s
+      var countdownId = setInterval(function() {
+        updateCounter(messagesLeft, expiresAt);
+        if (Date.now() > expiresAt) {
+          clearInterval(countdownId);
+          statusBar.textContent = '// session expired';
+          sendBtn.disabled = true;
+          input.disabled   = true;
+        }
+      }, 30000);
+
+      if (messagesLeft <= 0) {
+        sendBtn.disabled = true;
+        input.disabled   = true;
+        exhausted.style.display = 'block';
+      }
+
+      function appendMsg(role, text, isScope) {
+        var msg    = document.createElement('div');
+        msg.className = 'ask-msg';
+        var roleEl = document.createElement('div');
+        roleEl.className = 'ask-msg-role' + (role === 'you' ? ' user' : '');
+        roleEl.textContent = role;
+        var body   = document.createElement('div');
+        body.className = 'ask-msg-body' + (isScope ? ' scope-error' : '');
+        body.textContent = text || '';
+        msg.appendChild(roleEl);
+        msg.appendChild(body);
+        msgList.appendChild(msg);
+        msgList.scrollTop = msgList.scrollHeight;
+        return body;
+      }
+
+      function typewrite(el, text, onDone) {
+        var chars = text.split('');
+        var i = 0;
+        function tick() {
+          if (i >= chars.length) { if (onDone) onDone(); return; }
+          var step = Math.min(4, chars.length - i);
+          el.textContent += chars.slice(i, i + step).join('');
+          i += step;
+          msgList.scrollTop = msgList.scrollHeight;
+          setTimeout(tick, 6);
+        }
+        tick();
+      }
+
+      async function send() {
+        var msg = input.value.trim();
+        if (!msg || loading || messagesLeft <= 0) return;
+
+        loading = true;
+        sendBtn.disabled = true;
+        input.disabled   = true;
+        statusBar.textContent = '// thinking…';
+
+        appendMsg('you', msg);
+        input.value = '';
+
+        try {
+          var resp = await fetch(PROXY + '/ask/chat', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ token: token, message: msg }),
+          });
+          var data = await resp.json();
+
+          if (!resp.ok) {
+            if (resp.status === 410) {
+              statusBar.textContent = '// ' + (data.error || 'session ended');
+              sendBtn.disabled = true;
+              input.disabled   = true;
+              exhausted.style.display = 'block';
+              clearInterval(countdownId);
+              return;
+            }
+            throw new Error(data.error || 'request failed');
+          }
+
+          messagesLeft = data.messagesLeft;
+
+          // Persist updated count
+          try {
+            var s = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{}');
+            s.messagesLeft = messagesLeft;
+            sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
+          } catch (_) {}
+
+          statusBar.textContent = '';
+          var bodyEl = appendMsg('exocortex', '', data.scopeError);
+
+          typewrite(bodyEl, data.response, function() {
+            loading = false;
+            updateCounter(messagesLeft, expiresAt);
+            if (messagesLeft <= 0) {
+              sendBtn.disabled = true;
+              input.disabled   = true;
+              exhausted.style.display = 'block';
+              clearInterval(countdownId);
+            } else {
+              sendBtn.disabled = false;
+              input.disabled   = false;
+              input.focus();
+            }
+          });
+        } catch (e) {
+          statusBar.textContent = '// error: ' + (e.message || 'unknown');
+          loading = false;
+          sendBtn.disabled = false;
+          input.disabled   = false;
+        }
+      }
+
+      sendBtn.addEventListener('click', send);
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+      });
+    }
+  </script>
+</body>
+</html>

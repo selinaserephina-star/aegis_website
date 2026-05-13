@@ -168,7 +168,7 @@ em { font-style: italic; color: var(--accent-hex); font-weight: 500; }
   animation: blink 1.05s steps(2, end) infinite;
   transition: opacity 200ms;
 }
-.headline-caret.off { opacity: 0; }
+.headline-caret.off { opacity: 0; display: none; }
 .headline-dot {
   display: inline-block;
   margin-left: 0.02em;

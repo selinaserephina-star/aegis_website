@@ -2,6 +2,19 @@ name = "aegis-proxy"
 main = "index.js"
 compatibility_date = "2024-01-01"
 
+# KV namespace for Ask ExoCortex sessions
+# Setup before first deploy:
+#   wrangler kv:namespace create ASK_SESSIONS
+#   → copy the id output below
+[[kv_namespaces]]
+binding = "ASK_SESSIONS"
+id = "REPLACE_WITH_NAMESPACE_ID"
+
+# Secrets (set via wrangler secret put):
+#   CLAUDE_API_KEY     — already set
+#   RESEND_API_KEY     — already set
+#   STRIPE_SECRET_KEY  — new: wrangler secret put STRIPE_SECRET_KEY
+
 # After deploying, the worker URL will be:
 # https://aegis-proxy.<your-subdomain>.workers.dev
 #
