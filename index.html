@@ -22,20 +22,1138 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap"
-    rel="stylesheet"
-  />
-
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="site.css" />
+
+  <style>
+    /* KCP Package top-level tab buttons */
+    .kcp-tab-btn {
+      flex: 1; background: transparent; color: var(--fg-dim);
+      border: 1px solid var(--line); font-family: var(--t-mono);
+      font-size: 12px; letter-spacing: 0.06em; padding: 10px 14px;
+      cursor: pointer; text-align: left;
+    }
+    .kcp-tab-btn.active { background: var(--bg-2); color: var(--fg); border-color: var(--accent-hex); }
+    .kcp-tab-label { font-size: 10px; letter-spacing: 0.1em; margin-bottom: 2px; color: var(--fg-dim); }
+    .kcp-tab-btn.active .kcp-tab-label { color: var(--accent-hex); }
+    .kcp-tab-sub { font-size: 11px; color: var(--fg-dim); }
+    .kcp-tab-btn.active .kcp-tab-sub { color: var(--fg-mute); }
+    /* KCP code input sub-tab buttons */
+    .kcp-input-btn {
+      background: transparent; color: var(--fg-mute); border: 1px solid var(--line);
+      font-family: var(--t-mono); font-size: 11px; letter-spacing: 0.08em;
+      padding: 4px 10px; cursor: pointer;
+    }
+    .kcp-input-btn.active { background: var(--accent-hex); color: var(--bg); border-color: var(--accent-hex); }
+    /* ExoCortex tier buttons */
+    .exo-tier-btn {
+      background: transparent; color: var(--fg-mute); border: 1px solid var(--line);
+      font-family: var(--t-mono); font-size: 11px; letter-spacing: 0.08em;
+      padding: 5px 12px; cursor: pointer;
+    }
+    .exo-tier-btn.active { background: var(--accent-hex); color: var(--bg); border-color: var(--accent-hex); }
+    /* Inline form error / success */
+    .form-error { font-size: 12px; color: var(--accent-hex); letter-spacing: 0.02em; display: none; }
+    .form-success { font-size: 13px; color: var(--accent-hex); margin-top: 8px; line-height: 1.8; display: none; }
+  </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div class="page">
 
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+    <!-- ===== header ===== -->
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <span class="brand">ÆGIS</span>
+          <span class="dim">/</span>
+          <span>ægentisk</span>
+        </div>
+        <nav class="topbar-nav">
+          <a href="#demo">demo</a>
+          <a href="#offerings">offerings</a>
+          <a href="workshops.html">workshops</a>
+          <a href="advisory.html">advisory</a>
+          <a href="#hands-on">hands-on</a>
+          <a href="#tooling">tooling</a>
+          <a href="#who">who</a>
+          <a href="#engage">engage</a>
+        </nav>
+        <div class="topbar-right">
+          <span class="status-dot"></span>
+          <span class="dim">CET</span>
+          <span class="mono-time" id="header-clock"></span>
+          <button class="hamburger" id="hamburger-btn" aria-label="menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <div class="mobile-nav" id="mobile-nav" style="display:none">
+        <a href="#demo">demo</a>
+        <a href="#offerings">offerings</a>
+        <a href="workshops.html">workshops</a>
+        <a href="advisory.html">advisory</a>
+        <a href="#hands-on">hands-on</a>
+        <a href="#tooling">tooling</a>
+        <a href="#who">who</a>
+        <a href="#engage">engage</a>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- ===== hero ===== -->
+      <section class="hero" id="top">
+        <div class="hero-meta">
+          <span>// AI-era development partner</span>
+          <span class="dim">— est. Oslo</span>
+        </div>
+        <h1 class="hero-title" id="hero-title" title="replay">
+          <span class="headline" id="hero-headline">
+            <span class="ltr lig">Æ</span>
+            <span class="ltr">g</span>
+            <span class="ltr">e</span>
+            <span class="ltr">n</span>
+            <span class="ltr">t</span>
+            <span class="ltr">i</span>
+            <span class="ltr">s</span>
+            <span class="ltr">k</span>
+            <span class="headline-caret" id="hero-caret">▍</span>
+            <span class="headline-dot dim">.</span>
+          </span>
+          <br>
+          <span class="hero-sub">
+            Organisations that work <em>with</em> AI<span class="dim">—</span>
+            and <em>as</em> AI.<span class="caret" aria-hidden="true">▍</span>
+          </span>
+        </h1>
+        <div class="hero-foot">
+          <div class="hero-foot-col">
+            <div class="dim">// what</div>
+            <div>Talks · Workshops · Advisory · Hands-on · Tooling</div>
+          </div>
+          <div class="hero-foot-col">
+            <div class="dim">// how</div>
+            <div>Human-led. Production-grade. Memory as infrastructure.</div>
+          </div>
+          <div class="hero-foot-col">
+            <a class="cta-primary" href="#demo">
+              <span>$</span> try the live demo <span class="arrow">↓</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== demo / ask codebase ===== -->
+      <section class="section" id="demo">
+        <div class="section-label">
+          <span class="dim">[</span><span> 01 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>LIVE · ÆGENTISK MATURITY · PREVIEW</span>
+        </div>
+        <h2 class="section-title">Try it. <span class="dim">Right now.</span></h2>
+        <p class="section-lede">
+          Describe your codebase in one line. Get a 60-second sample maturity snapshot —
+          the same shape we deliver in a paid review, just shallower.
+        </p>
+        <div class="demo-shell">
+          <div class="demo-prompt">
+            <span class="dim">$</span>
+            <span> aegis review</span>
+            <span class="dim"> --stack</span>
+          </div>
+          <div class="demo-input-row">
+            <span class="prompt-arrow">›</span>
+            <input type="text" class="demo-input" id="demo-input"
+              placeholder="describe your codebase…" />
+            <button class="demo-run" id="demo-run">↵</button>
+          </div>
+          <div class="demo-examples">
+            <span class="dim">// try</span>
+            <button class="demo-chip" data-example="github.com/myorg/payments-api · Java 21 · Spring · 180 repos">github.com/myorg/payments-api · Java 21 · Spring · 180 repos</button>
+            <button class="demo-chip" data-example="Monorepo · TypeScript · Next.js + tRPC · 40 engineers">Monorepo · TypeScript · Next.js + tRPC · 40 engineers</button>
+            <button class="demo-chip" data-example="Python · Django · 8-year-old codebase · 12 services">Python · Django · 8-year-old codebase · 12 services</button>
+          </div>
+          <pre class="demo-output" id="demo-output" style="display:none"></pre>
+        </div>
+        <p class="footnote">
+          Powered by Claude Haiku · this is a sample, not a deliverable. Real review = 6–8 reports, architecture guards, prioritised roadmap.
+        </p>
+      </section>
+
+      <!-- ===== offerings ===== -->
+      <section class="section" id="offerings">
+        <div class="section-label">
+          <span class="dim">[</span><span> 02 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>OFFERINGS</span>
+        </div>
+        <h2 class="section-title">Five ways to work with us.</h2>
+        <p class="section-lede">Book one — or run the full programme.</p>
+        <div class="offer-grid five">
+          <a class="offer" href="#talks">
+            <div class="offer-num">01</div>
+            <div class="offer-title">Talks</div>
+            <div class="offer-desc">Keynotes at company conferences and developer communities.</div>
+            <div class="offer-arrow">→</div>
+          </a>
+          <a class="offer" href="#workshops">
+            <div class="offer-num">02</div>
+            <div class="offer-title">Workshops</div>
+            <div class="offer-desc">Hands-on team training. SDD, Claude Code, KCP — on your codebase.</div>
+            <div class="offer-arrow">→</div>
+          </a>
+          <a class="offer" href="#advisory">
+            <div class="offer-num">03</div>
+            <div class="offer-title">Advisory</div>
+            <div class="offer-desc">Ægentisk maturity review. One-off or monthly retainer.</div>
+            <div class="offer-arrow">→</div>
+          </a>
+          <a class="offer" href="#hands-on">
+            <div class="offer-num">04</div>
+            <div class="offer-title">Hands-on</div>
+            <div class="offer-desc">We build alongside you. Agentic development → full transformation.</div>
+            <div class="offer-arrow">→</div>
+          </a>
+          <a class="offer" href="#tooling">
+            <div class="offer-num">05</div>
+            <div class="offer-title">Tooling</div>
+            <div class="offer-desc">Synthesis · ExoCortex · KCP · Skills Library — implementation + license.</div>
+            <div class="offer-arrow">→</div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ===== talks ===== -->
+      <section class="section" id="talks">
+        <div class="section-label">
+          <span class="dim">[</span><span> 03 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>TALKS</span>
+        </div>
+        <h2 class="section-title">On stage, where the builders are.</h2>
+        <div class="two-col">
+          <div>
+            <div class="col-label">// developer communities</div>
+            <p class="footnote" style="margin:0">javaBin · Agentbrew · JVM, JavaScript and agentic-dev meetups across Oslo and beyond.</p>
+          </div>
+          <div>
+            <div class="col-label">// businesses &amp; consultancies</div>
+            <p class="footnote" style="margin:0">Internal events and brown-bags for engineering &amp; product organisations across the Nordics.</p>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="dim">→ recent</span>
+          <span> javaBin Oslo Meetup · </span>
+          <span class="dim">meetup.com/javabin/events/314316420</span>
+        </div>
+        <p class="footnote">Practical, opinionated, grounded in production — not hype.</p>
+      </section>
+
+      <!-- ===== workshops ===== -->
+      <section class="section" id="workshops">
+        <div class="section-label">
+          <span class="dim">[</span><span> 04 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>WORKSHOPS</span>
+        </div>
+        <h2 class="section-title">The 10× Developer Productivity Workshop.</h2>
+        <p class="section-lede">
+          Transform your team into AI-era developers who ship 10× value — with a sharp eye on AI cost.
+        </p>
+        <div class="workshop-grid">
+          <div class="workshop-loop">
+            <div class="col-label">// iterative loop</div>
+            <pre class="ascii">  ┌──────┐   ┌──────┐   ┌────────┐
+  │ build│ → │ test │ → │ change │
+  └──────┘   └──────┘   └────────┘
+                            │
+                            ▼
+  ┌──────┐   ┌──────────┐   ┌──────┐
+  │repeat│ ← │ improve  │ ← │ learn│
+  └──────┘   └──────────┘   └──────┘</pre>
+          </div>
+          <div>
+            <div class="col-label">// what you bring</div>
+            <p>Your own codebase or idea.</p>
+            <div class="col-label spaced">// what you leave with</div>
+            <p>A Claude that actually knows what it's working on. Personal license to the Skills Library.</p>
+            <div class="col-label spaced">// delivered for</div>
+            <p class="footnote" style="margin:0">Engineering teams across consulting, product and applied-AI organisations.</p>
+          </div>
+        </div>
+        <div class="pricing-grid">
+          <div class="price-card">
+            <div class="price-tag">INDIVIDUAL · OPEN ENROLMENT</div>
+            <div class="price-headline">
+              <span class="price-amount">9 000 NOK</span>
+              <span class="price-unit">/ seat</span>
+            </div>
+            <ul class="check-list dense">
+              <li>Next cohort · <strong>21 May</strong></li>
+              <li>15 places only · first-come</li>
+              <li>Personal license to the Skills Library included</li>
+              <li>Bring your own codebase</li>
+            </ul>
+            <div class="cta-with-foot">
+              <a class="cta-primary"
+                 href="mailto:selina@exoreaction.com?subject=Workshop%2021%20May%20-%20book%20a%20seat"
+                 onclick="copyAndToast('selina@exoreaction.com')">
+                <span>$</span> book your place <span class="arrow">→</span>
+              </a>
+              <div class="mail-cta-foot">
+                <span class="dim">or write directly:</span>
+                <a class="mail-cta-link" href="mailto:selina@exoreaction.com"
+                   onclick="copyAndToast('selina@exoreaction.com')">
+                  selina@exoreaction.com <span class="arrow">→</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="price-card">
+            <div class="price-tag">BUSINESS · TEAM TRAINING</div>
+            <div class="price-headline">
+              <span class="price-amount">enquire</span>
+            </div>
+            <ul class="check-list dense">
+              <li>On your codebase, on your premises</li>
+              <li>Tailored curriculum · paired follow-ups</li>
+              <li>Skills Library business license available</li>
+              <li>Half-day to multi-day formats</li>
+            </ul>
+            <div class="cta-with-foot">
+              <a class="cta-primary outline"
+                 href="mailto:selina@exoreaction.com?subject=Business%20workshop%20enquiry"
+                 onclick="copyAndToast('selina@exoreaction.com')">
+                <span>$</span> enquire within <span class="arrow">→</span>
+              </a>
+              <div class="mail-cta-foot">
+                <span class="dim">or write directly:</span>
+                <a class="mail-cta-link" href="mailto:selina@exoreaction.com"
+                   onclick="copyAndToast('selina@exoreaction.com')">
+                  selina@exoreaction.com <span class="arrow">→</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="footnote" style="margin-top:32px">
+          <a href="workshops.html" class="link-amber">full workshop page →</a>
+        </p>
+      </section>
+
+      <!-- ===== testimonial ===== -->
+      <section class="section testimonial" id="testimonial">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>
+          I've been on many AI courses that promise a lot and deliver less. This was different.
+          You show up with your own codebase and work with it all day.
+          <strong> Before lunch we had written several skills</strong> — rules obvious to me, invisible to any AI.
+          <br><br>
+          The instructor clearly doesn't just read about AI — he uses the tools daily on real
+          problems. Claude now orients itself quickly in our codebase. Less noise, and an assistant
+          that actually knows what it's working on. After one day we work noticeably smarter with AI.
+        </blockquote>
+        <div class="quote-attr">
+          <span class="dim">—</span> Ketil Hjerpaasen <span class="dim">·</span>
+          <span class="dim">Head of Consulting, Item Consulting</span>
+        </div>
+        <div class="quote-divider"></div>
+        <div class="quote-lang dim">// no</div>
+        <blockquote lang="no">
+          Vår visjon i Mynder er nært knyttet til europeisk digital suverenitet. Vi utvikler en ny
+          infrastruktur som gjør at virksomheter trygt kan ta i bruk AI-agenter — med sikkerheten,
+          sporbarheten og compliance-forankringen som kreves når det står noe på spill. Tiden for å
+          eksperimentere er over; nå handler det om å sette agenter i produksjon der de skaper reell
+          forretningsverdi og kutter kostnader. Det er noe hele Europa etterspør.
+          <br><br>
+          <strong>Etter at Totto kom inn har vi fått en etterlengtet tempoøkning</strong>, og leverer
+          nå mer og raskere — uten å gå på akkord med kvalitet eller sikkerhet — tvert imot. Han er i
+          tillegg svært hyggelig og en raus læremester, og det er et privilegium å bygge et agentisk
+          selskap sammen med ham. Han er rett og slett et unikum, og vi er svært heldige som fikk ham
+          med på laget.
+        </blockquote>
+        <div class="quote-attr">
+          <span class="dim">—</span> Synnøve, CEO Mynder
+        </div>
+      </section>
+
+      <!-- ===== advisory ===== -->
+      <section class="section" id="advisory">
+        <div class="section-label">
+          <span class="dim">[</span><span> 05 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>ADVISORY</span>
+        </div>
+        <h2 class="section-title">Make your codebase agent-ready.</h2>
+        <div class="two-col gap-wide">
+          <div>
+            <div class="col-label">// what we assess</div>
+            <ul class="check-list">
+              <li>Organisation and team readiness</li>
+              <li>Tech stacks and codebase fit for agents</li>
+              <li>Which areas can be automated</li>
+              <li>How large is the blast radius</li>
+            </ul>
+          </div>
+          <div>
+            <div class="col-label">// what you get</div>
+            <ul class="check-list">
+              <li>6–8 technical reports</li>
+              <li>Architecture guards</li>
+              <li>Security analysis</li>
+              <li>Prioritised roadmap for ægentisk adoption</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          Available as a one-off engagement or as a monthly retainer for continuous access.
+        </div>
+        <p class="footnote" style="margin-top:32px">
+          <a href="advisory.html" class="link-amber">full advisory page →</a>
+        </p>
+      </section>
+
+      <!-- ===== case study ===== -->
+      <section class="section case" id="case">
+        <div class="section-label">
+          <span class="dim">[</span><span> 06 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>CASE · MAR–APR 2026</span>
+        </div>
+        <h2 class="section-title">21 deliverables in 7 days.</h2>
+        <div class="case-stats">
+          <div class="stat"><div class="stat-value">21</div><div class="stat-label">deliverables</div></div>
+          <div class="stat"><div class="stat-value">1.75M</div><div class="stat-label">NOK · value at Oslo rates</div></div>
+          <div class="stat"><div class="stat-value">10×</div><div class="stat-label">throughput</div></div>
+        </div>
+        <div class="case-timeline">
+          <div class="col-label">// 7-day timeline · human-loop checkpoints marked ⌖</div>
+          <ol class="case-days">
+            <li><span class="case-day">D1</span> <span class="case-act">scope · index codebase · run synthesis</span> <span class="dim">⌖ kickoff</span></li>
+            <li><span class="case-day">D2</span> <span class="case-act">architecture analysis · threat model</span></li>
+            <li><span class="case-day">D3</span> <span class="case-act">security remediation · paired refactor</span> <span class="dim">⌖ midweek review</span></li>
+            <li><span class="case-day">D4</span> <span class="case-act">frontend + backend fixes · characterisation tests</span></li>
+            <li><span class="case-day">D5</span> <span class="case-act">strategic planning · cost model · skill packaging</span></li>
+            <li><span class="case-day">D6</span> <span class="case-act">test pyramid · deploy pipeline · briefings</span></li>
+            <li><span class="case-day">D7</span> <span class="case-act">handover · demo · train-the-trainer</span> <span class="dim">⌖ sign-off</span></li>
+          </ol>
+        </div>
+        <div class="case-deliverables">
+          <button class="case-toggle" id="case-toggle-btn">+ show all 21 deliverables</button>
+          <div class="case-grid" id="case-grid" style="display:none">
+            <div class="case-item"><span class="case-id">D01</span><span class="case-title">Architecture map · all 12 services</span><span class="case-how dim">// synthesis index</span></div>
+            <div class="case-item"><span class="case-id">D02</span><span class="case-title">Threat model · 21 signal types</span><span class="case-how dim">// automated scan + human review</span></div>
+            <div class="case-item"><span class="case-id">D03</span><span class="case-title">Secret rotation · CI hardening</span><span class="case-how dim">// guardrail script + paired</span></div>
+            <div class="case-item"><span class="case-id">D04</span><span class="case-title">Frontend perf budget + fixes</span><span class="case-how dim">// characterisation tests</span></div>
+            <div class="case-item"><span class="case-id">D05</span><span class="case-title">Backend N+1 audit + remediation</span><span class="case-how dim">// pattern refactor</span></div>
+            <div class="case-item"><span class="case-id">D06</span><span class="case-title">Database index review</span><span class="case-how dim">// query log analysis</span></div>
+            <div class="case-item"><span class="case-id">D07</span><span class="case-title">API contract documentation</span><span class="case-how dim">// auto-generated + reviewed</span></div>
+            <div class="case-item"><span class="case-id">D08</span><span class="case-title">Test pyramid restructure</span><span class="case-how dim">// characterisation testing</span></div>
+            <div class="case-item"><span class="case-id">D09</span><span class="case-title">Deploy pipeline v2 · canary</span><span class="case-how dim">// human-led rewrite</span></div>
+            <div class="case-item"><span class="case-id">D10</span><span class="case-title">Observability stack · traces</span><span class="case-how dim">// agent-paired</span></div>
+            <div class="case-item"><span class="case-id">D11</span><span class="case-title">Onboarding doc · auto-maintained</span><span class="case-how dim">// synthesis-driven</span></div>
+            <div class="case-item"><span class="case-id">D12</span><span class="case-title">Skills library · 18 team-specific</span><span class="case-how dim">// session-pattern mining</span></div>
+            <div class="case-item"><span class="case-id">D13</span><span class="case-title">Migration plan · legacy module</span><span class="case-how dim">// advisory + paired</span></div>
+            <div class="case-item"><span class="case-id">D14</span><span class="case-title">Cost model · AI usage caps</span><span class="case-how dim">// live spend tracker</span></div>
+            <div class="case-item"><span class="case-id">D15</span><span class="case-title">Code-review automation</span><span class="case-how dim">// klaw agent</span></div>
+            <div class="case-item"><span class="case-id">D16</span><span class="case-title">Strategic roadmap · 2 quarters</span><span class="case-how dim">// synthesis + workshop</span></div>
+            <div class="case-item"><span class="case-id">D17</span><span class="case-title">Vendor risk register</span><span class="case-how dim">// automated + signed off</span></div>
+            <div class="case-item"><span class="case-id">D18</span><span class="case-title">Knowledge graph of repos</span><span class="case-how dim">// kcp federation</span></div>
+            <div class="case-item"><span class="case-id">D19</span><span class="case-title">Briefing templates · 4 roles</span><span class="case-how dim">// mímir composer</span></div>
+            <div class="case-item"><span class="case-id">D20</span><span class="case-title">Train-the-trainer kit</span><span class="case-how dim">// skill packaging</span></div>
+            <div class="case-item"><span class="case-id">D21</span><span class="case-title">Live demo + handover deck</span><span class="case-how dim">// showcase</span></div>
+          </div>
+        </div>
+        <div class="rule">
+          <span class="rule-line"></span>
+          <span class="rule-label">// 50-week sustained outcome · git log --shortstat</span>
+          <span class="rule-line"></span>
+        </div>
+        <div class="case-stats">
+          <div class="stat"><div class="stat-value">10.7×</div><div class="stat-label">velocity multiplier</div></div>
+          <div class="stat"><div class="stat-value">~12×</div><div class="stat-label">per-developer efficiency after 85% headcount departed</div></div>
+          <div class="stat"><div class="stat-value">100×</div><div class="stat-label">test coverage · 40 → 4,000 tests</div></div>
+          <div class="stat"><div class="stat-value">22.8</div><div class="stat-label">PR / FTE / week · DORA Elite / Spike</div></div>
+        </div>
+        <p class="footnote" style="margin-top:20px">
+          All figures from git history — not surveys.
+          Team size fell 85%. Engineering output grew 10.7×.
+          Same client, June 2025 – May 2026.
+        </p>
+      </section>
+
+      <!-- ===== retainer ===== -->
+      <section class="section" id="retainer">
+        <div class="rule">
+          <span class="rule-line"></span>
+          <span class="rule-label">// continued engagement</span>
+          <span class="rule-line"></span>
+        </div>
+        <h2 class="section-title small">The monthly retainer — five needs.</h2>
+        <div class="retainer-grid">
+          <div class="retainer-card">
+            <div class="retainer-num">01</div>
+            <div class="retainer-title">Agent-ready codebase</div>
+            <div class="retainer-desc">More testable, modular, autonomous-friendly. Velocity compounds.</div>
+          </div>
+          <div class="retainer-card">
+            <div class="retainer-num">02</div>
+            <div class="retainer-title">Market launches</div>
+            <div class="retainer-desc">Blockers patched. Launch becomes a scheduling decision.</div>
+          </div>
+          <div class="retainer-card">
+            <div class="retainer-num">03</div>
+            <div class="retainer-title">Migration completion</div>
+            <div class="retainer-desc">Architectural guidance against live production systems.</div>
+          </div>
+          <div class="retainer-card">
+            <div class="retainer-num">04</div>
+            <div class="retainer-title">Security posture</div>
+            <div class="retainer-desc">Secret rotation, scanning, guardrails.</div>
+          </div>
+          <div class="retainer-card">
+            <div class="retainer-num">05</div>
+            <div class="retainer-title">AI-ready team</div>
+            <div class="retainer-desc">Paired workshops + coached sprints. Muscle that compounds.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== hands-on ===== -->
+      <section class="section" id="hands-on">
+        <div class="section-label">
+          <span class="dim">[</span><span> 07 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>HANDS-ON</span>
+        </div>
+        <h2 class="section-title">We build alongside you.</h2>
+        <p class="section-lede">
+          AI digital workers running in production. Human-led, not autonomous. Single feature → full ægentisk transformation.
+        </p>
+        <div class="build-grid">
+          <div class="build-card">
+            <div class="col-label">// current builds</div>
+            <div class="build-item">
+              <span class="build-name">Active client build</span>
+              <span class="dim">— production agentic infrastructure</span>
+            </div>
+            <div class="build-item">
+              <span class="build-name">elprint</span>
+              <span class="dim">— lib-electronic-components · Apache 2.0 · Java</span>
+            </div>
+            <p class="build-note">
+              elprint: MPN normalisation, 17 specialised similarity calculators
+              (resistors, MOSFETs, MCUs, sensors…), BOM validation, metadata for 135+ manufacturers.
+            </p>
+          </div>
+          <div class="build-card">
+            <div class="col-label">// reference agents</div>
+            <div class="build-item">
+              <span class="build-name">Mímir</span>
+              <span class="dim"> ( ironclaw0 )</span>
+            </div>
+            <div class="build-item">
+              <span class="build-name">Klaw</span>
+              <span class="dim"> ( ironclaw1 )</span>
+            </div>
+            <p class="build-note">24/7 on AWS EC2.</p>
+          </div>
+          <div class="build-proof">
+            <div class="proof-num">10–30×</div>
+            <div class="proof-label">development speed<br>with controlled quality</div>
+          </div>
+        </div>
+        <div class="callout spaced">
+          <span class="dim">// transformation arc · </span>
+          <span>single feature → agentic team → ægentisk company. </span>
+          <a href="agentic-company.html" class="link-amber">read the agentic company essay →</a>
+        </div>
+      </section>
+
+      <!-- ===== tooling ===== -->
+      <section class="section" id="tooling">
+        <div class="section-label">
+          <span class="dim">[</span><span> 08 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>TOOLING</span>
+        </div>
+        <h2 class="section-title">Memory as <em>infrastructure</em>.</h2>
+        <p class="section-lede">
+          Most AI-dev setups treat memory as text files you maintain by hand. We treat it as a system —
+          and we'll either implement it on your stack, or license you the pieces.
+        </p>
+
+        <div class="diff-table">
+          <div class="diff-head">
+            <div class="diff-h-c">CONFIGURATION APPROACH</div>
+            <div class="diff-h-e">ÆGIS TOOLING</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-c"><span class="minus">−</span> CLAUDE.md, hand-curated skill files</div>
+            <div class="diff-e"><span class="plus">+</span> Semantic indexing, behavioural scoring</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-c"><span class="minus">−</span> Manual routing and memory maintenance</div>
+            <div class="diff-e"><span class="plus">+</span> Deterministic, scheduled memory maintenance</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-c"><span class="minus">−</span> Scales to one developer, breaks at team scale</div>
+            <div class="diff-e"><span class="plus">+</span> Scales to 289+ repos, 66,350 files, 529 skills</div>
+          </div>
+          <div class="diff-row">
+            <div class="diff-c"><span class="minus">−</span> Memory rots silently</div>
+            <div class="diff-e"><span class="plus">+</span> Push-based context: 53–80% fewer tool calls</div>
+          </div>
+        </div>
+
+        <div class="three-col spaced">
+          <div class="tool-card">
+            <div class="col-label">// 01 — synthesis</div>
+            <div class="tool-name">Knowledge index across your entire codebase.</div>
+            <ul class="check-list dense">
+              <li>Lucene-based, sub-second retrieval across tens of thousands of files</li>
+              <li>Knowledge graph of directory purpose &amp; archetype</li>
+              <li>21 security signal types — incl. AI-specific threats</li>
+              <li>Auto-generates skills from recurring session patterns</li>
+            </ul>
+            <div class="tool-stats">
+              <div class="stat"><div class="stat-value">1.2s</div><div class="stat-label">answer latency</div></div>
+              <div class="stat"><div class="stat-value">−40%</div><div class="stat-label">tool calls</div></div>
+              <div class="stat"><div class="stat-value">+67%</div><div class="stat-label">reasoning time</div></div>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="col-label">// 02 — ExoCortex</div>
+            <div class="tool-name">Declare → execute → verify.</div>
+            <p class="tool-desc">
+              Human-led ægentisk workflow. In the loop at the decisions that matter
+              — out of it everywhere else.
+            </p>
+            <pre class="ascii small">$ exo declare  intent
+$ exo execute  --dry-run
+$ exo verify   --human</pre>
+          </div>
+          <div class="tool-card">
+            <div class="col-label">// 03 — kcp</div>
+            <div class="tool-name">Federated org manifest.</div>
+            <p class="tool-desc">
+              <span class="dim">knowledge.yaml →</span> agents understand structure. Saves 33% context.
+            </p>
+            <div class="tool-principle">
+              <span class="dim">// principle</span><br>
+              Agent memory rots. <code>topic-health</code> + <code>topic-triage</code> run
+              nightly · zero LLM calls · human in the deletion loop.
+              <br><strong>Freshness beats completeness.</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 — Skills Library -->
+        <div class="skills-product">
+          <div class="skills-head">
+            <div class="col-label">// 04 — skills library</div>
+            <div class="skills-title">529 skills. 40 years of dev knowledge. Licensed.</div>
+          </div>
+          <div class="skills-grid">
+            <div>
+              <div class="col-label">// what's inside</div>
+              <ul class="check-list dense">
+                <li>Java · Spring · Kotlin · TypeScript · Python · React</li>
+                <li>Architecture · security · testing · perf · DX patterns</li>
+                <li>Auto-curated from real production sessions</li>
+                <li>Behavioural scoring — stale skills retired automatically</li>
+              </ul>
+            </div>
+            <div>
+              <div class="col-label">// licensing</div>
+              <ul class="check-list dense">
+                <li><strong>Personal license</strong> — included with every workshop seat</li>
+                <li><strong>Business license</strong> — enquire within</li>
+                <li>Updated weekly · audit-trailed · self-hosted option</li>
+              </ul>
+              <div class="cta-with-foot">
+                <a class="cta-primary outline"
+                   href="mailto:selina@exoreaction.com?subject=Skills%20Library%20-%20business%20license%20enquiry"
+                   onclick="copyAndToast('selina@exoreaction.com')">
+                  <span>$</span> enquire about business licensing <span class="arrow">→</span>
+                </a>
+                <div class="mail-cta-foot">
+                  <span class="dim">or write directly:</span>
+                  <a class="mail-cta-link" href="mailto:selina@exoreaction.com"
+                     onclick="copyAndToast('selina@exoreaction.com')">
+                    selina@exoreaction.com <span class="arrow">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 05 — AI-Readiness Package -->
+        <div class="skills-product" id="kcp-package" style="margin-top:32px">
+          <div class="skills-head">
+            <div class="col-label">// 05 — ai-readiness package</div>
+            <div class="skills-title">
+              KCP manifest. Signed. Delivered. <span style="color:var(--accent-hex)">€5</span>.
+            </div>
+          </div>
+          <div style="display:flex;gap:2px;margin-bottom:24px">
+            <button type="button" class="kcp-tab-btn active" id="kcp-tab-web">
+              <div class="kcp-tab-label">FOR WEBSITES</div>
+              <div class="kcp-tab-sub">Make your company AI-discoverable</div>
+            </button>
+            <button type="button" class="kcp-tab-btn" id="kcp-tab-code">
+              <div class="kcp-tab-label">FOR CODEBASES</div>
+              <div class="kcp-tab-sub">Make your codebase agent-ready</div>
+            </button>
+          </div>
+          <div class="skills-grid">
+            <div>
+              <div class="col-label">// what you receive</div>
+              <ul class="check-list dense" id="kcp-web-files">
+                <li><code>knowledge.yaml</code> — company, products, team, customers, compliance</li>
+                <li><code>knowledge.yaml.sig</code> — ED25519 signed, verifiable provenance</li>
+                <li><code>llms.txt</code> — AI crawler format (llmstxt.org standard)</li>
+                <li><code>llms-full.txt</code> — full-detail version for agent pipelines</li>
+                <li><code>CLAUDE.md</code> — company context hub for Claude / Cursor / Zed</li>
+                <li><code>AGENTS.md</code> — agent instructions (all frameworks)</li>
+                <li><code>SETUP.md</code> — deploy to web root in minutes</li>
+              </ul>
+              <ul class="check-list dense" id="kcp-code-files" style="display:none">
+                <li><code>knowledge.yaml</code> — codebase architecture, patterns, structure</li>
+                <li><code>knowledge.yaml.sig</code> — ED25519 signed, verifiable provenance</li>
+                <li><code>CLAUDE.md</code> — Claude Code navigation hub — sessions start faster</li>
+                <li><code>AGENTS.md</code> — agent instructions for your tech stack</li>
+                <li><code>tech-index.yaml</code> — directory purposes, dependency map</li>
+                <li><code>SETUP.md</code> — how to drop this into your workflow</li>
+              </ul>
+              <div id="kcp-web-desc" style="margin-top:16px;font-size:12px;color:var(--fg-mute);line-height:1.6">
+                Crawled from your public site. Delivered to your inbox in minutes. One-time payment. No subscription.
+              </div>
+              <div id="kcp-code-desc" style="margin-top:16px;font-size:12px;color:var(--fg-mute);line-height:1.6;display:none">
+                Generated from your code. Delivered to your inbox in minutes. One-time payment. No subscription.
+              </div>
+            </div>
+            <div>
+              <!-- web form -->
+              <div id="kcp-web-panel">
+                <form id="kcp-web-form" style="display:flex;flex-direction:column;gap:10px">
+                  <div class="col-label" style="margin-bottom:4px">// your website</div>
+                  <div class="demo-input-row">
+                    <span class="prompt-arrow">▸</span>
+                    <input class="demo-input" type="url" id="kcp-web-url"
+                      placeholder="https://yourcompany.com" autocomplete="url" />
+                  </div>
+                  <div class="demo-input-row">
+                    <span class="prompt-arrow">@</span>
+                    <input class="demo-input" type="email" id="kcp-web-email"
+                      placeholder="your@email.com (delivered here)" autocomplete="email" />
+                  </div>
+                  <div class="form-error" id="kcp-web-error"></div>
+                  <button type="submit" class="cta-primary outline" style="margin-top:4px">
+                    <span>$</span> pay €5 · get your package <span class="arrow">→</span>
+                  </button>
+                </form>
+              </div>
+              <!-- code panel -->
+              <div id="kcp-code-panel" style="display:none">
+                <div style="display:flex;gap:2px;align-items:center;margin-bottom:10px">
+                  <div class="col-label" style="margin-right:8px">// input:</div>
+                  <button type="button" class="kcp-input-btn active" id="kcp-input-github">GitHub URL</button>
+                  <button type="button" class="kcp-input-btn" id="kcp-input-zip">ZIP upload</button>
+                </div>
+                <!-- github form -->
+                <form id="kcp-code-form" style="display:flex;flex-direction:column;gap:10px">
+                  <div class="demo-input-row">
+                    <span class="prompt-arrow">▸</span>
+                    <input class="demo-input" type="url" id="kcp-code-url"
+                      placeholder="https://github.com/you/your-repo" autocomplete="url" />
+                  </div>
+                  <div class="demo-input-row">
+                    <span class="prompt-arrow">@</span>
+                    <input class="demo-input" type="email" id="kcp-code-email"
+                      placeholder="your@email.com (delivered here)" autocomplete="email" />
+                  </div>
+                  <div class="form-error" id="kcp-code-error"></div>
+                  <button type="submit" class="cta-primary outline" style="margin-top:4px">
+                    <span>$</span> pay €5 · get your package <span class="arrow">→</span>
+                  </button>
+                </form>
+                <!-- zip waitlist -->
+                <div id="kcp-zip-panel" style="display:none">
+                  <div style="font-size:12px;color:var(--fg-mute);line-height:1.6;margin-bottom:10px">
+                    Private or closed-source? ZIP upload launching soon — join the list.
+                  </div>
+                  <div class="form-success" id="kcp-zip-success">
+                    ✓ you're on the list. we'll email you when ZIP upload goes live.
+                  </div>
+                  <form id="kcp-zip-form" style="display:flex;flex-direction:column;gap:10px">
+                    <div class="demo-input-row">
+                      <span class="prompt-arrow">@</span>
+                      <input class="demo-input" type="email" id="kcp-zip-email"
+                        placeholder="your@email.com" autocomplete="email" />
+                    </div>
+                    <div class="form-error" id="kcp-zip-error"></div>
+                    <button type="submit" class="cta-primary outline" style="margin-top:4px">
+                      <span>$</span> notify me when ZIP is live <span class="arrow">→</span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="margin-top:16px;font-size:12px;color:var(--fg-mute)">
+            <a href="ai-readiness-package.html" class="link-amber">full product page →</a>
+          </p>
+        </div>
+
+        <!-- 06 — Codebase Intelligence -->
+        <div class="skills-product" id="codebase-intelligence" style="margin-top:32px">
+          <div class="skills-head">
+            <div class="col-label" style="display:flex;align-items:center;gap:12px">
+              // 06 — codebase intelligence
+              <span style="font-size:10px;letter-spacing:0.12em;color:var(--accent-hex);border:1px solid var(--accent-hex);padding:2px 8px">LAUNCHING SOON</span>
+            </div>
+            <div class="skills-title">
+              Any codebase, fully understood. <span style="color:var(--accent-hex)">30–60 min. ~€890.</span>
+            </div>
+          </div>
+          <div class="skills-grid">
+            <div>
+              <div class="col-label">// what you receive</div>
+              <ul class="check-list dense">
+                <li>Architecture map — directory purposes, patterns, anti-patterns</li>
+                <li>Security analysis — 21 signal types, severity rated</li>
+                <li>Technical debt inventory — quantified and prioritized</li>
+                <li>Modernization roadmap — quick wins + structural changes</li>
+                <li>KCP manifest — drop it in, agents understand your codebase</li>
+              </ul>
+              <div style="margin-top:16px;font-size:12px;color:var(--fg-mute);line-height:1.6">
+                GitHub repo URL or zip archive. Agent-run analysis via Synthesis + ExoCortex.
+                Works on private repos — nothing leaves our pipeline.
+              </div>
+            </div>
+            <div>
+              <div class="col-label">// register interest · launching soon</div>
+              <div class="form-success" id="ci-success">
+                ✓ registered. we'll email you when it launches.
+              </div>
+              <form id="ci-form" style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+                <div class="demo-input-row">
+                  <span class="prompt-arrow">@</span>
+                  <input class="demo-input" type="email" id="ci-email"
+                    placeholder="your@email.com" autocomplete="email" />
+                </div>
+                <div class="form-error" id="ci-error"></div>
+                <button type="submit" class="cta-primary outline" style="margin-top:4px">
+                  <span>$</span> register interest <span class="arrow">→</span>
+                </button>
+              </form>
+              <p style="margin-top:16px;font-size:12px;color:var(--fg-mute)">
+                <a href="codebase-intelligence.html" class="link-amber">full product page →</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 07 — ExoCortex as a Service -->
+        <div class="skills-product" id="exocortex-service" style="margin-top:32px">
+          <div class="skills-head">
+            <div class="col-label" style="display:flex;align-items:center;gap:12px">
+              // 07 — exocortex as a service
+              <span style="font-size:10px;letter-spacing:0.12em;color:var(--accent-hex);border:1px solid var(--accent-hex);padding:2px 8px">LAUNCHING SOON</span>
+            </div>
+            <div class="skills-title">
+              Declare → Execute → Verify. <span style="color:var(--accent-hex)">Auto or HITL.</span>
+            </div>
+          </div>
+          <div class="skills-grid">
+            <div>
+              <div class="col-label">// two tiers</div>
+              <ul class="check-list dense">
+                <li><strong>Auto</strong> — fully agent-run, async delivery, from 25 000 NOK / month</li>
+                <li><strong>HITL</strong> — human in the loop at declare, execute, verify, 125 000 NOK / month</li>
+                <li>Works on any codebase — Synthesis indexed, ExoCortex orchestrated</li>
+                <li>Deliverable: PR, report, or deployed artifact</li>
+                <li>Same workflow used in eXOReaction client engagements</li>
+              </ul>
+              <div style="margin-top:16px;font-size:12px;color:var(--fg-mute);line-height:1.6">
+                You describe the intent. We run the pipeline. You receive the output.
+              </div>
+            </div>
+            <div>
+              <div class="col-label">// join the waitlist</div>
+              <div class="form-success" id="exo-success">
+                ✓ you're on the list. we'll email you when it launches.
+              </div>
+              <form id="exo-form" style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+                <div style="display:flex;gap:2px">
+                  <button type="button" class="exo-tier-btn active" data-tier="auto">Auto</button>
+                  <button type="button" class="exo-tier-btn" data-tier="hitl">HITL</button>
+                  <button type="button" class="exo-tier-btn" data-tier="both">Both</button>
+                </div>
+                <div class="demo-input-row">
+                  <span class="prompt-arrow">@</span>
+                  <input class="demo-input" type="email" id="exo-email"
+                    placeholder="your@email.com" autocomplete="email" />
+                </div>
+                <div class="form-error" id="exo-error"></div>
+                <button type="submit" class="cta-primary outline" style="margin-top:4px">
+                  <span>$</span> join the waitlist <span class="arrow">→</span>
+                </button>
+              </form>
+              <p style="margin-top:16px;font-size:12px;color:var(--fg-mute)">
+                <a href="exocortex-as-a-service.html" class="link-amber">full product page →</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <p class="footnote">
+          Implementation engagement available — we wire these into your stack and hand it back maintained.
+        </p>
+      </section>
+
+      <!-- ===== mimir ===== -->
+      <section class="section" id="mimir">
+        <div class="section-label">
+          <span class="dim">[</span><span> 09 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>LIVE · MÍMIR MORNING BRIEFING</span>
+        </div>
+        <h2 class="section-title">Wake up to a synchronised company.</h2>
+        <p class="section-lede">
+          Mímir composes the pulse. Slack channels carry it. No meetings. No status reports.
+          No copy-pasting between tools.
+        </p>
+        <div class="mimir-shell">
+          <div class="mimir-bar">
+            <span class="mimir-dot"></span>
+            <span class="dim">slack · ægis workspace · </span>
+            <span>09 channels</span>
+            <span class="dim mimir-clock" id="mimir-clock"></span>
+          </div>
+          <div class="mimir-list" id="mimir-list"></div>
+          <div class="mimir-foot">
+            <span class="dim">// every line above is composed by an agent · zero copy-paste · audit-trailed</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== writing ===== -->
+      <section class="section" id="writing">
+        <div class="rule">
+          <span class="rule-line"></span>
+          <span class="rule-label">// writing</span>
+          <span class="rule-line"></span>
+        </div>
+        <h2 class="section-title small">From the field.</h2>
+        <div class="writing-list">
+          <a class="writing-row" href="https://wiki.totto.org/blog/2026/05/08/trustfall-and-why-kcp-is-passive-data/" target="_blank" rel="noopener">
+            <span class="writing-date dim">2026-05-08</span>
+            <span class="writing-title">TrustFall and why KCP is passive data</span>
+            <span class="writing-tag dim">security · kcp</span>
+            <span class="writing-arrow dim">→</span>
+          </a>
+          <a class="writing-row" href="https://wiki.totto.org/blog/2026/05/07/making-aegis-machine-readable-in-one-session/" target="_blank" rel="noopener">
+            <span class="writing-date dim">2026-05-07</span>
+            <span class="writing-title">Making Ægis machine-readable in one session</span>
+            <span class="writing-tag dim">kcp · build-in-public</span>
+            <span class="writing-arrow dim">→</span>
+          </a>
+          <a class="writing-row" href="https://wiki.totto.org/blog/2026/04/16/seven-out-of-eight-models-lied-about-finishing/" target="_blank" rel="noopener">
+            <span class="writing-date dim">2026-04-16</span>
+            <span class="writing-title">Seven out of eight models lied about finishing</span>
+            <span class="writing-tag dim">quality · verification</span>
+            <span class="writing-arrow dim">→</span>
+          </a>
+          <a class="writing-row" href="https://wiki.totto.org/blog/2026/04/06/agent-memory-rots-heres-how-we-stopped-it/" target="_blank" rel="noopener">
+            <span class="writing-date dim">2026-04-06</span>
+            <span class="writing-title">Agent memory rots. Here's how we stopped it.</span>
+            <span class="writing-tag dim">synthesis · exocortex</span>
+            <span class="writing-arrow dim">→</span>
+          </a>
+          <a class="writing-row" href="https://wiki.totto.org/blog/2026/03/08/the-front-door-and-the-filing-cabinet-a2a-agent-cards-meet-kcp/" target="_blank" rel="noopener">
+            <span class="writing-date dim">2026-03-08</span>
+            <span class="writing-title">The front door and the filing cabinet</span>
+            <span class="writing-tag dim">kcp · a2a · protocol</span>
+            <span class="writing-arrow dim">→</span>
+          </a>
+        </div>
+        <p class="footnote" style="margin-top:24px">
+          <a href="https://wiki.totto.org/blog/" target="_blank" rel="noopener" class="link-amber">
+            all writing → wiki.totto.org
+          </a>
+        </p>
+      </section>
+
+      <!-- ===== who ===== -->
+      <section class="section" id="who">
+        <div class="section-label">
+          <span class="dim">[</span><span> 10 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>WHO</span>
+        </div>
+        <h2 class="section-title">Who builds this.</h2>
+        <div class="who-grid">
+          <div class="who-portrait">
+            <img src="thh.jpg" alt="Thor Henning Hetland" loading="lazy" />
+          </div>
+          <div class="who-body">
+            <div class="who-name">Thor Henning Hetland</div>
+            <div class="who-role dim">Founder · Ægis · ægentisk practitioner</div>
+            <p>
+              Four decades shipping production code across Java, Kotlin, TypeScript, Python and the
+              architectures around them. Spent the last few years using agentic tools every day on
+              real client problems — long enough to have opinions, scars, and a working method.
+            </p>
+            <p>
+              Ægis is the practice that came out of that. The tooling (Synthesis · ExoCortex · KCP),
+              the workshops, the case studies — all of it is what I do daily, packaged so a team can
+              adopt it without re-living the learning curve.
+            </p>
+            <div class="who-links">
+              <a href="https://wiki.totto.org/about/" target="_blank" rel="noopener" class="link-amber">wiki.totto.org/about →</a>
+              <span class="dim">·</span>
+              <a href="mailto:totto@exoreaction.com" class="link-amber">totto@exoreaction.com →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== rollout ===== -->
+      <section class="section" id="rollout">
+        <div class="rule">
+          <span class="rule-line"></span>
+          <span class="rule-label">// 6-week rollout</span>
+          <span class="rule-line"></span>
+        </div>
+        <h2 class="section-title small">From zero to ægentisk — in six weeks.</h2>
+        <div class="timeline">
+          <div class="timeline-track"></div>
+          <div class="timeline-steps">
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-week">WEEK 0</div>
+              <div class="step-title">Core infra</div>
+              <div class="step-desc">Synthesis workspaces · Mímir Slack channels.</div>
+            </div>
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-week">WEEK 1</div>
+              <div class="step-title">Dev activation</div>
+              <div class="step-desc">Claude Code live · codebase indexed · #mimir-dev active.</div>
+            </div>
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-week">WEEK 2–3</div>
+              <div class="step-title">Role activation</div>
+              <div class="step-desc">Morning briefings · meeting prep · BD signals live.</div>
+            </div>
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-week">WEEK 4</div>
+              <div class="step-title">API hardening</div>
+              <div class="step-desc">CRM and Accounting APIs fully automated.</div>
+            </div>
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-week">WEEK 5–6</div>
+              <div class="step-title">Polish &amp; showcase</div>
+              <div class="step-desc">Cross-role query testing · live demo.</div>
+            </div>
+          </div>
+        </div>
+        <div class="two-col gap-wide spaced">
+          <div class="callout dense">
+            <div class="col-label">// economic threshold</div>
+            <p>Infra cost <strong>~15,000 NOK/month</strong>. Positive ROI the moment each team member saves 20 minutes a day.</p>
+          </div>
+          <div class="callout dense">
+            <div class="col-label">// guardrails from day one</div>
+            <p>Network isolation · financial outputs cite API sources · sensitive queries DM-only · hard spend alerts · documented backup admin · gradual channel rollout.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== engage ===== -->
+      <section class="section" id="engage">
+        <div class="section-label">
+          <span class="dim">[</span><span> 11 / 11 </span><span class="dim">]</span>
+          <span class="dim"> · </span><span>ENGAGEMENT</span>
+        </div>
+        <h2 class="section-title">From scoping call to self-sufficient team.</h2>
+        <div class="engage-flow">
+          <div class="engage-step">
+            <div class="engage-when">START</div>
+            <div class="engage-title">30-min scoping call</div>
+            <div class="engage-desc">Fit · goals · constraints.</div>
+          </div>
+          <div class="engage-arrow">→</div>
+          <div class="engage-step">
+            <div class="engage-when">WEEK 1–2</div>
+            <div class="engage-title">Maturity review + workshop</div>
+            <div class="engage-desc">Assess · train · align.</div>
+          </div>
+          <div class="engage-arrow">→</div>
+          <div class="engage-step">
+            <div class="engage-when">WEEK 3–8</div>
+            <div class="engage-title">Implementation + agentic build</div>
+            <div class="engage-desc">Ship to production together.</div>
+          </div>
+          <div class="engage-arrow">→</div>
+          <div class="engage-step">
+            <div class="engage-when">WEEK 9+</div>
+            <div class="engage-title">Handover · train-the-trainer</div>
+            <div class="engage-desc">Your team keeps the velocity.</div>
+          </div>
+        </div>
+        <p class="footnote center">Or pick any single offering — talk · workshop · review · build · tooling.</p>
+      </section>
+
+      <!-- ===== cta ===== -->
+      <section class="section cta-section" id="contact">
+        <div class="cta-meta">// let's talk</div>
+        <h2 class="cta-title">
+          An AI-era codebase.<br>
+          An AI-era team.<br>
+          <span class="dim">Start with 30 minutes.</span><span class="caret" aria-hidden="true">▍</span>
+        </h2>
+        <div class="cta-actions">
+          <div class="cta-with-foot">
+            <a class="cta-primary big"
+               href="mailto:selina@exoreaction.com?subject=Scoping%20call%20enquiry"
+               onclick="copyAndToast('selina@exoreaction.com')">
+              <span>$</span> book scoping call <span class="arrow">→</span>
+            </a>
+            <div class="mail-cta-foot">
+              <span class="dim">or write directly:</span>
+              <a class="mail-cta-link" href="mailto:selina@exoreaction.com"
+                 onclick="copyAndToast('selina@exoreaction.com')">
+                selina@exoreaction.com <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
+          <div class="cta-links">
+            <a href="https://aegis.org" class="cta-link">aegis.org</a>
+            <span class="dim">·</span>
+            <a href="https://wiki.totto.org" class="cta-link">wiki</a>
+            <span class="dim">·</span>
+            <a href="agentic-company.html" class="cta-link">/agentic-company</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div>
+          <span class="brand small">ÆGIS</span>
+          <span class="dim"> · ægentisk · </span>
+          <span class="dim">© 2026</span>
+        </div>
+        <div class="dim">// human-led · production-grade · memory as infrastructure</div>
+        <div class="dim">end of file ▍</div>
+      </div>
+    </footer>
+
+    <a class="sticky-cta" href="#engage">
+      <span>$</span> book scoping call <span class="arrow">→</span>
+    </a>
+
+  </div><!-- .page -->
 
   <script type="application/ld+json">
   {
@@ -50,27 +1168,400 @@
   }
   </script>
 
-  <noscript>
-    <div style="font-family:monospace;max-width:800px;margin:40px auto;padding:20px;">
-      <h1>Ægis · Ægentisk — AI-era development partner</h1>
-      <p>Organisations that work with AI — and as AI. Talks, workshops, advisory, hands-on builds, and tooling from years of production use.</p>
-      <h2>Products &amp; Services</h2>
-      <ul>
-        <li><a href="workshops.html">10× Developer Productivity Workshop</a> — €790/seat · Next cohort: 21 May 2026, Oslo</li>
-        <li><a href="advisory.html">AI-Maturity Review</a> — Advisory engagement, one-off or retainer</li>
-        <li><a href="ai-readiness-package.html">AI-Readiness Package</a> — KCP manifest, CLAUDE.md, AGENTS.md · €5</li>
-        <li><a href="codebase-intelligence.html">Codebase Intelligence</a> — Full technical analysis · ~€890 · Launching soon</li>
-        <li><a href="exocortex-as-a-service.html">ExoCortex as a Service</a> — Agentic development managed service · from €1,990/mo</li>
-        <li><a href="agentic-company.html">The Agentic Company</a> — Essay on organisational transformation via agentic systems</li>
-      </ul>
-      <p>Contact: <a href="mailto:selina@exoreaction.com">selina@exoreaction.com</a></p>
-    </div>
-  </noscript>
-
   <script src="claude-api.js"></script>
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="mail-cta.jsx"></script>
-  <script type="text/babel" src="widgets.jsx"></script>
-  <script type="text/babel" src="site.jsx"></script>
+  <script>
+    // ── toast ──────────────────────────────────────────────────────────────
+    function showAegisToast(msg) {
+      var t = document.getElementById('aegis-toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'aegis-toast';
+        t.className = 'aegis-toast';
+        t.setAttribute('role', 'status');
+        t.setAttribute('aria-live', 'polite');
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.classList.remove('show');
+      void t.offsetWidth;
+      t.classList.add('show');
+      clearTimeout(t._hideTimer);
+      t._hideTimer = setTimeout(function() { t.classList.remove('show'); }, 2800);
+    }
+    function copyAndToast(email, opts) {
+      var ok   = (opts && opts.okMsg)   || (email + ' \u2014 copied to clipboard');
+      var fail = (opts && opts.failMsg) || ('opening mail app for ' + email);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(
+          function() { showAegisToast(ok); },
+          function() { showAegisToast(fail); }
+        );
+      } else {
+        showAegisToast(fail);
+      }
+    }
+
+    // ── header clock ───────────────────────────────────────────────────────
+    (function() {
+      var el = document.getElementById('header-clock');
+      function tick() {
+        el.textContent = new Intl.DateTimeFormat('en-GB', {
+          hour: '2-digit', minute: '2-digit', second: '2-digit',
+          hour12: false, timeZone: 'Europe/Oslo'
+        }).format(new Date());
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // ── hamburger ──────────────────────────────────────────────────────────
+    (function() {
+      var btn = document.getElementById('hamburger-btn');
+      var nav = document.getElementById('mobile-nav');
+      if (!btn || !nav) return;
+      btn.addEventListener('click', function() {
+        nav.style.display = nav.style.display === 'none' ? 'flex' : 'none';
+      });
+      nav.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() { nav.style.display = 'none'; });
+      });
+    })();
+
+    // ── hero animation ─────────────────────────────────────────────────────
+    (function() {
+      // keep[i] = true means letter stays when collapsing to "Ægis"
+      var KEEP = [true, true, false, false, false, true, true, false];
+      var timers = [];
+
+      function run() {
+        timers.forEach(clearTimeout);
+        timers = [];
+        var spans = Array.from(document.querySelectorAll('.hero-title .ltr'));
+        var caret = document.getElementById('hero-caret');
+        spans.forEach(function(s) { s.classList.remove('in', 'drop'); });
+        if (caret) caret.classList.remove('off');
+        var n = spans.length;
+        // type in
+        spans.forEach(function(s, i) {
+          timers.push(setTimeout(function() { s.classList.add('in'); }, 130 + i * 110));
+        });
+        // caret off
+        timers.push(setTimeout(function() {
+          if (caret) caret.classList.add('off');
+        }, 130 + n * 110 + 100));
+        // drop non-keep letters → collapses to "Ægis"
+        timers.push(setTimeout(function() {
+          spans.forEach(function(s, i) { if (!KEEP[i]) s.classList.add('drop'); });
+        }, 130 + n * 110 + 1100));
+      }
+
+      var title = document.getElementById('hero-title');
+      if (title) title.addEventListener('click', run);
+      run();
+    })();
+
+    // ── ask codebase demo ──────────────────────────────────────────────────
+    (function() {
+      var input  = document.getElementById('demo-input');
+      var runBtn = document.getElementById('demo-run');
+      var out    = document.getElementById('demo-output');
+      var chips  = Array.from(document.querySelectorAll('.demo-chip'));
+      if (!input || !runBtn || !out) return;
+
+      var loading = false;
+      var typeTimers = [];
+
+      function setLoading(v) {
+        loading = v;
+        runBtn.disabled = v;
+        input.disabled  = v;
+        chips.forEach(function(c) { c.disabled = v; });
+        runBtn.innerHTML = v ? '<span class="run-spin">\u28cb</span>' : '\u21b5';
+      }
+
+      async function run(override) {
+        var stack = override !== undefined ? override : input.value.trim();
+        if (!stack) return;
+        typeTimers.forEach(clearTimeout);
+        typeTimers = [];
+        setLoading(true);
+        out.style.display = 'block';
+        out.innerHTML = '// thinking\u2026<span class="caret">\u258d</span>';
+
+        var prompt =
+          'You are \u00c6gis, an AI-era development partner running an "\u00e6gentisk maturity" preview for a codebase.\n' +
+          'The user describes their codebase / stack in one line.\n' +
+          'Output a TERSE, OPINIONATED preview maturity snapshot, in this exact terminal format \u2014 no preamble, no closing \u2014 fewer than 14 short lines.\n\n' +
+          'Codebase: ' + stack + '\n\n' +
+          'Format:\n' +
+          '[ \u00e6gentisk maturity \u00b7 preview ]\n\n' +
+          '\u2261 readiness ........ <score>/10  <one-line reason>\n' +
+          '\u2261 blast radius ..... <low|medium|high>  <one-line reason>\n' +
+          '\u2261 top automatable .. <area>\n' +
+          '\u2261 top risk ......... <area>\n\n' +
+          '// 3 prioritised actions\n' +
+          '1. <action \u2014 one short imperative line>\n' +
+          '2. <action \u2014 one short imperative line>\n' +
+          '3. <action \u2014 one short imperative line>\n\n' +
+          '// next step\n' +
+          '<one short line \u2014 recommend a workshop, advisory, or hands-on engagement>\n\n' +
+          'Use lower-case, monospace-friendly, no emoji, no markdown bold. Be specific to the stack named.';
+
+        try {
+          var text = await window.claude.complete(prompt);
+          out.textContent = '';
+          var chars = text.split('');
+          var i = 0;
+          function tick() {
+            if (i >= chars.length) { setLoading(false); return; }
+            var step = Math.min(3, chars.length - i);
+            out.textContent += chars.slice(i, i + step).join('');
+            i += step;
+            out.scrollTop = out.scrollHeight;
+            typeTimers.push(setTimeout(tick, 8));
+          }
+          tick();
+        } catch(e) {
+          out.textContent = '// error\n' + (e.message || String(e)) + '\n\n// fall back to the form below to book a real review.';
+          setLoading(false);
+        }
+      }
+
+      runBtn.addEventListener('click', function() { run(); });
+      input.addEventListener('keydown', function(e) { if (e.key === 'Enter' && !loading) run(); });
+      chips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          var ex = chip.dataset.example;
+          input.value = ex;
+          run(ex);
+        });
+      });
+    })();
+
+    // ── case study toggle ──────────────────────────────────────────────────
+    (function() {
+      var btn  = document.getElementById('case-toggle-btn');
+      var grid = document.getElementById('case-grid');
+      if (!btn || !grid) return;
+      btn.addEventListener('click', function() {
+        var hidden = grid.style.display === 'none';
+        grid.style.display = hidden ? '' : 'none';
+        btn.textContent = hidden ? '\u2212 hide all 21 deliverables' : '+ show all 21 deliverables';
+      });
+    })();
+
+    // ── KCP Package tabs + forms ───────────────────────────────────────────
+    (function() {
+      var webTab    = document.getElementById('kcp-tab-web');
+      var codeTab   = document.getElementById('kcp-tab-code');
+      var webPanel  = document.getElementById('kcp-web-panel');
+      var codePanel = document.getElementById('kcp-code-panel');
+      var webFiles  = document.getElementById('kcp-web-files');
+      var codeFiles = document.getElementById('kcp-code-files');
+      var webDesc   = document.getElementById('kcp-web-desc');
+      var codeDesc  = document.getElementById('kcp-code-desc');
+      var ghTab     = document.getElementById('kcp-input-github');
+      var zipTab    = document.getElementById('kcp-input-zip');
+      var codeForm  = document.getElementById('kcp-code-form');
+      var zipPanel  = document.getElementById('kcp-zip-panel');
+      if (!webTab) return;
+
+      function show(el) { el.style.display = ''; }
+      function hide(el) { el.style.display = 'none'; }
+      function showFlex(el) { el.style.display = 'flex'; }
+
+      function setTarget(t) {
+        var web = t === 'web';
+        webTab.classList.toggle('active', web);
+        codeTab.classList.toggle('active', !web);
+        web ? show(webPanel)  : hide(webPanel);
+        web ? hide(codePanel) : show(codePanel);
+        web ? show(webFiles)  : hide(webFiles);
+        web ? hide(codeFiles) : show(codeFiles);
+        web ? show(webDesc)   : hide(webDesc);
+        web ? hide(codeDesc)  : show(codeDesc);
+      }
+
+      function setCodeInput(v) {
+        var gh = v === 'github';
+        ghTab.classList.toggle('active', gh);
+        zipTab.classList.toggle('active', !gh);
+        gh ? showFlex(codeForm) : hide(codeForm);
+        gh ? hide(zipPanel)     : show(zipPanel);
+      }
+
+      webTab.addEventListener('click',  function() { setTarget('web'); });
+      codeTab.addEventListener('click', function() { setTarget('code'); });
+      ghTab.addEventListener('click',   function() { setCodeInput('github'); });
+      zipTab.addEventListener('click',  function() { setCodeInput('zip'); });
+
+      var STRIPE = 'https://buy.stripe.com/4gM5kE2LM57Q1bB5WE14400';
+      function goStripe(ref, email) {
+        var p = new URLSearchParams({ client_reference_id: ref, prefilled_email: email });
+        window.location.href = STRIPE + '?' + p.toString();
+      }
+
+      // web form
+      document.getElementById('kcp-web-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var url   = document.getElementById('kcp-web-url').value.trim();
+        var email = document.getElementById('kcp-web-email').value.trim();
+        var err   = document.getElementById('kcp-web-error');
+        if (!url)   { err.textContent = 'enter your website URL'; err.style.display = 'block'; return; }
+        if (!email) { err.textContent = 'enter your email address'; err.style.display = 'block'; return; }
+        try { new URL(url); } catch(_) { err.textContent = 'not a valid URL \u2014 include https://'; err.style.display = 'block'; return; }
+        err.style.display = 'none';
+        goStripe(url, email);
+      });
+
+      // github form
+      document.getElementById('kcp-code-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var url   = document.getElementById('kcp-code-url').value.trim();
+        var email = document.getElementById('kcp-code-email').value.trim();
+        var err   = document.getElementById('kcp-code-error');
+        if (!url)   { err.textContent = 'enter the GitHub repo URL'; err.style.display = 'block'; return; }
+        if (!email) { err.textContent = 'enter your email address'; err.style.display = 'block'; return; }
+        try { new URL(url); } catch(_) { err.textContent = 'not a valid URL \u2014 include https://'; err.style.display = 'block'; return; }
+        err.style.display = 'none';
+        goStripe(url, email);
+      });
+
+      // zip waitlist
+      document.getElementById('kcp-zip-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var email = document.getElementById('kcp-zip-email').value.trim();
+        var err   = document.getElementById('kcp-zip-error');
+        if (!email) { err.textContent = 'enter your email address'; err.style.display = 'block'; return; }
+        err.style.display = 'none';
+        try {
+          await fetch('https://aegis-proxy.totto.workers.dev/waitlist', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ email: email, product: 'ai-readiness-zip' })
+          });
+          document.getElementById('kcp-zip-form').style.display = 'none';
+          document.getElementById('kcp-zip-success').style.display = 'block';
+        } catch(_) {
+          err.textContent = 'something went wrong \u2014 email selina@exoreaction.com';
+          err.style.display = 'block';
+        }
+      });
+
+      setTarget('web');
+      setCodeInput('github');
+    })();
+
+    // ── Codebase Intelligence waitlist ─────────────────────────────────────
+    (function() {
+      var form    = document.getElementById('ci-form');
+      var success = document.getElementById('ci-success');
+      var err     = document.getElementById('ci-error');
+      if (!form) return;
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var email = document.getElementById('ci-email').value.trim();
+        if (!email) { err.textContent = 'enter your email address'; err.style.display = 'block'; return; }
+        err.style.display = 'none';
+        try {
+          await fetch('https://aegis-proxy.totto.workers.dev/waitlist', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ email: email, product: 'codebase-intelligence' })
+          });
+          form.style.display = 'none';
+          success.style.display = 'block';
+        } catch(_) {
+          err.textContent = 'something went wrong \u2014 email selina@exoreaction.com';
+          err.style.display = 'block';
+        }
+      });
+    })();
+
+    // ── ExoCortex as a Service waitlist ────────────────────────────────────
+    (function() {
+      var tier = 'auto';
+      var btns = Array.from(document.querySelectorAll('.exo-tier-btn'));
+      var form    = document.getElementById('exo-form');
+      var success = document.getElementById('exo-success');
+      var err     = document.getElementById('exo-error');
+      btns.forEach(function(b) {
+        b.addEventListener('click', function() {
+          tier = b.dataset.tier;
+          btns.forEach(function(x) { x.classList.toggle('active', x.dataset.tier === tier); });
+        });
+      });
+      if (!form) return;
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var email = document.getElementById('exo-email').value.trim();
+        if (!email) { err.textContent = 'enter your email address'; err.style.display = 'block'; return; }
+        err.style.display = 'none';
+        try {
+          await fetch('https://aegis-proxy.totto.workers.dev/waitlist', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ email: email, product: 'exocortex-service-' + tier })
+          });
+          form.style.display = 'none';
+          success.style.display = 'block';
+        } catch(_) {
+          err.textContent = 'something went wrong \u2014 email selina@exoreaction.com';
+          err.style.display = 'block';
+        }
+      });
+    })();
+
+    // ── Mimir feed ─────────────────────────────────────────────────────────
+    (function() {
+      var msgs = [
+        { c: '#mimir-dev',      u: 'm\u00edmir', t: '[03:14] nightly index complete \u00b7 66,350 files \u00b7 0 schema drift \u00b7 4 stale skills flagged for review' },
+        { c: '#mimir-dev',      u: 'klaw',       t: '[06:02] PR #482 ready \u00b7 characterisation tests green \u00b7 waiting human approval (you)' },
+        { c: '#mimir-gtm',      u: 'm\u00edmir', t: '[06:31] BD signal: target account expanded LinkedIn team to 14 engineers \u2014 outreach window open' },
+        { c: '#mimir-finance',  u: 'm\u00edmir', t: '[06:45] DM-only \u00b7 invoice 0241 paid \u00b7 runway recalculated \u00b7 sources cited' },
+        { c: '#mimir-product',  u: 'm\u00edmir', t: '[07:00] morning briefing \u00b7 3 yesterday-decisions \u00b7 2 unblocked launches \u00b7 1 question for Thor' },
+        { c: '#mimir-dev',      u: 'm\u00edmir', t: '[07:02] component library: 17 similarity calculators verified \u00b7 MOSFETs now match by gate-charge \u00b15%' },
+        { c: '#mimir-strategy', u: 'm\u00edmir', t: "[07:14] cross-role query: 'who is talking to manufacturers?' \u2192 2 threads, 1 deal in motion" },
+        { c: '#mimir-dev',      u: 'm\u00edmir', t: '[07:22] memory triage \u00b7 12 stale topics \u00b7 human in deletion loop \u00b7 awaiting nod' },
+        { c: '#mimir-gtm',      u: 'm\u00edmir', t: '[07:31] javaBin Oslo \u00b7 attendance confirmed \u00b7 38 RSVPs \u00b7 venue capacity ok' },
+        { c: '#mimir-product',  u: 'm\u00edmir', t: '[07:48] client production deploy clean \u00b7 synthesis re-indexed \u00b7 1.1s avg query' },
+      ];
+      var listEl  = document.getElementById('mimir-list');
+      var clockEl = document.getElementById('mimir-clock');
+      if (!listEl) return;
+
+      var cursor = 4;
+      var shown  = msgs.slice(0, 4);
+
+      function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+      function render() {
+        listEl.innerHTML = shown.map(function(m) {
+          return '<div class="mimir-row">' +
+            '<span class="mimir-channel">' + esc(m.c) + '</span>' +
+            '<span class="mimir-user">@' + esc(m.u) + '</span>' +
+            '<span class="mimir-text">' + esc(m.t) + '</span>' +
+            '</div>';
+        }).join('');
+        listEl.scrollTop = listEl.scrollHeight;
+      }
+
+      function updateClock() {
+        if (clockEl) {
+          clockEl.textContent = new Intl.DateTimeFormat('en-GB', {
+            hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Europe/Oslo'
+          }).format(new Date()) + ' CET';
+        }
+      }
+
+      render();
+      updateClock();
+
+      setInterval(function() {
+        shown = shown.concat(msgs[cursor % msgs.length]).slice(-7);
+        cursor++;
+        render();
+      }, 2400);
+
+      setInterval(updateClock, 60000);
+    })();
+  </script>
 </body>
 </html>
