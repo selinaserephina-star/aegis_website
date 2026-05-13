@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KCP + Skills · Ægis</title>
-  <meta name="description" content="Your KCP manifest generated from your codebase or website, bundled with a personal Skills Library license. Context layer + 50+ Claude Code skills. €19, one-time." />
+  <title>Codebase Intelligence Starter · Ægis</title>
+  <meta name="description" content="Submit your codebase. Get KCP manifest, architecture map, and personal Skills Library — lite codebase intelligence in minutes. €19, one-time." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ægis" />
-  <meta property="og:title" content="KCP + Skills · Ægis" />
-  <meta property="og:description" content="KCP manifest + personal Skills Library license. Two tools that work together. €19, one-time." />
+  <meta property="og:title" content="Codebase Intelligence Starter · Ægis" />
+  <meta property="og:description" content="GitHub repo or ZIP → KCP manifest + architecture summary + personal Skills Library. €19, one-time." />
   <meta property="og:url" content="https://xn--gis-xla.no/kcp-skills.html" />
   <meta property="og:image" content="https://xn--gis-xla.no/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -127,11 +127,22 @@
     /* ---- what sections ---- */
     .pkg-what { padding: 64px 0; border-bottom: 1px solid var(--line); }
     .pkg-what-cols {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-top: 24px;
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-top: 24px;
     }
-    @media (max-width: 720px) { .pkg-what-cols { grid-template-columns: 1fr; gap: 40px; } }
-    .pkg-what-col-label { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 20px; }
-    .pkg-what p { font-size: 14px; line-height: 1.7; color: var(--fg-mute); margin: 0 0 16px; }
+    @media (max-width: 900px) { .pkg-what-cols { grid-template-columns: 1fr 1fr; gap: 32px; } }
+    @media (max-width: 560px) { .pkg-what-cols { grid-template-columns: 1fr; gap: 32px; } }
+    .pkg-what-col-label { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 16px; }
+    .pkg-what p { font-size: 13px; line-height: 1.7; color: var(--fg-mute); margin: 0 0 12px; }
+
+    /* ---- compare tier ---- */
+    .pkg-compare { padding: 64px 0; border-bottom: 1px solid var(--line); }
+    .pkg-compare-row {
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2px; font-size: 13px;
+    }
+    .pkg-compare-row.head { font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); margin-bottom: 4px; }
+    .pkg-compare-cell { padding: 10px 16px; border-bottom: 1px solid var(--line-2); color: var(--fg); line-height: 1.5; }
+    .pkg-compare-cell.hl { background: var(--bg-2); border: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--accent-hex); }
+    .pkg-compare-cell.dim { color: var(--fg-dim); }
 
     /* ---- back ---- */
     .pkg-back { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-mute); font-size: 12px; margin-top: 48px; }
@@ -167,23 +178,23 @@
     <main>
       <!-- hero -->
       <section class="pkg-hero">
-        <div class="pkg-eyebrow">// product · kcp + skills</div>
+        <div class="pkg-eyebrow">// product · codebase intelligence starter</div>
         <h1 class="pkg-title">
-          Context layer.<br/>
-          Skills<br/>
-          <em>included.</em>
+          Know your<br/>
+          codebase.<br/>
+          <em>Instantly.</em>
         </h1>
         <p class="pkg-lede">
-          Your KCP manifest — generated from your codebase or website — bundled with
-          a personal license to the Ægis Skills Library. The context layer that tells
-          your agents what you build, plus the skills that tell them how to do it.
+          Submit a GitHub repo or ZIP. Get an architecture map, KCP manifest,
+          and a personal Skills Library — everything you need to make your
+          codebase agent-ready in minutes.
         </p>
         <div class="pkg-price-pill">
           <span class="price-big">€19</span>
           <span>·</span>
           <div>
             <div>one-time payment</div>
-            <div class="price-note">KCP manifest + personal skills license</div>
+            <div class="price-note">KCP + architecture map + skills license</div>
           </div>
         </div>
       </section>
@@ -193,14 +204,15 @@
         <div>
           <div class="pkg-tree">
             <div class="pkg-tree-head">// what you receive</div>
-            <div class="pkg-tree-section">KCP MANIFEST</div>
-            <div class="tree-root">your-project/</div>
+            <div class="pkg-tree-section">KCP MANIFEST + INTELLIGENCE</div>
+            <div class="tree-root">your-codebase/</div>
             <div style="padding-left: 20px;">
-              <div class="tree-file">knowledge.yaml<span class="tree-note"> ← architecture, products, team</span></div>
+              <div class="tree-file">knowledge.yaml<span class="tree-note"> ← architecture, patterns, structure</span></div>
               <div class="tree-file">knowledge.yaml.sig<span class="tree-note"> ← ED25519 signed</span></div>
               <div class="tree-file">CLAUDE.md<span class="tree-note"> ← Claude Code navigation hub</span></div>
-              <div class="tree-file">AGENTS.md<span class="tree-note"> ← any agent framework</span></div>
-              <div class="tree-file">llms.txt<span class="tree-note"> ← llmstxt.org standard</span></div>
+              <div class="tree-file">AGENTS.md<span class="tree-note"> ← agent instructions for your stack</span></div>
+              <div class="tree-file">tech-index.yaml<span class="tree-note"> ← directory map, dependency graph</span></div>
+              <div class="tree-file">architecture-summary.md<span class="tree-note"> ← services, flows, entry points</span></div>
               <div class="tree-file">SETUP.md<span class="tree-note"> ← drop-in instructions</span></div>
             </div>
             <div class="pkg-tree-divider"></div>
@@ -216,34 +228,69 @@
             </div>
           </div>
           <p style="font-size:13px;color:var(--fg-mute);margin:20px 0 0;line-height:1.7;">
-            KCP manifest generated from your public website or GitHub repo.
-            Skills Library is a zip of <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.md</code>
-            skill files — install once, available everywhere.
+            Public GitHub repos run automatically. Private repos — submit via ZIP
+            (join the waitlist below). Skills Library zip delivered to your inbox.
           </p>
         </div>
 
         <div class="pkg-form-wrap">
-          <div class="pkg-form-head">// get your package</div>
-          <form class="pkg-form" id="kcp-form" novalidate>
-            <div class="pkg-input-row">
-              <span class="pkg-arrow">▸</span>
-              <input class="pkg-input" id="kcp-url" type="url"
-                placeholder="https://yoursite.com or github.com/you/repo" autocomplete="url" />
-            </div>
-            <div class="pkg-input-row">
-              <span class="pkg-arrow">@</span>
-              <input class="pkg-input" id="kcp-email" type="email"
-                placeholder="your@email.com (package delivered here)" autocomplete="email" />
-            </div>
-            <div class="pkg-error" id="kcp-error" style="display:none;"></div>
-            <button type="submit" class="pkg-submit">
-              <span><span style="color:var(--fg-mute)">$</span> pay €19 · get your package</span>
-              <span class="submit-price">€19 →</span>
+          <!-- input mode toggle -->
+          <div style="display:flex;gap:4px;margin-bottom:16px;">
+            <button type="button" onclick="setMode('github')" id="btn-github"
+              style="font-family:var(--t-mono);font-size:11px;letter-spacing:0.08em;padding:4px 12px;cursor:pointer;border:1px solid var(--accent-hex);background:var(--accent-hex);color:var(--bg);">
+              GitHub URL
             </button>
-          </form>
+            <button type="button" onclick="setMode('zip')" id="btn-zip"
+              style="font-family:var(--t-mono);font-size:11px;letter-spacing:0.08em;padding:4px 12px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fg-mute);">
+              ZIP upload
+            </button>
+          </div>
+
+          <!-- GitHub form -->
+          <div id="form-github">
+            <div class="pkg-form-head">// submit your repo</div>
+            <form class="pkg-form" id="kcp-form" novalidate>
+              <div class="pkg-input-row">
+                <span class="pkg-arrow">▸</span>
+                <input class="pkg-input" id="kcp-url" type="url"
+                  placeholder="https://github.com/you/your-repo" autocomplete="url" />
+              </div>
+              <div class="pkg-input-row">
+                <span class="pkg-arrow">@</span>
+                <input class="pkg-input" id="kcp-email" type="email"
+                  placeholder="your@email.com (package delivered here)" autocomplete="email" />
+              </div>
+              <div class="pkg-error" id="kcp-error" style="display:none;"></div>
+              <button type="submit" class="pkg-submit">
+                <span><span style="color:var(--fg-mute)">$</span> pay €19 · get your package</span>
+                <span class="submit-price">€19 →</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- ZIP waitlist -->
+          <div id="form-zip" style="display:none;flex-direction:column;gap:10px;">
+            <div class="pkg-form-head">// private repo — ZIP upload waitlist</div>
+            <div style="font-size:12px;color:var(--fg-mute);line-height:1.6;margin-bottom:8px;">
+              Private or closed-source? ZIP upload is launching soon — join the list.
+            </div>
+            <form id="zip-form" novalidate style="display:flex;flex-direction:column;gap:10px;">
+              <div class="pkg-input-row">
+                <span class="pkg-arrow">@</span>
+                <input class="pkg-input" id="zip-email" type="email"
+                  placeholder="your@email.com" autocomplete="email" />
+              </div>
+              <div class="pkg-error" id="zip-error" style="display:none;"></div>
+              <button type="submit" class="pkg-submit">
+                <span><span style="color:var(--fg-mute)">$</span> notify me when ZIP is live</span>
+                <span>→</span>
+              </button>
+            </form>
+          </div>
+
           <div class="pkg-fine">
-            Stripe-secured payment. KCP manifest generated automatically after checkout.
-            Skills Library zip emailed within minutes.<br/>
+            Stripe-secured payment. Pipeline runs automatically after checkout —
+            package arrives by email within minutes.<br/>
             Questions? <a href="mailto:selina@exoreaction.com" style="color:var(--accent-hex);">selina@exoreaction.com</a>
           </div>
         </div>
@@ -255,18 +302,18 @@
         <div class="pkg-steps">
           <div class="pkg-step">
             <div class="pkg-step-n">01</div>
-            <div class="pkg-step-t">You submit</div>
-            <div class="pkg-step-d">Paste your website URL or GitHub repo. Enter your email. Pay €19.</div>
+            <div class="pkg-step-t">Submit repo</div>
+            <div class="pkg-step-d">Paste your GitHub repo URL. Enter your email. Pay €19.</div>
           </div>
           <div class="pkg-step">
             <div class="pkg-step-n">02</div>
-            <div class="pkg-step-t">KCP pipeline runs</div>
-            <div class="pkg-step-d">We crawl your site or repo, run it through Claude Opus, extract structured knowledge.</div>
+            <div class="pkg-step-t">Pipeline runs</div>
+            <div class="pkg-step-d">We clone your repo, run it through Claude Opus, extract architecture and structure.</div>
           </div>
           <div class="pkg-step">
             <div class="pkg-step-n">03</div>
-            <div class="pkg-step-t">Both zips delivered</div>
-            <div class="pkg-step-d">KCP manifest + Skills Library zip sent to your inbox. Under 5 minutes from payment.</div>
+            <div class="pkg-step-t">Package built</div>
+            <div class="pkg-step-d">KCP manifest + architecture summary + Skills Library assembled and zipped.</div>
           </div>
           <div class="pkg-step">
             <div class="pkg-step-n">04</div>
@@ -276,55 +323,95 @@
         </div>
       </section>
 
-      <!-- what's included -->
+      <!-- what's included — 3 cols -->
       <section class="pkg-what">
         <div style="font-size:11px;letter-spacing:0.1em;color:var(--fg-mute);margin-bottom:32px;">// what's included</div>
         <div class="pkg-what-cols">
           <div>
             <div class="pkg-what-col-label">// KCP MANIFEST</div>
             <p>
-              KCP (Knowledge Context Protocol) is a structured YAML format that describes
-              what your organisation builds, who it serves, and how it works — in a form
-              any AI tool can load without being told every session.
+              Structured YAML that describes your codebase — architecture, patterns, stack,
+              directory purposes — in a form any AI tool can load directly.
             </p>
             <p>
               Drop <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">knowledge.yaml</code>
-              in your repo root and Claude Code, Cursor, and any MCP-compatible agent
-              picks it up automatically. No more repeating yourself.
+              in your repo root. Claude Code, Cursor, and any MCP agent pick it up automatically.
+              No more re-explaining your stack every session.
             </p>
-            <ul class="pkg-check" style="margin-top:16px;">
-              <li>Generated from your actual codebase or website</li>
-              <li>ED25519 signed — tamper-evident</li>
-              <li>llmstxt.org standard included</li>
-              <li>Works with Claude, Cursor, any MCP agent</li>
-            </ul>
           </div>
           <div>
-            <div class="pkg-what-col-label">// SKILLS LIBRARY (PERSONAL)</div>
+            <div class="pkg-what-col-label">// ARCHITECTURE MAP</div>
             <p>
-              The Ægis Skills Library is a curated collection of
-              <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.md</code>
-              skill files that become slash commands in Claude Code. Pre-built workflows
-              for the things engineers do every day.
+              <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">tech-index.yaml</code>
+              maps every directory — its purpose, what it owns, what it depends on.
             </p>
             <p>
-              Install once in <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.claude/skills/</code>
-              — or your global <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">~/.claude/skills/</code>
-              for access across all projects.
+              <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">architecture-summary.md</code>
+              documents services, data flows, and entry points in readable form.
+              Lite version of the full
+              <a href="codebase-intelligence.html" style="color:var(--accent-hex);">Codebase Intelligence</a> analysis.
             </p>
-            <ul class="pkg-check" style="margin-top:16px;">
-              <li>50+ skills across git, testing, security, architecture</li>
-              <li>Personal license — one developer, unlimited projects</li>
-              <li>Plain <code style="font-size:12px;color:var(--accent-hex);">.md</code> files — readable, forkable</li>
-              <li>Works with Claude Code and compatible agents</li>
-            </ul>
+          </div>
+          <div>
+            <div class="pkg-what-col-label">// SKILLS LIBRARY</div>
+            <p>
+              Personal license to 50+ curated Claude Code skills — <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">.md</code>
+              files that become slash commands.
+            </p>
+            <p>
+              Install globally in <code style="background:var(--bg-2);border:1px solid var(--line);padding:1px 5px;font-size:11px;color:var(--accent-hex);">~/.claude/skills/</code>
+              for access across all projects. git, testing, security, architecture — covered.
+            </p>
           </div>
         </div>
-        <p style="margin-top:40px;">
-          <a href="mailto:selina@exoreaction.com?subject=KCP + Skills enquiry"
-             style="display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border:1px solid var(--accent-hex);color:var(--accent-hex);font-size:13px;text-decoration:none;">
-            <span>$</span> get the bundle for €19 <span>↑</span>
-          </a>
+      </section>
+
+      <!-- compare tiers -->
+      <section class="pkg-compare">
+        <div style="font-size:11px;letter-spacing:0.1em;color:var(--fg-mute);margin-bottom:20px;">// how this fits in the range</div>
+        <div class="pkg-compare-row head">
+          <div class="pkg-compare-cell" style="border:none;padding-left:0;color:var(--fg-dim);"></div>
+          <div class="pkg-compare-cell" style="border:none;color:var(--fg-dim);">Starter · €19</div>
+          <div class="pkg-compare-cell" style="border:none;color:var(--fg-dim);">Full · ~€890</div>
+        </div>
+        <div class="pkg-compare-row">
+          <div class="pkg-compare-cell">KCP manifest (CLAUDE.md, knowledge.yaml, AGENTS.md)</div>
+          <div class="pkg-compare-cell hl">✓</div>
+          <div class="pkg-compare-cell">✓</div>
+        </div>
+        <div class="pkg-compare-row">
+          <div class="pkg-compare-cell">Architecture map + tech-index</div>
+          <div class="pkg-compare-cell hl">✓</div>
+          <div class="pkg-compare-cell">✓</div>
+        </div>
+        <div class="pkg-compare-row">
+          <div class="pkg-compare-cell">Personal Skills Library license</div>
+          <div class="pkg-compare-cell hl">✓</div>
+          <div class="pkg-compare-cell dim">—</div>
+        </div>
+        <div class="pkg-compare-row">
+          <div class="pkg-compare-cell">Security scan · 21 signal types</div>
+          <div class="pkg-compare-cell dim">—</div>
+          <div class="pkg-compare-cell">✓</div>
+        </div>
+        <div class="pkg-compare-row">
+          <div class="pkg-compare-cell">N+1 audit · performance analysis</div>
+          <div class="pkg-compare-cell dim">—</div>
+          <div class="pkg-compare-cell">✓</div>
+        </div>
+        <div class="pkg-compare-row">
+          <div class="pkg-compare-cell">Test pyramid restructure</div>
+          <div class="pkg-compare-cell dim">—</div>
+          <div class="pkg-compare-cell">✓</div>
+        </div>
+        <div class="pkg-compare-row">
+          <div class="pkg-compare-cell">Prioritised remediation roadmap</div>
+          <div class="pkg-compare-cell dim">—</div>
+          <div class="pkg-compare-cell">✓</div>
+        </div>
+        <p style="font-size:12px;color:var(--fg-dim);margin-top:20px;">
+          Need the full analysis?
+          <a href="codebase-intelligence.html" style="color:var(--accent-hex);">See Codebase Intelligence →</a>
         </p>
         <a class="pkg-back" href="index.html">← back to ægis</a>
       </section>
@@ -340,27 +427,61 @@
   </div>
 
   <script>
+    var PROXY = "https://aegis-proxy.totto.workers.dev/waitlist";
     // REPLACE_WITH_STRIPE_LINK once Stripe product is created
-    var STRIPE_KCP_SKILLS = "https://buy.stripe.com/REPLACE_KCP_SKILLS";
+    var STRIPE = "https://buy.stripe.com/REPLACE_KCP_SKILLS";
+
+    function setMode(mode) {
+      var isGh = mode === "github";
+      document.getElementById("form-github").style.display = isGh ? "block" : "none";
+      document.getElementById("form-zip").style.display    = isGh ? "none" : "flex";
+      document.getElementById("btn-github").style.background  = isGh ? "var(--accent-hex)" : "transparent";
+      document.getElementById("btn-github").style.color       = isGh ? "var(--bg)" : "var(--fg-mute)";
+      document.getElementById("btn-github").style.borderColor = isGh ? "var(--accent-hex)" : "var(--line)";
+      document.getElementById("btn-zip").style.background     = isGh ? "transparent" : "var(--accent-hex)";
+      document.getElementById("btn-zip").style.color          = isGh ? "var(--fg-mute)" : "var(--bg)";
+      document.getElementById("btn-zip").style.borderColor    = isGh ? "var(--line)" : "var(--accent-hex)";
+    }
 
     document.getElementById("kcp-form").addEventListener("submit", function(e) {
       e.preventDefault();
-      var err = document.getElementById("kcp-error");
-      var url = document.getElementById("kcp-url").value.trim();
+      var err   = document.getElementById("kcp-error");
+      var url   = document.getElementById("kcp-url").value.trim();
       var email = document.getElementById("kcp-email").value.trim();
       err.style.display = "none";
-      if (!url)   { err.textContent = "⚠ enter your website URL or GitHub repo"; err.style.display = "block"; return; }
-      if (!email) { err.textContent = "⚠ enter your email address"; err.style.display = "block"; return; }
-      try { new URL(url.startsWith("http") ? url : "https://" + url); } catch(_) {
-        err.textContent = "⚠ not a valid URL — include https://"; err.style.display = "block"; return;
-      }
-      if (STRIPE_KCP_SKILLS.includes("REPLACE")) {
-        window.location.href = "mailto:selina@exoreaction.com?subject=KCP+%2B+Skills+order&body=URL%3A+" + encodeURIComponent(url) + "%0AEmail%3A+" + encodeURIComponent(email);
+      if (!url)   { err.textContent = "⚠ enter your GitHub repo URL"; err.style.display = "block"; return; }
+      if (!email) { err.textContent = "⚠ enter your email address";   err.style.display = "block"; return; }
+      try { new URL(url); } catch(_) { err.textContent = "⚠ not a valid URL — include https://"; err.style.display = "block"; return; }
+      if (STRIPE.includes("REPLACE")) {
+        window.location.href = "mailto:selina@exoreaction.com?subject=Codebase+Intelligence+Starter&body=Repo%3A+" + encodeURIComponent(url) + "%0AEmail%3A+" + encodeURIComponent(email);
       } else {
         var params = new URLSearchParams({ client_reference_id: url, prefilled_email: email });
-        window.location.href = STRIPE_KCP_SKILLS + "?" + params.toString();
+        window.location.href = STRIPE + "?" + params.toString();
       }
     });
+
+    document.getElementById("zip-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      var err   = document.getElementById("zip-error");
+      var email = document.getElementById("zip-email").value.trim();
+      err.style.display = "none";
+      if (!email || !email.includes("@")) { err.textContent = "⚠ enter a valid email"; err.style.display = "block"; return; }
+      try {
+        await fetch(PROXY, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email: email, product: "kcp-skills-zip" }),
+        });
+        document.getElementById("zip-form").innerHTML =
+          '<div style="color:var(--accent-hex);font-size:13px;line-height:1.8;">✓ you\'re on the list. we\'ll email you when ZIP goes live.</div>';
+      } catch(_) {
+        err.textContent = "⚠ something went wrong — try selina@exoreaction.com";
+        err.style.display = "block";
+      }
+    });
+
+    // init
+    setMode("github");
   </script>
 </body>
 </html>
