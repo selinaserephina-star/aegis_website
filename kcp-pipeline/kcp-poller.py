@@ -470,7 +470,13 @@ def _run_claude(prompt_text, repo_path, repo_name, label, timeout=900):
     with open(debug_path, "w") as f:
         f.write(result.stdout)
     if result.returncode != 0:
-        raise RuntimeError(f"claude CLI failed [{label}] (rc={result.returncode}): {result.stderr[:400]}")
+        # Soft-fail: claude sometimes exits rc=1 after generating valid tagged output
+        # (e.g. subscription rate-limit hit after Phase 1+2 token usage). If the
+        # output contains the expected XML tags, log a warning and proceed.
+        if result.stdout and ("<skill" in result.stdout or "<architecture_report" in result.stdout or "<module_knowledge" in result.stdout):
+            log.warning(f"claude CLI exited rc={result.returncode} [{label}] but stdout contains valid tags — treating as soft-fail. stderr: {result.stderr[:200]}")
+        else:
+            raise RuntimeError(f"claude CLI failed [{label}] (rc={result.returncode}): {result.stderr[:400]}")
     return result.stdout
 
 def generate_codebase_intelligence(repo_path, repo_name, job_id=None):
