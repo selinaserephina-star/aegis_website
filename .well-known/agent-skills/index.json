@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "kcp-manifest-discovery",
+      "type": "skill-md",
+      "description": "Discover and consume a site's KCP (Knowledge Context Protocol) manifest at /knowledge.yaml to get grounded, source-cited organizational context instead of scraping or guessing from prose.",
+      "url": "/.well-known/agent-skills/kcp-manifest-discovery/SKILL.md",
+      "digest": "sha256:9645a6e7417d38ff2982a01a8ca341de8d4179033898d56d98a68c054ffba86c"
+    }
+  ]
+}
